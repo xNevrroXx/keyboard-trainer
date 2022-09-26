@@ -1,0 +1,212 @@
+/**
+* Table Of Contents
+* 1. Variables
+* 2. General
+* 3. statistic
+* 4. text
+* 5. Keyboard
+* 6. Grid columns
+* 7. GIF
+*   7.1. Animations
+*/
+
+/* 1. Variables */
+$columns: 29;
+$rows: 5;
+
+$radius: 5px;
+$size: 1.5rem;
+$spacing: 12px;
+
+$beige: #fcf0e4;
+$bright-orange: #eb7131;
+$soft-cyan: #54d9d1;
+$soft-pink: #f27a9b;
+
+/* 2. General */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html {
+    height: 100vh;
+    font-size: 14px;
+}
+body {
+    align-items: center;
+    background-color: $soft-cyan;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    justify-content: space-around;
+    padding: 5vw;
+    overflow: hidden;
+    width: 100vw;
+}
+
+h1 {
+    font-family: "Montserrat", sans-serif;
+    font-size: 4rem;
+    text-align: center;
+}
+
+/* 3. Statistic */
+.statistic {
+    display: flex;
+    gap: 5rem;
+    font-size: 2rem;
+}
+
+/* 4. Text */
+.text {
+    font-size: 2rem;
+    background-color: rgba(white, 0.3);
+    width: calc(#{$size} * #{$columns} + (#{$spacing} * #{$columns}));
+    height: 10rem;
+}
+
+/* 5. Keyboard */
+.keyboard {
+    background-color: $beige;
+    border-radius: $radius;
+    box-shadow: 5px 5px 10px 3px rgba(0, 0, 0, 0.5);
+    display: grid;
+    gap: $spacing;
+    grid-template-columns: repeat($columns, $size);
+    grid-template-rows: repeat($rows, $size * 2);
+    padding: $spacing;
+    width: fit-content;
+
+    &#{__key} {
+        border: none;
+        border-radius: $radius;
+        cursor: pointer;
+        display: flex;
+        font-family: "Source Code Pro", monospace;
+        outline: none;
+        padding: $spacing;
+        position: relative;
+
+        &:hover,
+        &:focus {
+            font-weight: 700;
+        }
+
+        &:active,
+        &.active {
+            box-shadow: none;
+            font-weight: 400;
+            transform: translate(2px, 2px);
+        }
+
+        &#{--general} {
+            background-color: $soft-pink;
+            box-shadow: 2px 2px 0 0 darken($soft-pink, 35);
+        }
+
+        &#{--special} {
+            background-color: $bright-orange;
+            box-shadow: 2px 2px 0 0 darken($bright-orange, 35);
+        }
+
+        &#{_serif} {
+            &::after {
+                content: "";
+                position: absolute;
+                bottom: 10%;
+                left: 50%;
+                transform: translateX(-50%);
+                display: block;
+                border: 4px;
+                width: 20%;
+                height: 2px;
+                background-color: rgba(black, .6);
+            }
+        }
+    }
+}
+
+/* 6. Grid columns */
+@for $i from 1 through $columns {
+    .col-span-#{$i} {
+        align-items: center;
+        grid-column: span $i;
+        justify-content: center;
+    }
+}
+
+
+.pinky {
+    &#{__left-finger} {
+        background-color: rgb(249, 220, 167);
+    }
+    &#{__right-finger} {
+        background-color: rgb(249, 220, 167);
+    }
+}
+.ring {
+    &#{__left-finger} {
+        background-color: rgb(241, 176, 176);
+    }
+    &#{__right-finger} {
+        background-color: rgb(241, 176, 176);
+    }
+}
+.middle {
+    &#{__left-finger} {
+        background-color: rgb(194, 230, 181);
+    }
+    &#{__right-finger} {
+        background-color: rgb(194, 230, 181);
+    }
+}
+.index {
+    &#{__left-finger} {
+        background-color: rgb(181, 212, 237);
+    }
+    &#{__right-finger} {
+        background-color: rgb(187, 200, 232);
+    }
+}
+
+/* 7. GIF */
+.gif {
+    z-index: 1;
+
+    &#{--hidden} {
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    &#{__wrapper} {
+        animation: gif__animation--x 5s linear infinite alternate;
+        left: 0;
+        position: absolute;
+        top: 0;
+        transition: opacity 0.5s;
+    }
+
+    &#{__img} {
+        animation: gif__animation--y 3s linear infinite alternate;
+        border-radius: 100%;
+        height: 500px;
+        width: 500px;
+    }
+}
+
+/* 7.1. Animations */
+
+@keyframes gif__animation--x {
+    100% {
+        transform: translateX(calc(100vw - 500px));
+    }
+}
+
+@keyframes gif__animation--y {
+    100% {
+        transform: translateY(calc(100vh - 500px));
+    }
+}
