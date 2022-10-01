@@ -1,0 +1,24 @@
+@import "../modules/variables";
+
+.text {
+  border-radius: .5rem;
+  padding: 1.5rem 1rem 1.5rem 1rem;
+  font-size: 2rem;
+  background-color: white;
+  width: calc(#{$size} * #{$columns} + (#{$spacing} * #{$columns+1}));
+  height: 10rem;
+  &_passed {
+    //background-color: rgb(154, 154, 154);
+    //border-radius: .2rem;
+    //opacity: .4;
+    color: rgb(91, 197, 56);
+  }
+  &_target {
+    color: white;
+    background-color: rgb(91, 197, 56);
+  }
+  &_failed {
+    color: white;
+    background-color: rgb(243, 103, 71);
+  }
+}

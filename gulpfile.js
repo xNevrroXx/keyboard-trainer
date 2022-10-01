@@ -6,14 +6,16 @@ const sourcemaps = require("gulp-sourcemaps")
 const rename = require('gulp-rename');
 const ts = require("gulp-typescript");
 const tsProject = ts.createProject("tsconfig.json");
+const rigger = require("gulp-rigger");
 
 const dist = "./dist/";
 const src = "./src/";
 
-gulp.task("copy-html", () => {
-  return gulp.src("./src/index.html")
-    .pipe(gulp.dest(dist))
-    .pipe(browsersync.stream());
+gulp.task("copy-html-pages", () => {
+  return gulp.src("./src/pages/**/*.html")
+    .pipe(rigger())
+    .pipe(gulp.dest(dist + "/pages"))
+    .pipe(browsersync.stream())
 });
 
 gulp.task("copy-json", () => {
@@ -32,6 +34,13 @@ gulp.task("copy-assets", () => {
   return gulp.src("./src/assets/**/*.*")
     .pipe(gulp.dest(dist + "/assets"))
     .on("end", browsersync.reload);
+})
+
+gulp.task("build-html", () => {
+  return gulp.src("./src/index.html")
+    .pipe(rigger())
+    .pipe(gulp.dest("./dist"))
+    .pipe(browsersync.stream());
 })
 
 gulp.task("build-ts", () => {
@@ -89,7 +98,7 @@ gulp.task("watch", () => {
     notify: true
   });
 
-  gulp.watch("./src/index.html", gulp.parallel("copy-html"));
+  gulp.watch("./src/**/*.html", gulp.parallel("build-html", "copy-html-pages"));
   gulp.watch("./data.json", gulp.parallel("copy-json"));
   gulp.watch("./src/scripts/**/*.ts", gulp.parallel("build-ts"));
   gulp.watch("./src/buildJS/**/*.js", gulp.parallel("build-js"));
@@ -98,6 +107,6 @@ gulp.task("watch", () => {
   gulp.watch("./src/fonts/**/*.*", gulp.parallel("copy-fonts"));
 })
 
-gulp.task("build", gulp.parallel("copy-html", /*"copy-json",*/ "build-ts", "build-js", "build-styles", /*"copy-assets", "copy-fonts"*/));
+gulp.task("build", gulp.parallel("build-html", "copy-html-pages", /*"copy-json",*/ "build-ts", "build-js", "build-styles", /*"copy-assets", "copy-fonts"*/));
 
 gulp.task("default", gulp.parallel("watch", "build"))

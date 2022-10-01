@@ -1,0 +1,54 @@
+@import "../modules/variables";
+
+.modal {
+  z-index: 100;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(113, 135, 194, 0.2);
+  &_active {
+    display: flex;
+  }
+  &__dialog {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 2rem 3rem;
+    align-items: center;
+    width: 60vw;
+    height: 50vh;
+    border-radius: 1rem;
+    z-index: 10;
+    background-color: white;
+  }
+
+  .darken-bg {
+  }
+
+  &__close-trigger {
+    position: absolute;
+  }
+
+  &__icon {
+    display: block;
+    width: 25%;
+    height: 25%;
+    fill: rgb(87 82 229);
+  }
+
+  &__title {
+    font-size: 2.5rem;
+  }
+
+  &__start-print-btn {
+  }
+
+  &_statistic {
+    display: none;
+  }
+}
