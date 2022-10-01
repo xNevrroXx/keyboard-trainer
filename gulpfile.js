@@ -107,6 +107,6 @@ gulp.task("watch", () => {
   gulp.watch("./src/fonts/**/*.*", gulp.parallel("copy-fonts"));
 })
 
-gulp.task("build", gulp.parallel("build-html", "copy-html-pages", /*"copy-json",*/ "build-ts", "build-js", "build-styles", /*"copy-assets", "copy-fonts"*/));
+gulp.task("build", gulp.parallel("build-html", "copy-html-pages", /*"copy-json",*/ "build-ts", "build-js", "build-styles", "copy-assets", /*"copy-fonts"*/));
 
 gulp.task("default", gulp.parallel("watch", "build"))

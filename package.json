@@ -39,6 +39,7 @@
     "webpack-stream": "^7.0.0"
   },
   "dependencies": {
+    "chart.js": "^3.9.1",
     "gsap": "^3.10.4",
     "vinyl": "^3.0.0"
   }

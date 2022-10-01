@@ -1,6 +1,7 @@
 import splitText from "./splitText";
+import {IChartStatistic} from "../types";
 
-function initTraining() {
+function initTraining(chartStatistic: IChartStatistic[]) {
   const textElem: HTMLElement = document.querySelector(".text"),
     statisticElem = document.querySelector(".statistic");
 
@@ -9,11 +10,12 @@ function initTraining() {
     countErrors: number = 0,
     wasError: boolean = false;
 
-  const buffer: string[] = [];
   const statistic = {
     speed: 0,
     accuracy: 0
   }
+  chartStatistic.length = 0;
+  const buffer: string[] = [];
 
   const specialKeyCodes = [
     "ControlLeft",
@@ -32,6 +34,11 @@ function initTraining() {
     pastTime++;
     statistic.accuracy = buffer.length !== 0 ? Math.floor(100 - countErrors / (buffer.length / 100)) : 100;
     statistic.speed = Math.floor(buffer.length / (pastTime/60));
+    chartStatistic.push({
+      accuracy: statistic.accuracy,
+      speed: statistic.speed,
+      time: pastTime
+    })
 
     statisticSpeedValueElem.textContent = statistic.speed + " ch/min";
     statisticAccuracyElem.textContent = statistic.accuracy + "%";

@@ -7,100 +7,42 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <link rel="stylesheet" href="../styles/style.css">
-
+    <script defer src="../scripts/bundle.js"></script>
     <title>Keyboard training - govorov</title>
 </head>
 <body>
-    <h1>results page</h1>
-    <div class="keyboard">
-        <!-- Row 1 -->
-        <button data-code="96" class="keyboard__key keyboard__key--general col-span-2 pinky__left-finger" id="Backquote">`</button>
-        <button data-code="" class="keyboard__key keyboard__key--general col-span-2 pinky__left-finger" id="Digit1">1</button>
-        <button class="keyboard__key keyboard__key--general col-span-2 ring__left-finger" id="Digit2">2</button>
-        <button class="keyboard__key keyboard__key--general col-span-2 middle__left-finger" id="Digit3">3</button>
-        <button class="keyboard__key keyboard__key--general col-span-2 index__left-finger" id="Digit4">4</button>
-        <button class="keyboard__key keyboard__key--general col-span-2 index__left-finger" id="Digit5">5</button>
-        <button class="keyboard__key keyboard__key--general col-span-2 index__right-finger" id="Digit6">6</button>
-        <button class="keyboard__key keyboard__key--general col-span-2 index__right-finger" id="Digit7">7</button>
-        <button class="keyboard__key keyboard__key--general col-span-2 middle__right-finger" id="Digit8">8</button>
-        <button class="keyboard__key keyboard__key--general col-span-2 ring__right-finger" id="Digit9">9</button>
-        <button class="keyboard__key keyboard__key--general col-span-2 pinky__right-finger" id="Digit0">0</button>
-        <button class="keyboard__key keyboard__key--general col-span-2 pinky__right-finger" id="Minus">-</button>
-        <button class="keyboard__key keyboard__key--general col-span-2 pinky__right-finger" id="Equal">=</button>
-        <button class="keyboard__key keyboard__key--special col-span-3 pinky__right-finger" id="Backspace">←</button>
-        <!--    <button class="keyboard__key keyboard__key&#45;&#45;special col-span-2" id="Delete">Del</button>-->
-        <!--    <button class="keyboard__key keyboard__key&#45;&#45;special col-span-2" id="Home">Home</button>-->
-        <!-- Row 2 -->
-        <button class="keyboard__key keyboard__key--special col-span-3 pinky__left-finger" id="Tab">↹</button>
-        <button class="keyboard__key keyboard__key--general col-span-2 pinky__left-finger" id="KeyQ">Q</button>
-        <button class="keyboard__key keyboard__key--general col-span-2 ring__left-finger" id="KeyW">W</button>
-        <button class="keyboard__key keyboard__key--general col-span-2 middle__left-finger" id="KeyE">E</button>
-        <button class="keyboard__key keyboard__key--general col-span-2 index__left-finger" id="KeyR">R</button>
-        <button class="keyboard__key keyboard__key--general col-span-2 index__left-finger" id="KeyT">T</button>
-        <button class="keyboard__key keyboard__key--general col-span-2 index__right-finger" id="KeyY">Y</button>
-        <button class="keyboard__key keyboard__key--general col-span-2 index__right-finger" id="KeyU">U</button>
-        <button class="keyboard__key keyboard__key--general col-span-2 middle__right-finger" id="KeyI">I</button>
-        <button class="keyboard__key keyboard__key--general col-span-2 ring__right-finger" id="KeyO">O</button>
-        <button class="keyboard__key keyboard__key--general col-span-2 pinky__right-finger" id="KeyP">P</button>
-        <button class="keyboard__key keyboard__key--general col-span-2 pinky__right-finger" id="BracketLeft">[</button>
-        <button class="keyboard__key keyboard__key--general col-span-2 pinky__right-finger" id="BracketRight">]</button>
-        <button class="keyboard__key keyboard__key--general col-span-2 pinky__right-finger" id="Backslash">\</button>
-        <!--    <button class="keyboard__key keyboard__key&#45;&#45;special col-span-2" id="PageUp">Up</button>-->
-    
-        <!-- Row 3 -->
-        <button class="keyboard__key keyboard__key--special col-span-4 pinky__left-finger" id="CapsLock"><span class="activated">
-                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                             viewBox="0 0 511.999 511.999" style="enable-background:new 0 0 511.999 511.999;" xml:space="preserve">
-                            <g>
-                                <path d="M506.43,421.536L291.573,49.394c-15.814-27.391-55.327-27.401-71.147,0L5.568,421.536
-                                    c-15.814,27.391,3.934,61.616,35.574,61.616h429.714C502.485,483.153,522.25,448.938,506.43,421.536z M274.821,385.034
-                                    c0,10.394-8.427,18.821-18.821,18.821s-18.821-8.427-18.821-18.821v-11.239c0-10.394,8.427-18.821,18.821-18.821
-                                    s18.821,8.427,18.821,18.821V385.034z M274.821,311.702c0,10.394-8.427,18.821-18.821,18.821s-18.821-8.427-18.821-18.821v-107.89
-                                    c0-10.394,8.427-18.821,18.821-18.821s18.821,8.427,18.821,18.821V311.702z"/>
-                            </g>
-                        </svg>
-                    </span>Caps</button>
-        <button class="keyboard__key keyboard__key--general col-span-2 pinky__left-finger" id="KeyA">A</button>
-        <button class="keyboard__key keyboard__key--general col-span-2 ring__left-finger" id="KeyS">S</button>
-        <button class="keyboard__key keyboard__key--general col-span-2 middle__left-finger" id="KeyD">D</button>
-        <button class="keyboard__key keyboard__key--general col-span-2 index__left-finger keyboard__key_serif" id="KeyF">F</button>
-        <button class="keyboard__key keyboard__key--general col-span-2 index__left-finger" id="KeyG">G</button>
-        <button class="keyboard__key keyboard__key--general col-span-2 index__right-finger" id="KeyH">H</button>
-        <button class="keyboard__key keyboard__key--general col-span-2 index__right-finger keyboard__key_serif" id="KeyJ">J</button>
-        <button class="keyboard__key keyboard__key--general col-span-2 middle__right-finger" id="KeyK">K</button>
-        <button class="keyboard__key keyboard__key--general col-span-2 ring__right-finger" id="KeyL">L</button>
-        <button class="keyboard__key keyboard__key--general col-span-2 pinky__right-finger" id="Semicolon">;</button>
-        <button class="keyboard__key keyboard__key--general col-span-2 pinky__right-finger" id="Quote">'</button>
-        <button class="keyboard__key keyboard__key--special col-span-3 pinky__right-finger" id="Enter">Enter</button>
-        <!--    <button class="keyboard__key keyboard__key&#45;&#45;special col-span-2" id="PageDown">Down</button>-->
-    
-        <!-- Row 4 -->
-        <button class="keyboard__key keyboard__key--special col-span-5 pinky__left-finger" id="ShiftLeft">Shift</button>
-        <button class="keyboard__key keyboard__key--general col-span-2 pinky__left-finger" id="KeyZ">Z</button>
-        <button class="keyboard__key keyboard__key--general col-span-2 ring__left-finger" id="KeyX">X</button>
-        <button class="keyboard__key keyboard__key--general col-span-2 middle__left-finger" id="KeyC">C</button>
-        <button class="keyboard__key keyboard__key--general col-span-2 index__left-finger" id="KeyV">V</button>
-        <button class="keyboard__key keyboard__key--general col-span-2 index__left-finger" id="KeyB">B</button>
-        <button class="keyboard__key keyboard__key--general col-span-2 index__right-finger" id="KeyN">N</button>
-        <button class="keyboard__key keyboard__key--general col-span-2 index__right-finger" id="KeyM">M</button>
-        <button class="keyboard__key keyboard__key--general col-span-2 middle__right-finger" id="Comma">,</button>
-        <button class="keyboard__key keyboard__key--general col-span-2 ring__right-finger" id="Period">.</button>
-        <button class="keyboard__key keyboard__key--general col-span-2 pinky__right-finger" id="Slash">/</button>
-        <button class="keyboard__key keyboard__key--special col-span-4 pinky__right-finger" id="ShiftRight">Shift</button>
-        <!--    <button class="keyboard__key keyboard__key&#45;&#45;special col-span-2" id="ArrowUp">↑</button>-->
-        <!--    <button class="keyboard__key keyboard__key&#45;&#45;special col-span-2" id="End">End</button>-->
-    
-        <!-- Row 5 -->
-        <button class="keyboard__key keyboard__key--special col-span-2" id="ControlLeft">Ctrl</button>
-        <button class="keyboard__key keyboard__key--special col-span-2" id="MetaLeft">Sup</button>
-        <button class="keyboard__key keyboard__key--special col-span-2" id="AltLeft">Alt</button>
-        <button class="keyboard__key keyboard__key--general col-span-17" id="Space"></button>
-        <button class="keyboard__key keyboard__key--special col-span-2" id="AltRight">Alt</button>
-        <button class="keyboard__key keyboard__key--special col-span-2" id="ContextMenu">...</button>
-        <button class="keyboard__key keyboard__key--special col-span-2" id="ControlRight">Ctrl</button>
-        <!--    <button class="keyboard__key keyboard__key&#45;&#45;special col-span-2" id="ArrowLeft">←</button>-->
-        <!--    <button class="keyboard__key keyboard__key&#45;&#45;special col-span-2" id="ArrowDown">↓</button>-->
-        <!--    <button class="keyboard__key keyboard__key&#45;&#45;special col-span-2" id="ArrowRight">→</button>-->
+    <header class="main-navbar">
+        <div class="container">
+            <nav class="menu">
+                <a class="logo" href="pages/trainer.html">govorov</a>
+                <ul class="menu__main">
+                    <li class="menu__item">
+                        <a href="/">Testing</a>
+                    </li>
+                    <li class="menu__item">
+                        <a href="pages/trainer.html">Trainer</a>
+                    </li>
+                    <li class="menu__item">
+                        <a href="pages/preparation.html">Preparation</a>
+                    </li>
+                </ul>
+                <ul class="menu__right">
+                    <li class="menu__item_user">
+                        <a class="user-link" href="pages/userpage.html"> <!--todo on mouseover appear list of users characteristic-->
+                            <object class="user-picture" data="avatar.jpg" type="image/jpg">
+                                <img src="get from js" />
+                            </object>
+                            <span class="user-name">Владимир</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <h1>Your results</h1>
+    <p class="feedback">Keep it up! Your accuracy wasn't below than <span style="color: red">98%</span></p>
+    <div class="result-statistic">
+        <canvas class="result-statistic-canvas" id="myChart"></canvas>
     </div>
 </body>
 </html>

@@ -12,19 +12,30 @@ html {
     font-size: 14px;
 }
 body {
+    font-family: "Montserrat", sans-serif;
+    padding: 5vw;
     align-items: center;
     background-color: $soft-light-green;
     display: flex;
     flex-direction: column;
-    height: 100vh;
     justify-content: space-around;
-    padding: 5vw;
+    height: 90vh;
+}
+a {
+    text-decoration: none;
+    color: inherit;
+    font-family: inherit;
+}
+li {
+    list-style-type: none;
+}
+.container {
+    margin: 0 auto;
     overflow: hidden;
-    width: 100vw;
+    width: 60vw;
 }
 
 h1 {
-    font-family: "Montserrat", sans-serif;
     font-size: 4rem;
     text-align: center;
 }
@@ -43,9 +54,12 @@ h1 {
 @import "blocks/keyboard";
 @import "blocks/text";
 @import "blocks/modal";
+@import "blocks/graphic";
+@import "blocks/header";
 
 .statistic {
     display: flex;
+    width: 15rem;
     flex-direction: column;
     gap: 5rem;
     font-size: 2rem;
@@ -68,4 +82,8 @@ h1 {
         flex-direction: column;
         gap: .5rem;
     }
+}
+
+.feedback {
+    font-size: 1.5rem;
 }

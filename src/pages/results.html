@@ -7,11 +7,15 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <link rel="stylesheet" href="../styles/style.css">
-
+    <script defer src="../scripts/bundle.js"></script>
     <title>Keyboard training - govorov</title>
 </head>
 <body>
-    <h1>results page</h1>
-    //= ../templates/keyboard.html
+    //= ../templates/header.html
+    <h1>Your results</h1>
+    <p class="feedback">Keep it up! Your accuracy wasn't below than <span style="color: red">98%</span></p>
+    <div class="result-statistic">
+        <canvas class="result-statistic-canvas" id="myChart"></canvas>
+    </div>
 </body>
 </html>

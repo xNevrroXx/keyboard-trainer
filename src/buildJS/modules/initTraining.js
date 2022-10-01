@@ -1,12 +1,13 @@
 import splitText from "./splitText";
-function initTraining() {
+function initTraining(chartStatistic) {
     const textElem = document.querySelector(".text"), statisticElem = document.querySelector(".statistic");
     let indexTargetChar = 0, pastTime = 0, countErrors = 0, wasError = false;
-    const buffer = [];
     const statistic = {
         speed: 0,
         accuracy: 0
     };
+    chartStatistic.length = 0;
+    const buffer = [];
     const specialKeyCodes = [
         "ControlLeft",
         "ControlRight",
@@ -21,6 +22,11 @@ function initTraining() {
         pastTime++;
         statistic.accuracy = buffer.length !== 0 ? Math.floor(100 - countErrors / (buffer.length / 100)) : 100;
         statistic.speed = Math.floor(buffer.length / (pastTime / 60));
+        chartStatistic.push({
+            accuracy: statistic.accuracy,
+            speed: statistic.speed,
+            time: pastTime
+        });
         statisticSpeedValueElem.textContent = statistic.speed + " ch/min";
         statisticAccuracyElem.textContent = statistic.accuracy + "%";
     }, 1000);
