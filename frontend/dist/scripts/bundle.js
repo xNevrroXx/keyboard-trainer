@@ -185,6 +185,46 @@ function keyboard() {
 
 /***/ }),
 
+/***/ "./src/buildJS/modules/loginForm.js":
+/*!******************************************!*\
+  !*** ./src/buildJS/modules/loginForm.js ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var core_js_modules_es_regexp_exec_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.regexp.exec.js */ "./node_modules/core-js/modules/es.regexp.exec.js");
+/* harmony import */ var core_js_modules_es_regexp_exec_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_regexp_exec_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var core_js_modules_es_string_search_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/es.string.search.js */ "./node_modules/core-js/modules/es.string.search.js");
+/* harmony import */ var core_js_modules_es_string_search_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_string_search_js__WEBPACK_IMPORTED_MODULE_1__);
+
+
+
+function loginForm() {
+  var signUpButton = document.getElementById('signUp');
+  var signInButton = document.getElementById('signIn');
+  var container = document.getElementById('container');
+
+  if (window.location.search === "?register") {
+    container.classList.add("right-panel-active");
+  }
+
+  signUpButton.addEventListener('click', function () {
+    container.classList.add("right-panel-active");
+  });
+  signInButton.addEventListener('click', function () {
+    container.classList.remove("right-panel-active");
+  });
+  console.log(signInButton);
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (loginForm);
+
+/***/ }),
+
 /***/ "./src/buildJS/modules/makeChart.js":
 /*!******************************************!*\
   !*** ./src/buildJS/modules/makeChart.js ***!
@@ -3411,6 +3451,23 @@ module.exports = function (it) {
 
 /***/ }),
 
+/***/ "./node_modules/core-js/internals/same-value.js":
+/*!******************************************************!*\
+  !*** ./node_modules/core-js/internals/same-value.js ***!
+  \******************************************************/
+/***/ ((module) => {
+
+// `SameValue` abstract operation
+// https://tc39.es/ecma262/#sec-samevalue
+// eslint-disable-next-line es-x/no-object-is -- safe
+module.exports = Object.is || function is(x, y) {
+  // eslint-disable-next-line no-self-compare -- NaN check
+  return x === y ? x !== 0 || 1 / x === 1 / y : x != x && y != y;
+};
+
+
+/***/ }),
+
 /***/ "./node_modules/core-js/internals/schedulers-fix.js":
 /*!**********************************************************!*\
   !*** ./node_modules/core-js/internals/schedulers-fix.js ***!
@@ -4680,6 +4737,55 @@ defineIterator(String, 'String', function (iterated) {
   point = charAt(string, index);
   state.index += point.length;
   return createIterResultObject(point, false);
+});
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js/modules/es.string.search.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/core-js/modules/es.string.search.js ***!
+  \**********************************************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var call = __webpack_require__(/*! ../internals/function-call */ "./node_modules/core-js/internals/function-call.js");
+var fixRegExpWellKnownSymbolLogic = __webpack_require__(/*! ../internals/fix-regexp-well-known-symbol-logic */ "./node_modules/core-js/internals/fix-regexp-well-known-symbol-logic.js");
+var anObject = __webpack_require__(/*! ../internals/an-object */ "./node_modules/core-js/internals/an-object.js");
+var isNullOrUndefined = __webpack_require__(/*! ../internals/is-null-or-undefined */ "./node_modules/core-js/internals/is-null-or-undefined.js");
+var requireObjectCoercible = __webpack_require__(/*! ../internals/require-object-coercible */ "./node_modules/core-js/internals/require-object-coercible.js");
+var sameValue = __webpack_require__(/*! ../internals/same-value */ "./node_modules/core-js/internals/same-value.js");
+var toString = __webpack_require__(/*! ../internals/to-string */ "./node_modules/core-js/internals/to-string.js");
+var getMethod = __webpack_require__(/*! ../internals/get-method */ "./node_modules/core-js/internals/get-method.js");
+var regExpExec = __webpack_require__(/*! ../internals/regexp-exec-abstract */ "./node_modules/core-js/internals/regexp-exec-abstract.js");
+
+// @@search logic
+fixRegExpWellKnownSymbolLogic('search', function (SEARCH, nativeSearch, maybeCallNative) {
+  return [
+    // `String.prototype.search` method
+    // https://tc39.es/ecma262/#sec-string.prototype.search
+    function search(regexp) {
+      var O = requireObjectCoercible(this);
+      var searcher = isNullOrUndefined(regexp) ? undefined : getMethod(regexp, SEARCH);
+      return searcher ? call(searcher, regexp, O) : new RegExp(regexp)[SEARCH](toString(O));
+    },
+    // `RegExp.prototype[@@search]` method
+    // https://tc39.es/ecma262/#sec-regexp.prototype-@@search
+    function (string) {
+      var rx = anObject(this);
+      var S = toString(string);
+      var res = maybeCallNative(nativeSearch, rx, S);
+
+      if (res.done) return res.value;
+
+      var previousLastIndex = rx.lastIndex;
+      if (!sameValue(previousLastIndex, 0)) rx.lastIndex = 0;
+      var result = regExpExec(rx, S);
+      if (!sameValue(rx.lastIndex, previousLastIndex)) rx.lastIndex = previousLastIndex;
+      return result === null ? -1 : result.index;
+    }
+  ];
 });
 
 
@@ -19103,6 +19209,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_makeChart__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/makeChart */ "./src/buildJS/modules/makeChart.js");
 /* harmony import */ var _modules_plugToImgOnError__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/plugToImgOnError */ "./src/buildJS/modules/plugToImgOnError.js");
 /* harmony import */ var _modules_scaleElements__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/scaleElements */ "./src/buildJS/modules/scaleElements.js");
+/* harmony import */ var _modules_loginForm__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/loginForm */ "./src/buildJS/modules/loginForm.js");
+// owm modules
+
 
 
 
@@ -19110,14 +19219,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 window.addEventListener("DOMContentLoaded", function () {
+  (0,_modules_plugToImgOnError__WEBPACK_IMPORTED_MODULE_4__["default"])();
   var chartStatistic = [];
-  console.log(chartStatistic);
   (0,_modules_scaleElements__WEBPACK_IMPORTED_MODULE_5__["default"])(document.querySelector("body"), document.querySelectorAll("body > *"));
   window.addEventListener("resize", function () {
     (0,_modules_scaleElements__WEBPACK_IMPORTED_MODULE_5__["default"])(document.querySelector("body"), document.querySelectorAll("body > *"));
   });
-  (0,_modules_plugToImgOnError__WEBPACK_IMPORTED_MODULE_4__["default"])();
-  console.log(window.location);
 
   if (window.location.pathname === "/") {
     var modalStartPrint = document.querySelector(".modal_start-print");
@@ -19150,6 +19257,8 @@ window.addEventListener("DOMContentLoaded", function () {
     });
   } else if (window.location.pathname === "/pages/results.html") {
     (0,_modules_makeChart__WEBPACK_IMPORTED_MODULE_3__["default"])(chartStatistic);
+  } else if (window.location.pathname === "/pages/login.html") {
+    (0,_modules_loginForm__WEBPACK_IMPORTED_MODULE_6__["default"])();
   }
 });
 })();

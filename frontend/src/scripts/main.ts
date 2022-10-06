@@ -1,22 +1,24 @@
+// third-party modules
+import {IChartStatistic} from "./types";
+// owm modules
 import initTraining from "./modules/initTraining";
 import keyboard from "./modules/keyboard";
 import initModal from "./modules/modal";
 import makeChart from "./modules/makeChart";
 import plugToImgOnError from "./modules/plugToImgOnError";
 import scaleElements from "./modules/scaleElements";
-import {IChartStatistic} from "./types";
+import loginForm from "./modules/loginForm";
 
 window.addEventListener("DOMContentLoaded", () => {
+  plugToImgOnError();
+
   const chartStatistic: IChartStatistic[] = [];
-  console.log(chartStatistic)
 
   scaleElements(document.querySelector("body"), document.querySelectorAll("body > *"));
   window.addEventListener("resize", () => {
     scaleElements(document.querySelector("body"), document.querySelectorAll("body > *"));
-  });
-  plugToImgOnError();
+  })
 
-  console.log(window.location)
   if(window.location.pathname === "/") {
     const modalStartPrint: HTMLElement = document.querySelector(".modal_start-print");
 
@@ -51,5 +53,8 @@ window.addEventListener("DOMContentLoaded", () => {
   }
   else if(window.location.pathname === "/pages/results.html") {
     makeChart(chartStatistic);
+  }
+  else if (window.location.pathname === "/pages/login.html") {
+    loginForm();
   }
 })

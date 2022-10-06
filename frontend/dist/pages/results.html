@@ -17,23 +17,26 @@
                 <a class="logo" href="pages/trainer.html">govorov</a>
                 <ul class="menu__main">
                     <li class="menu__item">
-                        <a href="/">Testing</a>
+                        <a data-target-point="/" href="/">Testing</a>
                     </li>
                     <li class="menu__item">
-                        <a href="pages/trainer.html">Trainer</a>
+                        <a data-target-point="/pages/trainer.html" href="pages/trainer.html">Trainer</a>
                     </li>
                     <li class="menu__item">
-                        <a href="pages/preparation.html">Preparation</a>
+                        <a data-target-point="/pages/preparation.html" href="pages/preparation.html">Preparation</a>
                     </li>
                 </ul>
                 <ul class="menu__right">
-                    <li class="menu__item_user">
-                        <a class="user-link" href="pages/userpage.html"> <!--todo on mouseover appear list of users characteristic-->
+                    <li class="menu__item menu__item_profile">
+                        <a data-target-point="/pages/profile.html" class="user-link" href="pages/profile.html"> <!--todo on mouseover appear list of users characteristic-->
                             <object class="user-picture" data="avatar.jpg" type="image/jpg">
                                 <img src="get from js" />
                             </object>
                             <span class="user-name">Владимир</span>
                         </a>
+                    </li>
+                    <li class="menu__item menu__item_login">
+                        <a href="/pages/login.html?register">Register</a> <span>or</span> <a href="/pages/login.html">Sign in</a>
                     </li>
                 </ul>
             </nav>
@@ -43,6 +46,6 @@
     <p class="feedback">Keep it up! Your accuracy wasn't below than <span style="color: red">98%</span></p>
     <div class="result-statistic">
         <canvas class="result-statistic-canvas" id="myChart"></canvas>
-    </div>
+    </div
 </body>
 </html>

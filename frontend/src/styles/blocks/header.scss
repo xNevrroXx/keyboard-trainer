@@ -1,10 +1,12 @@
+@import "../modules/variables.scss";
+
 header.main-navbar {
   z-index: 101;
   padding-top: 2rem;
   font-size: 1.5rem;
   color: rgba(255,255,255,.95);
   text-shadow: -1px -1px .3px #ababab;
-  font-weight: 600;
+  font-weight: 400;
   position: fixed;
   top: 0;
   left: 0;
@@ -13,7 +15,7 @@ header.main-navbar {
 }
 .menu {
   height: 4rem;
-  background-color: rgba(0, 255, 191, 0.5);
+  background-color: $menu-color;
   border-radius: 1rem;
   padding: 0 1.5rem 0 1.5rem;
   display: flex;
@@ -21,14 +23,39 @@ header.main-navbar {
   .logo {
     display: block;
     margin-right: 4rem;
+    color: black;
   }
   &__main {
     display: flex;
     gap: 1.5rem;
   }
   &__right {
+    display: flex;
+    gap: 1rem;
     margin-left: auto;
+    position: relative;
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -1rem;
+      display: block;
+      height: 100%;
+      width: 1px;
+      //box-shadow: 0 0 2px rgba(255,255,255,.8);
+      background: linear-gradient(45deg, rgb(74, 177, 232) 50%, transparent 100%);
+    }
   }
+  &__item_profile {
+    display: none; //todo remove line
+  }
+  &__item_login {
+    //display: none; //todo add line
+    span {
+      opacity: 0.5;
+    }
+  }
+
   .user-link {
     display: flex;
     gap: 1rem;

@@ -12,10 +12,11 @@ const dist = "./dist/";
 const src = "./src/";
 
 gulp.task("copy-html-pages", () => {
-  return gulp.src("./src/pages/**/*.html")
+  console.log(gulp.src("./src/pages/*.html").length)
+  return gulp.src("./src/pages/*.html")
     .pipe(rigger())
     .pipe(gulp.dest(dist + "/pages"))
-    .pipe(browsersync.stream())
+    .pipe(browsersync.stream());
 });
 
 gulp.task("copy-json", () => {
