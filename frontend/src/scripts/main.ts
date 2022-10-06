@@ -1,5 +1,5 @@
 // third-party modules
-import {IChartStatistic} from "./types";
+import {backendUrls, IChartStatistic} from "./types";
 // owm modules
 import initTraining from "./modules/initTraining";
 import keyboard from "./modules/keyboard";
@@ -7,10 +7,13 @@ import initModal from "./modules/modal";
 import makeChart from "./modules/makeChart";
 import plugToImgOnError from "./modules/plugToImgOnError";
 import scaleElements from "./modules/scaleElements";
-import loginForm from "./modules/loginForm";
+import loginFormTab from "./modules/loginFormTab";
+import loginFormListener from "./modules/loginFormListener";
+import authorize from "./modules/authorize";
 
 window.addEventListener("DOMContentLoaded", () => {
   plugToImgOnError();
+  authorize();
 
   const chartStatistic: IChartStatistic[] = [];
 
@@ -55,6 +58,7 @@ window.addEventListener("DOMContentLoaded", () => {
     makeChart(chartStatistic);
   }
   else if (window.location.pathname === "/pages/login.html") {
-    loginForm();
+    loginFormTab();
+    loginFormListener();
   }
 })

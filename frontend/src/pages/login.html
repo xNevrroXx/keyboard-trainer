@@ -8,14 +8,14 @@
     <link rel="stylesheet" href="../styles/style.css">
     <script defer src="../scripts/bundle.js"></script>
 
-    <title>Login Keyboard training - govorov</title>
+    <title>Login Keyboard trainer - govorov</title>
 </head>
 <body>
 //= ../templates/header.html
 <div class="wrapper-login">
     <div class="login-form container" id="container">
         <div class="form-container sign-up-container">
-            <form action="#">
+            <form id="register">
                 <h1>Create Account</h1>
 <!--                <div class="social-container">-->
 <!--                    <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>-->
@@ -23,14 +23,14 @@
 <!--                    <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>-->
 <!--                </div>-->
 <!--                <span>or use your email for registration</span>-->
-                <input type="text" placeholder="Name" />
-                <input type="email" placeholder="Email" />
-                <input type="password" placeholder="Password" />
+                <input name="name" type="text" placeholder="Name" />
+                <input name="email" type="text" placeholder="Email" />
+                <input name="password" type="text" placeholder="Password" />
                 <button class="button button_login">Register</button>
             </form>
         </div>
         <div class="form-container sign-in-container">
-            <form>
+            <form id="sign-in">
                 <h1>Sign in</h1>
 <!--                <div class="social-container">-->
 <!--                    <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>-->
@@ -38,8 +38,8 @@
 <!--                    <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>-->
 <!--                </div>-->
 <!--                <span>or use your account</span>-->
-                <input type="email" placeholder="Email" />
-                <input type="password" placeholder="Password" />
+                <input name="email" type="text" placeholder="Email" />
+                <input name="password" type="text" placeholder="Password" />
                 <a href="#">Forgot your password?</a>
                 <button class="button button_login">Sign In</button>
             </form>

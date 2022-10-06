@@ -5,9 +5,12 @@ import initModal from "./modules/modal";
 import makeChart from "./modules/makeChart";
 import plugToImgOnError from "./modules/plugToImgOnError";
 import scaleElements from "./modules/scaleElements";
-import loginForm from "./modules/loginForm";
+import loginFormTab from "./modules/loginFormTab";
+import loginFormListener from "./modules/loginFormListener";
+import authorize from "./modules/authorize";
 window.addEventListener("DOMContentLoaded", () => {
     plugToImgOnError();
+    authorize();
     const chartStatistic = [];
     scaleElements(document.querySelector("body"), document.querySelectorAll("body > *"));
     window.addEventListener("resize", () => {
@@ -46,6 +49,7 @@ window.addEventListener("DOMContentLoaded", () => {
         makeChart(chartStatistic);
     }
     else if (window.location.pathname === "/pages/login.html") {
-        loginForm();
+        loginFormTab();
+        loginFormListener();
     }
 });

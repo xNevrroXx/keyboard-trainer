@@ -5,11 +5,25 @@ const generateAccessToken = require("../modules/generateAccessToken");
 const generateRefreshToken = require("../modules/generateRefreshToken");
 const validateToken = require("../modules/validateToken.js");
 
-let refreshTokens = [];
+let refreshTokensList = [];
 
 async function routes(app, db) {
   app.get("/", (request, response) => {
-    response.json({message: "hi"})
+    db.getConnection(async(error, connection) => {
+      const searchQuerySQL = mysql.format("SELECT * FROM user;");
+
+      connection.query(searchQuerySQL, (error, result) => {
+        connection.release();
+
+        if (error) {
+          throw error;
+        }
+
+        response.json({
+          users: result
+        })
+      })
+    })
   })
   app.post("/register", async (request, response) => {
     const name = request.body.name;
@@ -34,7 +48,7 @@ async function routes(app, db) {
 
         if (result.length !== 0) {
           connection.release();
-          console.log(result);
+          console.log("User already exists", result);
           response.status(409).send("User already exists");
         } else {
           await connection.query(insertQuerySQL, (error, result) => {
@@ -67,7 +81,7 @@ async function routes(app, db) {
 
         if (result.length === 0) {
           connection.release();
-          response.status(404).send("User does not exist");
+          response.status(401).send("User does not exist");
         } else {
           if (await argon2.verify(result[0].password, password)) {
             const accessToken = generateAccessToken({
@@ -76,27 +90,26 @@ async function routes(app, db) {
             const refreshToken = generateRefreshToken({
               name: result[0].name
             });
-            refreshTokens.push(refreshToken);
+            refreshTokensList.push(refreshToken);
 
-            console.log(accessToken);
             response.json({
               accessToken: accessToken,
               refreshToken: refreshToken
             });
           } else {
-            response.send("password incorrect");
+            response.status(401).send("password incorrect");
           }
         }
       });
     })
   })
 
-  app.post("/refreshToken", (request, response) => {
-    if (!refreshTokens.includes(request.body.token)) {
+  app.post("/refreshtoken", (request, response) => {
+    if (!refreshTokensList.includes(request.body.token)) {
       response.status(400).send("Refresh Token Invalid");
     }
 
-    refreshTokens = refreshTokens.filter(token => token !== request.body.token);
+    refreshTokensList = refreshTokensList.filter(token => token !== request.body.token);
 
     const accessToken = generateAccessToken({
       name: request.body.name
@@ -104,7 +117,7 @@ async function routes(app, db) {
     const refreshToken = generateRefreshToken({
       name: request.body.name
     });
-    refreshTokens.push(refreshToken);
+    refreshTokensList.push(refreshToken);
 
     response.json({
       accessToken: accessToken,
@@ -113,16 +126,34 @@ async function routes(app, db) {
   })
 
   app.delete("/logout", (request, response) => {
-    refreshTokens = refreshTokens.filter(token => token !== request.body.token);
+    refreshTokensList = refreshTokensList.filter(token => token !== request.body.token);
     response.status(204).send("Logged out!");
   })
 
   app.post("/posts", validateToken, (request, response) => {
+    const user = request.user;
     console.log("token validate");
     console.log(request.user)
-    response.json({
-      message: "successfully accessed post"
-    });
+    // todo send some info about user
+
+    db.getConnection(async(error, connection) => {
+      const searchStrSQL = "SELECT * FROM user WHERE name = ?";
+      const searchQuerySQL = mysql.format(searchStrSQL, [user.name]);
+
+
+      connection.query(searchQuerySQL, (error, result) => {
+        connection.release();
+
+        if (error) {
+          throw error;
+        }
+
+        console.log(result)
+        response.json({
+          name: user.name,
+        })
+      })
+    })
   })
 }
 

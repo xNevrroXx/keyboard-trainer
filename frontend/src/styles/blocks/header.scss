@@ -50,10 +50,13 @@ header.main-navbar {
     display: none; //todo remove line
   }
   &__item_login {
-    //display: none; //todo add line
+    display: none; //todo add line
     span {
       opacity: 0.5;
     }
+  }
+  &__item_profile.active, &__item_login.active {
+    display: block;
   }
 
   .user-link {
