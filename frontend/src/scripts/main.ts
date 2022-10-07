@@ -10,10 +10,12 @@ import scaleElements from "./modules/scaleElements";
 import loginFormTab from "./modules/loginFormTab";
 import loginFormListener from "./modules/loginFormListener";
 import authorize from "./modules/authorize";
+import navMenu from "./modules/navMenu";
 
-window.addEventListener("DOMContentLoaded", () => {
+window.addEventListener("DOMContentLoaded", async () => {
+  navMenu();
   plugToImgOnError();
-  authorize();
+  await authorize();
 
   const chartStatistic: IChartStatistic[] = [];
 
@@ -22,7 +24,7 @@ window.addEventListener("DOMContentLoaded", () => {
     scaleElements(document.querySelector("body"), document.querySelectorAll("body > *"));
   })
 
-  if(window.location.pathname === "/") {
+  if (window.location.pathname === "/") {
     const modalStartPrint: HTMLElement = document.querySelector(".modal_start-print");
 
     keyboard();
@@ -30,7 +32,7 @@ window.addEventListener("DOMContentLoaded", () => {
       modalSelector: ".modal_start-print",
       activeClass: "modal_active",
       triggerCloseSelector: ".modal__close-trigger",
-      next: function() {
+      next: function () {
         const startPrintBtn = modalStartPrint.querySelector(".modal__start-print-btn");
 
         startPrintBtn.addEventListener("click", handleClick)
@@ -45,6 +47,7 @@ window.addEventListener("DOMContentLoaded", () => {
             startPrintBtn.removeEventListener("click", handleClick);
           }
         }
+
         function handleClick(event: MouseEvent) {
           modalStartPrint.dispatchEvent(new CustomEvent("closeModal"));
           initTraining(chartStatistic);
@@ -53,11 +56,9 @@ window.addEventListener("DOMContentLoaded", () => {
         }
       }
     });
-  }
-  else if(window.location.pathname === "/pages/results.html") {
+  } else if (window.location.pathname === "/pages/results.html") {
     makeChart(chartStatistic);
-  }
-  else if (window.location.pathname === "/pages/login.html") {
+  } else if (window.location.pathname === "/pages/login.html") {
     loginFormTab();
     loginFormListener();
   }

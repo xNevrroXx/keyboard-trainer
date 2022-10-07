@@ -3,9 +3,9 @@ const mysql = require("mysql");
 // own modules
 const generateAccessToken = require("../modules/generateAccessToken");
 const generateRefreshToken = require("../modules/generateRefreshToken");
-const validateToken = require("../modules/validateToken.js");
+const validateToken = require("../modules/validateToken");
 
-let refreshTokensList = [];
+let refreshTokenList = [];
 
 async function routes(app, db) {
   app.get("/", (request, response) => {
@@ -16,7 +16,7 @@ async function routes(app, db) {
         connection.release();
 
         if (error) {
-          throw error;
+          throw error;``
         }
 
         response.json({
@@ -48,7 +48,6 @@ async function routes(app, db) {
 
         if (result.length !== 0) {
           connection.release();
-          console.log("User already exists", result);
           response.status(409).send("User already exists");
         } else {
           await connection.query(insertQuerySQL, (error, result) => {
@@ -58,7 +57,6 @@ async function routes(app, db) {
               throw error;
             }
 
-            console.log(`User created. ID: ${result.insertId}`);
             response.status(201).send("User created");
           })
         }
@@ -85,12 +83,14 @@ async function routes(app, db) {
         } else {
           if (await argon2.verify(result[0].password, password)) {
             const accessToken = generateAccessToken({
+              id: result[0].id,
               name: result[0].name
             });
             const refreshToken = generateRefreshToken({
+              id: result[0].id,
               name: result[0].name
             });
-            refreshTokensList.push(refreshToken);
+            refreshTokenList.push(refreshToken);
 
             response.json({
               accessToken: accessToken,
@@ -104,20 +104,24 @@ async function routes(app, db) {
     })
   })
 
-  app.post("/refreshtoken", (request, response) => {
-    if (!refreshTokensList.includes(request.body.token)) {
+  app.post("/refreshtoken", (req, res, next) => validateToken(req, res, next, process.env.REFRESH_TOKEN_SECRET), (request, response) => {
+    const user = request.user;
+
+    if (!refreshTokenList.includes(request.headers["refreshtoken"].split(" ")[1])) {
       response.status(400).send("Refresh Token Invalid");
     }
 
-    refreshTokensList = refreshTokensList.filter(token => token !== request.body.token);
+    refreshTokenList = refreshTokenList.filter(token => token !== request.body.token);
 
     const accessToken = generateAccessToken({
-      name: request.body.name
+      id: user.id,
+      name: user.name
     });
     const refreshToken = generateRefreshToken({
-      name: request.body.name
+      id: user.id,
+      name: user.name
     });
-    refreshTokensList.push(refreshToken);
+    refreshTokenList.push(refreshToken);
 
     response.json({
       accessToken: accessToken,
@@ -126,20 +130,17 @@ async function routes(app, db) {
   })
 
   app.delete("/logout", (request, response) => {
-    refreshTokensList = refreshTokensList.filter(token => token !== request.body.token);
+    refreshTokenList = refreshTokenList.filter(token => token !== request.body.token);
     response.status(204).send("Logged out!");
   })
 
-  app.post("/posts", validateToken, (request, response) => {
+  app.post("/posts", (req, res, next) => validateToken(req, res, next, process.env.ACCESS_TOKEN_SECRET), (request, response) => {
     const user = request.user;
-    console.log("token validate");
-    console.log(request.user)
     // todo send some info about user
 
     db.getConnection(async(error, connection) => {
       const searchStrSQL = "SELECT * FROM user WHERE name = ?";
       const searchQuerySQL = mysql.format(searchStrSQL, [user.name]);
-
 
       connection.query(searchQuerySQL, (error, result) => {
         connection.release();
@@ -148,8 +149,8 @@ async function routes(app, db) {
           throw error;
         }
 
-        console.log(result)
         response.json({
+          id: user.id,
           name: user.name,
         })
       })

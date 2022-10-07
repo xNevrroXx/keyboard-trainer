@@ -9,6 +9,7 @@ const backendUrlsObj: backendUrls = {
   logout: backendMainUrlStr + "/logout",
   posts: backendMainUrlStr + "/posts"
 };
+let userData: any = {};
 
 async function getData() {
   // const result = await fetch('https://baconipsum.com/api/?type=meat-and-filler&paras=1');
@@ -21,22 +22,20 @@ async function getData() {
   }
 }
 
-async function getProfile() {
+async function getProfile(): Promise<any> {
   const accessToken = localStorage.getItem("accessToken");
-  console.log("accessToken: ", accessToken);
 
-  if(accessToken != "null") {
-    console.log("start get profile")
+  if(accessToken && accessToken != "null") {
     try {
       const response = await axios.post(backendUrlsObj.posts, {}, {
-        headers: {"Authorization": `Bearer ${accessToken}`}
+        headers: {"authorization": `Bearer ${accessToken}`}
       })
-      console.log("response: ", response);
+      userData = response.data;
       return response.data;
     } catch (response) {
-      console.log("response in error: ", response)
       const status = response.response.status;
       if(status === 400) {
+        userData = {};
         localStorage.setItem("isAuthorized", "no");
         window.location.href = "/pages/login.html";
       }
@@ -44,9 +43,10 @@ async function getProfile() {
         localStorage.setItem("isAuthorized", "no");
         const isSuccess = await refreshToken(backendUrlsObj);
         if(isSuccess) {
-          await getProfile();
+          return await getProfile();
         }
         else {
+          userData = {};
           window.location.href = "/pages/login.html";
         }
       }
@@ -58,15 +58,18 @@ async function refreshToken(backendUrlsObj: backendUrls) {
   const refreshToken = localStorage.getItem("refreshToken");
 
   try{
-    const response = await axios.post(backendUrlsObj.refreshToken, {token: refreshToken});
+    console.log("start refresh")
+    await setTimeout(function (){}, 2000)
+    const response = await axios.post(backendUrlsObj.refreshToken, {}, {
+      headers: {refreshtoken: `Bearer ${refreshToken}`}
+    });
 
-    console.log("new tokens: ", response.data); // todo remove line
     localStorage.setItem("isAuthorized", "yes");
     localStorage.setItem("accessToken", response.data.accessToken);
     localStorage.setItem("refreshToken", response.data.refreshToken);
     return true;
   }
-  catch (response) {// недействительный/неверный refreshToken
+  catch (response) {
     localStorage.setItem("isAuthorized", "no");
     localStorage.setItem("accessToken", "null");
     localStorage.setItem("refreshToken", "null");
@@ -77,7 +80,6 @@ async function refreshToken(backendUrlsObj: backendUrls) {
 function signIn(data: any) {
   axios.post(backendUrlsObj.login, data)
     .then(response => {
-      console.log(response)
       localStorage.setItem("isAuthorized", "yes");
       localStorage.setItem("accessToken", response.data.accessToken);
       localStorage.setItem("refreshToken", response.data.refreshToken);
@@ -104,7 +106,6 @@ function register(data: any) {
       signIn(data);
     })
     .catch((error) => {
-      console.log(error) // todo remove line
       alert("We catch some error. Please try later")
     });
 }

@@ -46,6 +46,22 @@ header.main-navbar {
       background: linear-gradient(45deg, rgb(74, 177, 232) 50%, transparent 100%);
     }
   }
+  button {
+    position: relative;
+    text-decoration: none;
+    color: inherit;
+    text-shadow: inherit;
+    font-family: inherit;
+    background: transparent;
+    border: none;
+    font-size: inherit;
+    transition: .1s transform ease-in;
+    &:not(.logo) {
+      &:hover {
+        transform: translateY(-0.2rem);
+      }
+    }
+  }
   &__item_profile {
     display: none; //todo remove line
   }

@@ -13,29 +13,29 @@
 <header class="main-navbar">
     <div class="container">
         <nav class="menu">
-            <a class="logo" href="pages/trainer.html">govorov</a>
+            <button class="logo" data-target-point="/pages/trainer.html">govorov</button>
             <ul class="menu__main">
                 <li class="menu__item">
-                    <a data-target-point="/" href="/">Testing</a>
+                    <button data-target-point="/">Testing</button>
                 </li>
                 <li class="menu__item">
-                    <a data-target-point="/pages/trainer.html" href="pages/trainer.html">Trainer</a>
+                    <button data-target-point="/pages/trainer.html">Trainer</button>
                 </li>
                 <li class="menu__item">
-                    <a data-target-point="/pages/preparation.html" href="pages/preparation.html">Preparation</a>
+                    <button data-target-point="/pages/preparation.html">Preparation</button>
                 </li>
             </ul>
             <ul class="menu__right">
                 <li class="menu__item menu__item_profile">
-                    <a data-target-point="/pages/profile.html" class="user-link" href="pages/profile.html"> <!--todo on mouseover appear list of users characteristic-->
+                    <button data-target-point="/pages/profile.html" class="user-link"> <!--todo on mouseover appear list of users characteristic-->
                         <object class="user-picture" data="avatar.jpg" type="image/jpg">
                             <img src="get from js" />
                         </object>
                         <span class="user-name">Владимир</span>
-                    </a>
+                    </button>
                 </li>
                 <li class="menu__item menu__item_login active">
-                    <a href="/pages/login.html?register">Register</a> <span>or</span> <a href="/pages/login.html">Sign in</a>
+                    <button data-target-point="/pages/login.html" data-target-point-extra="?register">Register</button> <span>or</span> <button data-target-point="/pages/login.html" data-target-point-extra="?sign-in">Sign in</button>
                 </li>
             </ul>
         </nav>

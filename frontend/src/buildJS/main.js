@@ -1,3 +1,12 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 // owm modules
 import initTraining from "./modules/initTraining";
 import keyboard from "./modules/keyboard";
@@ -8,9 +17,11 @@ import scaleElements from "./modules/scaleElements";
 import loginFormTab from "./modules/loginFormTab";
 import loginFormListener from "./modules/loginFormListener";
 import authorize from "./modules/authorize";
-window.addEventListener("DOMContentLoaded", () => {
+import navMenu from "./modules/navMenu";
+window.addEventListener("DOMContentLoaded", () => __awaiter(void 0, void 0, void 0, function* () {
+    navMenu();
     plugToImgOnError();
-    authorize();
+    yield authorize();
     const chartStatistic = [];
     scaleElements(document.querySelector("body"), document.querySelectorAll("body > *"));
     window.addEventListener("resize", () => {
@@ -52,4 +63,4 @@ window.addEventListener("DOMContentLoaded", () => {
         loginFormTab();
         loginFormListener();
     }
-});
+}));

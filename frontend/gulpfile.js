@@ -12,7 +12,6 @@ const dist = "./dist/";
 const src = "./src/";
 
 gulp.task("copy-html-pages", () => {
-  console.log(gulp.src("./src/pages/*.html").length)
   return gulp.src("./src/pages/*.html")
     .pipe(rigger())
     .pipe(gulp.dest(dist + "/pages"))
