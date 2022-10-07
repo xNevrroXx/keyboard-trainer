@@ -14,9 +14,9 @@ const backendUrlsObj = {
     register: backendMainUrlStr + "/register",
     refreshToken: backendMainUrlStr + "/refreshtoken",
     logout: backendMainUrlStr + "/logout",
-    posts: backendMainUrlStr + "/posts"
+    posts: backendMainUrlStr + "/posts",
+    recover: backendMainUrlStr + "/recover"
 };
-let userData = {};
 function getData() {
     return __awaiter(this, void 0, void 0, function* () {
         // const result = await fetch('https://baconipsum.com/api/?type=meat-and-filler&paras=1');
@@ -37,13 +37,11 @@ function getProfile() {
                 const response = yield axios.post(backendUrlsObj.posts, {}, {
                     headers: { "authorization": `Bearer ${accessToken}` }
                 });
-                userData = response.data;
                 return response.data;
             }
             catch (response) {
                 const status = response.response.status;
                 if (status === 400) {
-                    userData = {};
                     localStorage.setItem("isAuthorized", "no");
                     window.location.href = "/pages/login.html";
                 }
@@ -54,7 +52,6 @@ function getProfile() {
                         return yield getProfile();
                     }
                     else {
-                        userData = {};
                         window.location.href = "/pages/login.html";
                     }
                 }
@@ -113,4 +110,16 @@ function register(data) {
         alert("We catch some error. Please try later");
     });
 }
-export { getData, getProfile, refreshToken, signIn, register };
+function recover(data) {
+    axios.post(backendUrlsObj.recover, data)
+        .then(response => {
+        alert("Email has been send");
+        // todo locate to change password page
+        console.log(response);
+    })
+        .catch((error) => {
+        // todo locate to sign in page
+        alert("We catch some error. Please try later");
+    });
+}
+export { getData, getProfile, refreshToken, signIn, register, recover };

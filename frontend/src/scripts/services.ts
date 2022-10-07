@@ -1,5 +1,6 @@
 import axios from "axios";
-import {backendUrls} from "./types";
+import {backendUrls, dataLogin, dataRecover, dataRegister} from "./types";
+
 
 const backendMainUrlStr = "http://localhost:5000";
 const backendUrlsObj: backendUrls = {
@@ -7,9 +8,9 @@ const backendUrlsObj: backendUrls = {
   register: backendMainUrlStr + "/register",
   refreshToken: backendMainUrlStr + "/refreshtoken",
   logout: backendMainUrlStr + "/logout",
-  posts: backendMainUrlStr + "/posts"
+  posts: backendMainUrlStr + "/posts",
+  recover: backendMainUrlStr + "/recover"
 };
-let userData: any = {};
 
 async function getData() {
   // const result = await fetch('https://baconipsum.com/api/?type=meat-and-filler&paras=1');
@@ -30,12 +31,10 @@ async function getProfile(): Promise<any> {
       const response = await axios.post(backendUrlsObj.posts, {}, {
         headers: {"authorization": `Bearer ${accessToken}`}
       })
-      userData = response.data;
       return response.data;
     } catch (response) {
       const status = response.response.status;
       if(status === 400) {
-        userData = {};
         localStorage.setItem("isAuthorized", "no");
         window.location.href = "/pages/login.html";
       }
@@ -46,7 +45,6 @@ async function getProfile(): Promise<any> {
           return await getProfile();
         }
         else {
-          userData = {};
           window.location.href = "/pages/login.html";
         }
       }
@@ -77,7 +75,7 @@ async function refreshToken(backendUrlsObj: backendUrls) {
   }
 }
 
-function signIn(data: any) {
+function signIn(data: dataLogin) {
   axios.post(backendUrlsObj.login, data)
     .then(response => {
       localStorage.setItem("isAuthorized", "yes");
@@ -99,7 +97,7 @@ function signIn(data: any) {
     });
 }
 
-function register(data: any) {
+function register(data: dataRegister) {
   axios.post(backendUrlsObj.register, data)
     .then(() => {
       alert("Success registration");
@@ -110,4 +108,17 @@ function register(data: any) {
     });
 }
 
-export {getData, getProfile, refreshToken, signIn, register};
+function recover(data: dataRecover) {
+  axios.post(backendUrlsObj.recover, data)
+    .then(response => {
+      alert("Email has been send");
+      // todo locate to change password page
+      console.log(response)
+    })
+    .catch((error) => {
+      // todo locate to sign in page
+      alert("We catch some error. Please try later")
+    });
+}
+
+export {getData, getProfile, refreshToken, signIn, register, recover};

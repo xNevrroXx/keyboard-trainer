@@ -1,6 +1,6 @@
-import {dataErrors, dataLogin, dataRegister} from "../types";
+import {dataErrors, dataLogin, dataRegister, dataRecover} from "../types";
 
-function validate(data: dataLogin | dataRegister, isRegister: boolean): dataErrors {
+function validate(data: dataLogin | dataRegister | dataRecover, isName: boolean, isPassword: boolean): dataErrors {
   const errors: dataErrors = {};
   const nameRegex = /^\D{2,}$/ig,
     emailRegex =  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
@@ -9,7 +9,7 @@ function validate(data: dataLogin | dataRegister, isRegister: boolean): dataErro
   if("name" in data && data.name && nameRegex.test(data.name.trim())) {
     console.log("name is Ok")
   }
-  else if(isRegister) {
+  else if(isName) {
     errors.name = "Name incorrect";
   }
 
@@ -20,10 +20,10 @@ function validate(data: dataLogin | dataRegister, isRegister: boolean): dataErro
     errors.email = "Email incorrect";
   }
 
-  if (passwordRegex.test(data.password.trim())) {
+  if ("password" in data && data.password && passwordRegex.test(data.password.trim())) {
     console.log("password is Ok");
   }
-  else {
+  else if(isPassword) {
     errors.password = "Password should include !@#$%^&* and be greater than 6 characters"
   }
 

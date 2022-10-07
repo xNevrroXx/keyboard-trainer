@@ -4,8 +4,9 @@ import changeHeader from "./changeHeader";
 async function authorize() {
   const data = await getProfile();
 
+  console.log(data)
   if(data) {
-    changeHeader();
+    changeHeader(data.name);
   }
 }
 

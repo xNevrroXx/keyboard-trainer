@@ -15,6 +15,10 @@ export interface dataRegister {
   password: string
 }
 
+export interface dataRecover {
+  email: string
+}
+
 export interface dataErrors {
   name?: string,
   email?: string,
@@ -26,5 +30,6 @@ export interface backendUrls {
   register: string,
   refreshToken: string,
   logout: string,
-  posts: string
+  posts: string,
+  recover: string
 }

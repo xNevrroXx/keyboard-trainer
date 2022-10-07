@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../styles/style.css">
+    <script src="../scripts/bundle.js"></script>
+
+    <title>Recovery Keyboard trainer - govorov</title>
+</head>
+<body>
+    //= ../templates/header.html
+
+    <div class="wrapper-login wrapper-login_recovery">
+        <div class="login-form container" id="container">
+            <div class="form-container recovery-container">
+                <form id="recover">
+                    <h1>Password recovery</h1>
+                    <!--                <div class="social-container">  // todo upgrade-->
+                    <!--                    <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>-->
+                    <!--                    <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>-->
+                    <!--                    <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>-->
+                    <!--                </div>-->
+                    <!--                <span>or use your email for registration</span>-->
+                    <input name="email" type="text" placeholder="Email" />
+                    <button class="button button_login button_recover">Send me email</button>
+                </form>
+            </div>
+            <div class="overlay-container overlay-container_recovery">
+                <div class="overlay">
+                    <div class="overlay-panel overlay-right">
+                        <h1>Hello, Friend!</h1>
+                        <p>Let's try recover your password</p>
+                        <button class="button button_login ghost" id="try-again">Try again</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

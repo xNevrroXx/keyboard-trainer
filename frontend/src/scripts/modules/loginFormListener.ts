@@ -18,7 +18,7 @@ function loginFormListener() {
     formData.forEach((value, key) => {
       data[key] = value;
     })
-    const errors = validate(data, false);
+    const errors = validate(data, false, true);
 
     if (Object.keys(errors).length === 0) {
       signIn(data);
@@ -35,7 +35,7 @@ function loginFormListener() {
     formData.forEach((value, key) => {
       data[key] = value;
     })
-    const errors = validate(data,true);
+    const errors = validate(data,true, true);
 
     if (Object.keys(errors).length === 0) {
       register(data);

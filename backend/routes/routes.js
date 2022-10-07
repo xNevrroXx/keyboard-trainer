@@ -4,6 +4,7 @@ const mysql = require("mysql");
 const generateAccessToken = require("../modules/generateAccessToken");
 const generateRefreshToken = require("../modules/generateRefreshToken");
 const validateToken = require("../modules/validateToken");
+const sendMail = require("../modules/nodemailer");
 
 let refreshTokenList = [];
 
@@ -155,6 +156,23 @@ async function routes(app, db) {
         })
       })
     })
+  })
+
+  app.post("/recover", async (request, response) => {
+    const email = request.body.email;
+
+    try {
+      const sendingResult = await sendMail(email);
+
+      response.status(202).json({
+        message: "email has been send"
+      });
+    }
+    catch (error) {
+      response.status(502).json({
+        message: "error"
+      })
+    }
   })
 }
 

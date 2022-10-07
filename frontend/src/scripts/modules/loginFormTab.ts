@@ -6,27 +6,27 @@ function loginFormTab() {
   const container = document.getElementById('container');
 
   if(window.location.search === "?register") {
-    container.classList.add("right-panel-active");
+    container.classList.add("active-right");
   }
   if(window.location.search === "?sign-in") {
-    container.classList.remove("right-panel-active");
+    container.classList.remove("active-right");
   }
 
   signUpButton.addEventListener('click', () => {
-    container.classList.add("right-panel-active");
+    container.classList.add("active-right");
     window.history.replaceState({}, "", "/pages/login.html?register");
   });
   signUpButtonMenu.addEventListener('click', () => {
-    container.classList.add("right-panel-active");
+    container.classList.add("active-right");
     window.history.replaceState({}, "", "/pages/login.html?register");
   });
 
   signInButton.addEventListener('click', () => {
-    container.classList.remove("right-panel-active");
+    container.classList.remove("active-right");
     window.history.replaceState({}, "", "/pages/login.html?sign-in");
   });
   signInButtonMenu.addEventListener('click', () => {
-    container.classList.remove("right-panel-active");
+    container.classList.remove("active-right");
     window.history.replaceState({}, "", "/pages/login.html?sign-in");
   });
 }

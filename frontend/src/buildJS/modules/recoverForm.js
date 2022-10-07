@@ -7,12 +7,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-// own modules
 import validate from "./validate";
-import { register, signIn } from "../services";
-function loginFormListener() {
-    const signInFormElem = document.querySelector("#sign-in"), registerFormElem = document.querySelector("#register");
-    signInFormElem.addEventListener("submit", function (event) {
+import { recover } from "../services";
+function recoverForm() {
+    const recoverFormElem = document.querySelector("#recover");
+    recoverFormElem.addEventListener("submit", function (event) {
         return __awaiter(this, void 0, void 0, function* () {
             event.preventDefault();
             const formData = new FormData(this);
@@ -20,31 +19,15 @@ function loginFormListener() {
             formData.forEach((value, key) => {
                 data[key] = value;
             });
-            const errors = validate(data, false, true);
+            const errors = validate(data, false, false);
             if (Object.keys(errors).length === 0) {
-                signIn(data);
+                console.log("send to recover: ", data);
+                recover(data);
             }
             else {
                 // todo show errors
             }
         });
     }); // end sign in
-    registerFormElem.addEventListener("submit", function (event) {
-        return __awaiter(this, void 0, void 0, function* () {
-            event.preventDefault();
-            const formData = new FormData(this);
-            const data = {};
-            formData.forEach((value, key) => {
-                data[key] = value;
-            });
-            const errors = validate(data, true, true);
-            if (Object.keys(errors).length === 0) {
-                register(data);
-            }
-            else {
-                // todo show errors
-            }
-        });
-    }); // end register
 }
-export default loginFormListener;
+export default recoverForm;

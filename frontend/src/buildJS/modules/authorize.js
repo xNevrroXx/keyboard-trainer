@@ -12,8 +12,9 @@ import changeHeader from "./changeHeader";
 function authorize() {
     return __awaiter(this, void 0, void 0, function* () {
         const data = yield getProfile();
+        console.log(data);
         if (data) {
-            changeHeader();
+            changeHeader(data.name);
         }
     });
 }
