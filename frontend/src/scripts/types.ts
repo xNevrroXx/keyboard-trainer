@@ -15,14 +15,25 @@ export interface dataRegister {
   password: string
 }
 
-export interface dataRecover {
+export interface dataRecover__stageEmail {
   email: string
+}
+export interface dataRecover__stageCode {
+  email: string,
+  code: string
+}
+export interface dataRecover__stagePassword {
+  email: string,
+  code: string,
+  password: string,
+  "repeat-password": string
 }
 
 export interface dataErrors {
   name?: string,
   email?: string,
-  password?: string
+  password?: string,
+  "repeat-password"?: string
 }
 
 export interface backendUrls {
@@ -31,5 +42,9 @@ export interface backendUrls {
   refreshToken: string,
   logout: string,
   posts: string,
-  recover: string
+  recover: {
+    stageEmail: string,
+    stageCode: string,
+    stagePassword: string
+  }
 }

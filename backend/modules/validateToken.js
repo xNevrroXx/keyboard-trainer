@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
+const {changeToken} = require("./database");
 
-function validateToken(request, response, next, secretToken) {
+function validateToken(request, response, next, db, secretToken) {
   const authHeader = request.headers["authorization"] || request.headers["refreshtoken"];
   const token = authHeader.split(" ")[1];
 
@@ -10,11 +11,15 @@ function validateToken(request, response, next, secretToken) {
 
   jwt.verify(token, secretToken, (error, user) => {
     if (error) {
-      console.log(user);
-      response.status(403).send("Token invalid")
+      // if (request.body.id && secretToken === process.env.ACCESS_TOKEN_SECRET) {
+      //   changeToken(db, "access_token", request.body.id, " ");
+      // }
+      // else if(request.body.id) {
+      //   changeToken(db, "refresh_token", request.body.id, " ");
+      // }
+      response.status(403).send("Token invalid");
     }
     else {
-      console.log(user);
       request.user = user;
       next();
     }

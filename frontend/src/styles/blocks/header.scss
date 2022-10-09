@@ -12,6 +12,9 @@ header.main-navbar {
   left: 0;
   width: 100%;
   display: block;
+  .container {
+    overflow: visible;
+  }
 }
 .menu {
   height: 4rem;
@@ -64,6 +67,11 @@ header.main-navbar {
   }
   &__item_profile {
     display: none; //todo remove line
+    &:hover {
+      .profile-submenu {
+        opacity: 1;
+      }
+    }
   }
   &__item_login {
     display: none; //todo add line

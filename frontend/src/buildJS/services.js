@@ -15,7 +15,11 @@ const backendUrlsObj = {
     refreshToken: backendMainUrlStr + "/refreshtoken",
     logout: backendMainUrlStr + "/logout",
     posts: backendMainUrlStr + "/posts",
-    recover: backendMainUrlStr + "/recover"
+    recover: {
+        stageEmail: backendMainUrlStr + "/recover/getcode",
+        stageCode: backendMainUrlStr + "/recover/verifycode",
+        stagePassword: backendMainUrlStr + "/recover/changepassword"
+    }
 };
 function getData() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -32,7 +36,7 @@ function getData() {
 function getProfile() {
     return __awaiter(this, void 0, void 0, function* () {
         const accessToken = localStorage.getItem("accessToken");
-        if (accessToken && accessToken != "null") {
+        if (accessToken && accessToken !== "null") {
             try {
                 const response = yield axios.post(backendUrlsObj.posts, {}, {
                     headers: { "authorization": `Bearer ${accessToken}` }
@@ -63,8 +67,6 @@ function refreshToken(backendUrlsObj) {
     return __awaiter(this, void 0, void 0, function* () {
         const refreshToken = localStorage.getItem("refreshToken");
         try {
-            console.log("start refresh");
-            yield setTimeout(function () { }, 2000);
             const response = yield axios.post(backendUrlsObj.refreshToken, {}, {
                 headers: { refreshtoken: `Bearer ${refreshToken}` }
             });
@@ -82,44 +84,80 @@ function refreshToken(backendUrlsObj) {
     });
 }
 function signIn(data) {
-    axios.post(backendUrlsObj.login, data)
-        .then(response => {
-        localStorage.setItem("isAuthorized", "yes");
-        localStorage.setItem("accessToken", response.data.accessToken);
-        localStorage.setItem("refreshToken", response.data.refreshToken);
-        window.location.href = "/";
-    })
-        .catch(response => {
-        const status = response.response.status;
-        localStorage.setItem("isAuthorized", "no");
-        if (status === 401) {
-            alert("Incorrect password or username");
-        }
-        else {
-            alert("We catch some error. Please try later");
-        }
+    return __awaiter(this, void 0, void 0, function* () {
+        yield axios.post(backendUrlsObj.login, data)
+            .then(response => {
+            localStorage.setItem("isAuthorized", "yes");
+            localStorage.setItem("accessToken", response.data.accessToken);
+            localStorage.setItem("refreshToken", response.data.refreshToken);
+            window.location.href = "/";
+        })
+            .catch(error => {
+            const status = error.response.status;
+            localStorage.setItem("isAuthorized", "no");
+            if (status === 401) {
+                alert("Incorrect password or username");
+            }
+            else {
+                console.log(error);
+                alert(error.response.data.message);
+            }
+        });
     });
 }
 function register(data) {
-    axios.post(backendUrlsObj.register, data)
-        .then(() => {
-        alert("Success registration");
-        signIn(data);
-    })
-        .catch((error) => {
-        alert("We catch some error. Please try later");
+    return __awaiter(this, void 0, void 0, function* () {
+        yield axios.post(backendUrlsObj.register, data)
+            .then(() => __awaiter(this, void 0, void 0, function* () {
+            alert("Success registration");
+            yield signIn(data);
+        }))
+            .catch((error) => {
+            alert(error.response.data.message);
+        });
     });
 }
-function recover(data) {
-    axios.post(backendUrlsObj.recover, data)
-        .then(response => {
-        alert("Email has been send");
-        // todo locate to change password page
-        console.log(response);
-    })
-        .catch((error) => {
-        // todo locate to sign in page
-        alert("We catch some error. Please try later");
+function logout() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const accessToken = localStorage.getItem("accessToken");
+        const refreshToken = localStorage.getItem("refreshToken");
+        yield axios.delete(backendUrlsObj.logout, {
+            headers: {
+                "accesstoken": `Bearer ${accessToken}`,
+                "refreshtoken": `Bearer ${refreshToken}`
+            }
+        })
+            .catch(error => {
+            alert(error.response.data.message);
+        });
+        localStorage.setItem("isAuthorized", "no");
+        localStorage.setItem("accessToken", "null");
+        localStorage.setItem("refreshToken", "null");
     });
 }
-export { getData, getProfile, refreshToken, signIn, register, recover };
+function recoverStageEmail(data) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield axios.post(backendUrlsObj.recover.stageEmail, data);
+    });
+}
+function recoverStageCode(data) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield axios.post(backendUrlsObj.recover.stageCode, data);
+    });
+}
+function recoverStagePassword(data) {
+    return __awaiter(this, void 0, void 0, function* () {
+        axios.post(backendUrlsObj.recover.stagePassword, data)
+            .then((response) => {
+            const dataLogin = {
+                email: data.email,
+                password: data.password
+            };
+            signIn(dataLogin);
+        })
+            .catch((error) => {
+            alert(error.response.data.message);
+        });
+    });
+}
+export { getData, getProfile, refreshToken, signIn, register, recoverStageEmail, recoverStageCode, recoverStagePassword, logout };

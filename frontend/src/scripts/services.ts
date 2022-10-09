@@ -1,5 +1,12 @@
 import axios from "axios";
-import {backendUrls, dataLogin, dataRecover, dataRegister} from "./types";
+import {
+  backendUrls,
+  dataLogin,
+  dataRecover__stageCode,
+  dataRecover__stageEmail,
+  dataRecover__stagePassword,
+  dataRegister
+} from "./types";
 
 
 const backendMainUrlStr = "http://localhost:5000";
@@ -9,7 +16,11 @@ const backendUrlsObj: backendUrls = {
   refreshToken: backendMainUrlStr + "/refreshtoken",
   logout: backendMainUrlStr + "/logout",
   posts: backendMainUrlStr + "/posts",
-  recover: backendMainUrlStr + "/recover"
+  recover: {
+    stageEmail: backendMainUrlStr + "/recover/getcode",
+    stageCode: backendMainUrlStr + "/recover/verifycode",
+    stagePassword: backendMainUrlStr + "/recover/changepassword"
+  }
 };
 
 async function getData() {
@@ -26,7 +37,7 @@ async function getData() {
 async function getProfile(): Promise<any> {
   const accessToken = localStorage.getItem("accessToken");
 
-  if(accessToken && accessToken != "null") {
+  if(accessToken && accessToken !== "null") {
     try {
       const response = await axios.post(backendUrlsObj.posts, {}, {
         headers: {"authorization": `Bearer ${accessToken}`}
@@ -56,8 +67,6 @@ async function refreshToken(backendUrlsObj: backendUrls) {
   const refreshToken = localStorage.getItem("refreshToken");
 
   try{
-    console.log("start refresh")
-    await setTimeout(function (){}, 2000)
     const response = await axios.post(backendUrlsObj.refreshToken, {}, {
       headers: {refreshtoken: `Bearer ${refreshToken}`}
     });
@@ -75,8 +84,8 @@ async function refreshToken(backendUrlsObj: backendUrls) {
   }
 }
 
-function signIn(data: dataLogin) {
-  axios.post(backendUrlsObj.login, data)
+async function signIn(data: dataLogin) {
+  await axios.post(backendUrlsObj.login, data)
     .then(response => {
       localStorage.setItem("isAuthorized", "yes");
       localStorage.setItem("accessToken", response.data.accessToken);
@@ -84,41 +93,70 @@ function signIn(data: dataLogin) {
 
       window.location.href = "/";
     })
-    .catch(response => {
-      const status = response.response.status;
+    .catch(error => {
+      const status = error.response.status;
 
       localStorage.setItem("isAuthorized", "no");
       if(status === 401) {
         alert("Incorrect password or username");
       }
       else {
-        alert("We catch some error. Please try later");
+        console.log(error)
+        alert(error.response.data.message);
       }
     });
 }
 
-function register(data: dataRegister) {
-  axios.post(backendUrlsObj.register, data)
-    .then(() => {
+async function register(data: dataRegister) {
+  await axios.post(backendUrlsObj.register, data)
+    .then(async () => {
       alert("Success registration");
-      signIn(data);
+      await signIn(data);
     })
     .catch((error) => {
-      alert("We catch some error. Please try later")
+      alert(error.response.data.message)
     });
 }
 
-function recover(data: dataRecover) {
-  axios.post(backendUrlsObj.recover, data)
-    .then(response => {
-      alert("Email has been send");
-      // todo locate to change password page
-      console.log(response)
+async function logout() {
+  const accessToken = localStorage.getItem("accessToken");
+  const refreshToken = localStorage.getItem("refreshToken");
+
+  await axios.delete(backendUrlsObj.logout, {
+    headers: {
+      "accesstoken": `Bearer ${accessToken}`,
+      "refreshtoken": `Bearer ${refreshToken}`
+    }
+  })
+    .catch (error => {
+      alert(error.response.data.message);
     })
-    .catch((error) => {
-      // todo locate to sign in page
-      alert("We catch some error. Please try later")
-    });
+  localStorage.setItem("isAuthorized", "no");
+  localStorage.setItem("accessToken", "null");
+  localStorage.setItem("refreshToken", "null");
 }
 
-export {getData, getProfile, refreshToken, signIn, register, recover};
+async function recoverStageEmail(data: dataRecover__stageEmail) {
+  return await axios.post(backendUrlsObj.recover.stageEmail, data);
+}
+
+async function recoverStageCode(data: dataRecover__stageCode) {
+  return await axios.post(backendUrlsObj.recover.stageCode, data);
+}
+
+async function recoverStagePassword(data: dataRecover__stagePassword) {
+  axios.post(backendUrlsObj.recover.stagePassword, data)
+    .then((response) => {
+      const dataLogin: dataLogin = {
+        email: data.email,
+        password: data.password
+      };
+
+      signIn(dataLogin);
+    })
+    .catch((error) => {
+      alert(error.response.data.message)
+    })
+}
+
+export {getData, getProfile, refreshToken, signIn, register, recoverStageEmail, recoverStageCode, recoverStagePassword, logout};

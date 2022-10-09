@@ -3,48 +3,32 @@ import axios from "axios";
 // own modules
 import validate from "./validate";
 import {register, signIn} from "../services";
+import form from "./form";
 // types
-import {backendUrls} from "../types";
+import {dataLogin, dataRegister} from "../types";
 
 function loginFormListener() {
   const signInFormElem = document.querySelector("#sign-in"),
     registerFormElem = document.querySelector("#register");
 
-  signInFormElem.addEventListener("submit", async function (event: Event) {
-    event.preventDefault();
-    const formData = new FormData(this);
-
-    const data: any = {};
-    formData.forEach((value, key) => {
-      data[key] = value;
-    })
-    const errors = validate(data, false, true);
-
-    if (Object.keys(errors).length === 0) {
-      signIn(data);
-    } else {
-      // todo show errors
-    }
-  }) // end sign in
-
-  registerFormElem.addEventListener("submit", async function (event: Event) {
-    event.preventDefault();
-    const formData = new FormData(this);
-
-    const data: any = {};
-    formData.forEach((value, key) => {
-      data[key] = value;
-    })
-    const errors = validate(data,true, true);
-
-    if (Object.keys(errors).length === 0) {
-      register(data);
-    } else {
-      // todo show errors
-    }
-  }) // end register
-
-
+  const formBindSignIn = form.bind(signInFormElem,
+    (data: dataLogin) => validate(data, false, true, true, false),
+    async (data: dataLogin) => await signIn(data),
+    () => {},
+    false,
+    false,
+    false
+  );
+  const formBindRegister = form.bind(registerFormElem,
+    (data: dataRegister) => validate(data,true, true, true, false),
+    async (data: dataRegister) => await register(data),
+    () => {},
+    false,
+    false,
+    false
+  );
+  signInFormElem.addEventListener("submit", formBindSignIn);
+  registerFormElem.addEventListener("submit", formBindRegister);
 }
 
 export default loginFormListener;

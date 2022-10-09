@@ -1,33 +1,17 @@
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 import validate from "./validate";
-import { recover } from "../services";
+import { recoverStageCode, recoverStageEmail, recoverStagePassword } from "../services";
+import form from "./form";
 function recoverForm() {
-    const recoverFormElem = document.querySelector("#recover");
-    recoverFormElem.addEventListener("submit", function (event) {
-        return __awaiter(this, void 0, void 0, function* () {
-            event.preventDefault();
-            const formData = new FormData(this);
-            const data = {};
-            formData.forEach((value, key) => {
-                data[key] = value;
-            });
-            const errors = validate(data, false, false);
-            if (Object.keys(errors).length === 0) {
-                console.log("send to recover: ", data);
-                recover(data);
-            }
-            else {
-                // todo show errors
-            }
-        });
-    }); // end sign in
+    const stageEmailForm = document.querySelector("#email"), stageCodeForm = document.querySelector("#code"), stagePasswordForm = document.querySelector("#password");
+    if (window.location.search !== "?email" && window.location.search !== "?code" && window.location.search !== "?password") {
+        window.location.href = "/pages/recovery.html?email";
+    }
+    const formBindStageEmail = form.bind(stageEmailForm, event, (data) => validate(data, false, false, true, false), (data) => recoverStageEmail(data), () => window.location.href = "/pages/recovery.html?code");
+    const formBindStageCode = form.bind(stageCodeForm, event, () => { }, // we don't need to validate the verification code
+    (data) => recoverStageCode(data), () => window.location.href = "/pages/recovery.html?password");
+    const formBindStagePassword = form.bind(stagePasswordForm, event, (data) => validate(data, false, true, false, true), (data) => recoverStagePassword(data), () => window.location.href = "/pages/login.html?sign-in");
+    stageEmailForm.addEventListener("submit", formBindStageEmail);
+    stageCodeForm.addEventListener("submit", formBindStageCode);
+    stagePasswordForm.addEventListener("submit", formBindStagePassword);
 }
 export default recoverForm;

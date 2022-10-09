@@ -1,16 +1,39 @@
+import {logout} from "../services";
+
 function navMenu() {
   const menuElem = document.querySelector("nav.menu");
   const linkElems = menuElem.querySelectorAll("button[data-target-point]");
+  const childCompares: Map<Element, NodeList> = new Map();
+  const logoutBtn = menuElem.querySelector("button#logout");
 
+  logoutBtn.addEventListener("click", async () => {
+    await logout();
+    window.location.reload();
+  })
+
+  linkElems.forEach(linkElem => {
+    childCompares.set(linkElem, linkElem.querySelectorAll("*"));
+  })
 
   menuElem.addEventListener("click", (event) => {
     const target = event.target as Element;
 
     if (target && Array.from(linkElems).includes(target)) {
+      handler(target);
+    }
+    else {
+      for (const childCompare of childCompares) {
+        if (Array.from(childCompare[1]).includes(target)) {
+          handler(childCompare[0]);
+          return;
+        }
+      }
+    }
+
+    function handler(target: Element) {
       const buttonLinkTarget = target.getAttribute("data-target-point");
       const buttonLinkTargetExtra = target.getAttribute("data-target-point-extra");
 
-      console.log(window.location)
       if(window.location.pathname !== buttonLinkTarget) {
         if (buttonLinkTargetExtra) {
           window.location.href = buttonLinkTarget + buttonLinkTargetExtra;

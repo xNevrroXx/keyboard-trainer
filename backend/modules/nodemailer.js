@@ -1,28 +1,37 @@
 const nodemailer = require("nodemailer");
 
 
-async function sendMail(targetEmail) {
+async function sendMail(targetEmail, temporaryCode) {
   const userEmail = process.env.EMAIL_ADDRESS;
   const passwordEmail = process.env.EMAIL_PASSWORD;
+
   console.log("userEmail: ", userEmail);
   console.log("passwordEmail: ", passwordEmail);
   console.log("targetEmail: ", targetEmail);
+
   const transporter = nodemailer.createTransport({
-    host: "smtp.google.com",
+    host: "smtp.gmail.com",
     port: 465,
     secure: true,
+    requiresAuth: true,
     auth: {
       user: userEmail,
       pass: passwordEmail
     }
   });
 
+
   const sendingResult = await transporter.sendMail({
-    from: `"Keyboard trainer" ${userEmail}`,
+    from: `"Recovery" ${userEmail}`,
     to: targetEmail,
-    subject: "Password recovery",
+    subject: "Keyboard trainer password recovery",
     html: `
-      <h1>234323</h1>
+      <div style="padding: 5px; border-radius: 5px; border: 1px solid black; height: auto; width: 400px; box-shadow: 0 0 3px black">
+        <p style="margin: 0; padding: 0">Please do not transfer the following code. Via this <span style="font-weight: bold">whoever</span> can access to your account</p>
+        <br><br>
+        <p style="margin: 0; padding: 0"><span style="font-weight: bold">Enter code</span> to the input form on the site.</p>
+      </div>
+      <h1>${temporaryCode}</h1>
     `
   });
 

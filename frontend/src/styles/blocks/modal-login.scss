@@ -60,6 +60,10 @@
     text-align: center;
   }
 
+  label {
+    display: block;
+    width: 100%;
+  }
   input {
     background-color: #eee;
     border: none;
@@ -67,6 +71,9 @@
     padding: 12px 15px;
     margin-bottom: 1rem;
     width: 100%;
+  }
+  input.input-with-error {
+    margin-bottom: 0.5rem;
   }
 
   .container {
@@ -210,6 +217,12 @@
     width: 40px;
   }
 
+  .error-description {
+    margin-bottom: 1rem;
+    font-size: .9rem;
+    color: $soft-pink;
+  }
+
 
   &_recovery {
     .login-form {
@@ -219,7 +232,11 @@
       position: static;
     }
     .container .recovery-container {
+      display: none;
       width: 50%;
+    }
+    .container .recovery-container.active {
+      display: block
     }
     .overlay-panel {
       width: 100%;

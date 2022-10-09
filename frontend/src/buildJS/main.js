@@ -18,7 +18,8 @@ import loginFormTab from "./modules/loginFormTab";
 import loginFormListener from "./modules/loginFormListener";
 import authorize from "./modules/authorize";
 import navMenu from "./modules/navMenu";
-import recoverForm from "./modules/recoverForm";
+import recoverFormListener from "./modules/recoverFormListener";
+import recoverFormRender from "./modules/recoverFormRender";
 window.addEventListener("DOMContentLoaded", () => __awaiter(void 0, void 0, void 0, function* () {
     navMenu();
     plugToImgOnError();
@@ -61,16 +62,23 @@ window.addEventListener("DOMContentLoaded", () => __awaiter(void 0, void 0, void
         makeChart(chartStatistic);
     }
     else if (window.location.pathname === "/pages/login.html") {
+        if (localStorage.getItem("isAuthorized") === "yes" && localStorage.getItem("accessToken") && localStorage.getItem("refreshToken")) {
+            window.location.href = "/";
+        }
         document.querySelector("button#forgot-password").addEventListener("click", () => {
-            window.location.href = "/pages/recovery.html";
+            window.location.href = "/pages/recovery.html?email";
         });
         loginFormTab();
         loginFormListener();
     }
     else if (window.location.pathname === "/pages/recovery.html") {
+        if (localStorage.getItem("isAuthorized") === "yes" && localStorage.getItem("accessToken") && localStorage.getItem("refreshToken")) {
+            window.location.href = "/";
+        }
         document.querySelector("button#try-again").addEventListener("click", () => {
             window.location.href = "/pages/login.html?sign-in";
         });
-        recoverForm();
+        recoverFormRender();
+        recoverFormListener();
     }
 }));

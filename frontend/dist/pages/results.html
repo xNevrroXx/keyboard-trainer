@@ -17,26 +17,35 @@
                 <button class="logo" data-target-point="/pages/trainer.html">govorov</button>
                 <ul class="menu__main">
                     <li class="menu__item">
-                        <button data-target-point="/">Testing</button>
+                        <button class="menu__main-link" data-target-point="/">Testing</button>
                     </li>
                     <li class="menu__item">
-                        <button data-target-point="/pages/trainer.html">Trainer</button>
+                        <button class="menu__main-link" data-target-point="/pages/trainer.html">Trainer</button>
                     </li>
                     <li class="menu__item">
-                        <button data-target-point="/pages/preparation.html">Preparation</button>
+                        <button class="menu__main-link" data-target-point="/pages/preparation.html">Preparation</button>
                     </li>
                 </ul>
                 <ul class="menu__right">
-                    <li class="menu__item menu__item_profile">
-                        <button data-target-point="/pages/profile.html" class="user-link"> <!--todo on mouseover appear list of users characteristic-->
+                    <li class="menu__item_profile">
+                        <button class="menu__main-link menu__profile user-link" data-target-point="/pages/profile.html"> <!--todo on mouseover appear list of users characteristic-->
                             <object class="user-picture" data="avatar.jpg" type="image/jpg">
                                 <img src="get from js" />
                             </object>
                             <span class="user-name">Владимир</span>
                         </button>
+                        <div class="menu__profile-menu profile-submenu">
+                            <ul class="profile-submenu__list">
+                                <li class="profile-submenu__item"><button data-target-point="/pages/profile.html">My profile</button></li>
+                                <li class="profile-submenu__item"><button data-target-point="/pages/profile.html">Test results</button></li>
+                                <li class="profile-submenu__item"><button data-target-point="/pages/profile.html">Study results</button></li>
+                                <li class="profile-submenu__item"><button data-target-point="/pages/profile.html">Edit profile</button></li>
+                                <li class="profile-submenu__item"><button id="logout">Logout</button></li>
+                            </ul>
+                        </div>
                     </li>
                     <li class="menu__item menu__item_login active">
-                        <button data-target-point="/pages/login.html" data-target-point-extra="?register">Register</button> <span>or</span> <button data-target-point="/pages/login.html" data-target-point-extra="?sign-in">Sign in</button>
+                        <button class="menu__main-link" data-target-point="/pages/login.html" data-target-point-extra="?register">Register</button> <span>or</span> <button data-target-point="/pages/login.html" data-target-point-extra="?sign-in">Sign in</button>
                     </li>
                 </ul>
             </nav>

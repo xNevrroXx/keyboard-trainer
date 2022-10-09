@@ -10,41 +10,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 // own modules
 import validate from "./validate";
 import { register, signIn } from "../services";
+import form from "./form";
 function loginFormListener() {
     const signInFormElem = document.querySelector("#sign-in"), registerFormElem = document.querySelector("#register");
-    signInFormElem.addEventListener("submit", function (event) {
-        return __awaiter(this, void 0, void 0, function* () {
-            event.preventDefault();
-            const formData = new FormData(this);
-            const data = {};
-            formData.forEach((value, key) => {
-                data[key] = value;
-            });
-            const errors = validate(data, false, true);
-            if (Object.keys(errors).length === 0) {
-                signIn(data);
-            }
-            else {
-                // todo show errors
-            }
-        });
-    }); // end sign in
-    registerFormElem.addEventListener("submit", function (event) {
-        return __awaiter(this, void 0, void 0, function* () {
-            event.preventDefault();
-            const formData = new FormData(this);
-            const data = {};
-            formData.forEach((value, key) => {
-                data[key] = value;
-            });
-            const errors = validate(data, true, true);
-            if (Object.keys(errors).length === 0) {
-                register(data);
-            }
-            else {
-                // todo show errors
-            }
-        });
-    }); // end register
+    const formBindSignIn = form.bind(signInFormElem, (data) => validate(data, false, true, true, false), (data) => __awaiter(this, void 0, void 0, function* () { return yield signIn(data); }), () => { }, false, false, false);
+    const formBindRegister = form.bind(registerFormElem, (data) => validate(data, true, true, true, false), (data) => __awaiter(this, void 0, void 0, function* () { return yield register(data); }), () => { }, false, false, false);
+    signInFormElem.addEventListener("submit", formBindSignIn);
+    registerFormElem.addEventListener("submit", formBindRegister);
 }
 export default loginFormListener;
