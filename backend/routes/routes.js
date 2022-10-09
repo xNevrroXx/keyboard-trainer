@@ -185,7 +185,7 @@ async function routes(app, db) {
     console.log("accessToken: ", accessToken)
     console.log("refreshToken: ", refreshToken)
     changeData(db, "access_token", accessToken, "value", "", "value");
-    changeData(db, "refresh_token", accessToken, "value", "", "value");
+    changeData(db, "refresh_token", refreshToken, "value", "", "value");
     // changeToken(db, "access_token", accessToken, "");
     // changeToken(db, "refresh_token", refreshToken, "");
     response.status(204).json({
