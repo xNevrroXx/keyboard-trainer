@@ -17,7 +17,7 @@ function initTraining(chartStatistic) {
         "Backspace",
         "ContextMenu",
     ];
-    const statisticSpeedValueElem = statisticElem.querySelector(".statistic_speed > .statistic__value"), statisticAccuracyElem = statisticElem.querySelector(".statistic_accuracy .statistic__value");
+    const statisticSpeedValueElem = statisticElem.querySelector(".statistic-item_print-speed .statistic-item__value"), statisticAccuracyElem = statisticElem.querySelector(".statistic-item_accuracy .statistic-item__value");
     setInterval(() => {
         pastTime++;
         statistic.accuracy = buffer.length !== 0 ? Math.floor(100 - countErrors / (buffer.length / 100)) : 100;
@@ -27,8 +27,8 @@ function initTraining(chartStatistic) {
             speed: statistic.speed,
             time: pastTime
         });
-        statisticSpeedValueElem.textContent = statistic.speed + " ch/min";
-        statisticAccuracyElem.textContent = statistic.accuracy + "%";
+        statisticSpeedValueElem.textContent = statistic.speed.toString();
+        statisticAccuracyElem.textContent = statistic.accuracy.toString();
     }, 1000);
     textElem.textContent = textElem.textContent.trim();
     splitText(textElem);

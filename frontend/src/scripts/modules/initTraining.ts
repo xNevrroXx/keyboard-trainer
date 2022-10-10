@@ -27,8 +27,8 @@ function initTraining(chartStatistic: IChartStatistic[]) {
     "ContextMenu",
   ];
 
-  const statisticSpeedValueElem = statisticElem.querySelector(".statistic_speed > .statistic__value"),
-    statisticAccuracyElem = statisticElem.querySelector(".statistic_accuracy .statistic__value");
+  const statisticSpeedValueElem = statisticElem.querySelector(".statistic-item_print-speed .statistic-item__value"),
+    statisticAccuracyElem = statisticElem.querySelector(".statistic-item_accuracy .statistic-item__value");
 
   setInterval(() => {
     pastTime++;
@@ -40,8 +40,8 @@ function initTraining(chartStatistic: IChartStatistic[]) {
       time: pastTime
     })
 
-    statisticSpeedValueElem.textContent = statistic.speed + " ch/min";
-    statisticAccuracyElem.textContent = statistic.accuracy + "%";
+    statisticSpeedValueElem.textContent = statistic.speed.toString();
+    statisticAccuracyElem.textContent = statistic.accuracy.toString();
   }, 1000)
 
 

@@ -1,0 +1,84 @@
+@import "../modules/variables";
+
+.edit-profile {
+  width: 100%;
+  padding: 2rem 3rem;
+  border-radius: 1rem;
+  background-color: whitesmoke;
+
+  &__title {
+    font-size: 3rem;
+  }
+
+  &__wrapper-user-picture {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    width: 100%;
+    border: none;
+    margin-bottom: 5rem;
+  }
+  &__user-picture {
+    border-radius: 50%;
+    background-color: aquamarine;
+    width: 10rem;
+    height: 10rem;
+    cursor: pointer;
+  }
+  &__change-user-picture {
+    font-size: 2rem;
+    height: 2.5rem;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 2rem;
+  }
+  &__form-field {
+    width: 40%;
+  }
+  label {
+    display: block;
+    width: 100%;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+  input {
+    margin-left: .5rem;
+    background-color: #eee;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 12px 15px;
+    width: 100%;
+    color: #3b3b3b;
+  }
+  input.input-with-error {
+    margin-bottom: 0.5rem;
+  }
+
+  &__wrapper-form-choose {
+    margin-bottom: 3rem;
+    button:first-of-type {
+      margin-right: 1rem;
+    }
+  }
+  &__save-btn {
+    background-color: rgba(lightgreen, .5);
+  }
+  &__cancel-btn {
+    &:hover {
+      background-color: $soft-pink;
+    }
+  }
+
+  &__link {
+    display: block;
+    width: max-content;
+    &:not(:last-child) {
+      margin-bottom: 1rem;
+    }
+  }
+}

@@ -37,7 +37,9 @@ const recoverRoutes = (app, db) => {
     try {
       const findingResult = await searchData(db, "temporary_code", email, "user_email");
 
-      if(findingResult.data.value === code) {
+      console.log("code_value", findingResult.data)
+      console.log("time now: ", new Date().getTime())
+      if(findingResult.data.value === code && +findingResult.data["end_time"] > new Date().getTime()) {
         response.status(200).json({
           message: "success"
         });

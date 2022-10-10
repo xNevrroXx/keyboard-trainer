@@ -66,15 +66,16 @@ header.main-navbar {
     }
   }
   &__item_profile {
-    display: none; //todo remove line
+    display: none;
     &:hover {
       .profile-submenu {
+        display: block;
         opacity: 1;
       }
     }
   }
   &__item_login {
-    display: none; //todo add line
+    display: none;
     span {
       opacity: 0.5;
     }

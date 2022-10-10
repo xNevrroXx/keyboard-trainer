@@ -41,7 +41,7 @@
   }
 
   button:focus {
-    outline: none;
+
   }
 
   button.ghost {
@@ -107,16 +107,21 @@
 
   .container.active-right .sign-in-container {
     transform: translateX(100%);
+    display: none; // todo add line
+    animation: 0 linear 0.5s forwards disappear;
   }
 
   .sign-up-container {
+    display: none; // todo add line
     left: 0;
     width: 50%;
     opacity: 0;
     z-index: 1;
+    animation: 0 linear 0.5s forwards disappear;
   }
 
   .container.active-right .sign-up-container {
+    display: block; // todo add line
     transform: translateX(100%);
     opacity: 1;
     z-index: 5;
@@ -125,6 +130,7 @@
 
   @keyframes show {
     0%, 49.99% {
+      display: block;
       opacity: 0;
       z-index: 1;
     }
@@ -186,19 +192,23 @@
   }
 
   .overlay-left {
+    display: none;
     transform: translateX(-20%);
   }
 
   .container.active-right .overlay-left {
+    display: flex; // todo add line
     transform: translateX(0);
   }
 
   .overlay-right {
+    display: flex; // todo add line
     right: 0;
     transform: translateX(0);
   }
 
   .container.active-right .overlay-right {
+    display: none; // todo add line
     transform: translateX(20%);
   }
 
@@ -250,5 +260,19 @@
         position: static;
       }
     }
+  }
+}
+
+
+@keyframes disappear {
+  0% {
+    opacity: 1;
+  }
+  99% {
+    opacity: 0;
+    display: flex;
+  }
+  100% {
+    display: none;
   }
 }

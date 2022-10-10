@@ -4,7 +4,7 @@ function createRandomValue(min, max) {
 
   return {
     value: Math.floor(Math.random() * (max - min + 1)) + min,
-    endTime: new Date().getTime() + 1000*5
+    endTime: new Date().getTime() + 1000*60*5
   };
 }
 

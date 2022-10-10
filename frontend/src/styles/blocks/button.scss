@@ -15,11 +15,11 @@ button {
   background: transparent;
 
   &:hover {
-    transform: scale(1.05);
+    transform: scale(1.01);
   }
   &_login {
     border-radius: 20px;
-    border: 1px solid $soft-pink;
+    border: .5px solid $soft-pink;
     background-color: $soft-pink;
     color: #FFFFFF;
     font-size: 12px;
@@ -28,5 +28,14 @@ button {
     letter-spacing: 1px;
     text-transform: uppercase;
     transition: transform 80ms ease-in;
+  }
+  &_form {
+    width: 8rem;
+    height: 2.5rem;
+  }
+  &_tab-trigger {
+    border: none;
+    width: 12rem;
+    height: 2rem;
   }
 }

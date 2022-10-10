@@ -1,0 +1,53 @@
+@import "../modules/variables";
+
+.profile {
+  width: 100%;
+  padding: 2rem 3rem;
+  border-radius: 1rem;
+  background-color: whitesmoke;
+
+  &__title {
+    font-size: 3rem;
+  }
+  &__wrapper-main-data {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+  &__wrapper-user-picture {
+    display: block;
+    background-color: aquamarine;
+    width: 10rem;
+    height: 10rem;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+  }
+  &__wrapper-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  &__user-picture {
+    width: 100%;
+    height: 100%;
+  }
+  &__user-name {
+    font-size: 2rem;
+  }
+  &__statistic {
+    display: flex;
+    gap: 2rem;
+    justify-content: space-between;
+  }
+
+  &__list-personal-keyboard-data {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    width: 100%;
+  }
+  &__data-tab-trigger {
+    color: $soft-light-blue;
+  }
+}

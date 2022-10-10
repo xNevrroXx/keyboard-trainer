@@ -7,19 +7,26 @@
     padding: 0;
     box-sizing: border-box;
 }
+* {
+    &:focus {
+        outline: .2rem solid #000000;
+        border-radius: .3rem;
+        scale: 1.01;
+    }
+}
 html {
-    height: 100vh;
     font-size: 14px;
 }
 body {
     font-family: "Montserrat", sans-serif;
     padding: 5vw;
     align-items: center;
-    background-color: $soft-light-green;
+    background-color: $soft-light-blue;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    height: 90vh;
+    min-height: 100vh;
+    position: relative;
 }
 footer {
     position: absolute;
@@ -71,38 +78,14 @@ h1 {
 @import "blocks/keyboard";
 @import "blocks/text";
 @import "blocks/modal";
-@import "blocks/graphic";
+@import "blocks/chart";
 @import "blocks/header";
+@import "blocks/statistic-item";
 @import "blocks/modal-login";
 @import "blocks/copyright";
 @import "blocks/profile-submenu";
-
-.statistic {
-    display: flex;
-    width: 15rem;
-    flex-direction: column;
-    gap: 5rem;
-    font-size: 2rem;
-    &__label {
-        display: flex;
-        align-items: baseline;
-        gap: .5rem;
-    }
-    &__label-icon {
-        display: inline-block;
-        width: 1.5rem;
-        height: 1.5rem;
-        svg {
-            width: 100%;
-            height: 100%;
-        }
-    }
-    &__field {
-        display: flex;
-        flex-direction: column;
-        gap: .5rem;
-    }
-}
+@import "blocks/profile";
+@import "blocks/editprofile";
 
 .feedback {
     font-size: 1.5rem;

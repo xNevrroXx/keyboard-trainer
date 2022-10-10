@@ -1,0 +1,44 @@
+@import "../modules/variables";
+
+.statistic {
+  display: flex;
+  width: 15rem;
+  flex-direction: column;
+  gap: 5rem;
+  font-size: 2rem;
+}
+
+.statistic-item {
+  display: flex;
+  gap: .5rem;
+  align-items: center;
+  font-size: 1.5rem;
+  &__wrapper-image {
+    width: 3rem;
+    height: 3rem;
+    svg {
+      fill: $soft-pink;
+      width: 100%;
+      height: 100%;
+    }
+  }
+  &__wrapper-description {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+  }
+  &__title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #4a4a4a;
+  }
+  &__wrapper-value {
+
+  }
+  &__value {
+
+  }
+  &__units {
+
+  }
+}
