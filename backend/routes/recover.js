@@ -37,8 +37,6 @@ const recoverRoutes = (app, db) => {
     try {
       const findingResult = await searchData(db, "temporary_code", email, "user_email");
 
-      console.log("code_value", findingResult.data)
-      console.log("time now: ", new Date().getTime())
       if(findingResult.data.value === code && +findingResult.data["end_time"] > new Date().getTime()) {
         response.status(200).json({
           message: "success"
@@ -70,12 +68,10 @@ const recoverRoutes = (app, db) => {
         if(findingResultCode.data.value === code) {
           try {
             const updatingResult = await changeData(db, "user", email, "email", password, "password");
-            console.log("data has been updated!");
             response.status(200).json({
               message: "data has been updated!"
             })
           } catch (error) {
-            console.log("error update code: ", error);
             response.sendStatus(500).json({
               message: "unknown error"
             });

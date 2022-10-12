@@ -182,8 +182,6 @@ async function routes(app, db) {
     const accessToken = request.headers["accesstoken"].split(" ")[1];
     const refreshToken = request.headers["refreshtoken"].split(" ")[1];
 
-    console.log("accessToken: ", accessToken)
-    console.log("refreshToken: ", refreshToken)
     changeData(db, "access_token", accessToken, "value", "", "value");
     changeData(db, "refresh_token", refreshToken, "value", "", "value");
     // changeToken(db, "access_token", accessToken, "");

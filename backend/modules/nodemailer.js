@@ -5,10 +5,6 @@ async function sendMail(targetEmail, temporaryCode) {
   const userEmail = process.env.EMAIL_ADDRESS;
   const passwordEmail = process.env.EMAIL_PASSWORD;
 
-  console.log("userEmail: ", userEmail);
-  console.log("passwordEmail: ", passwordEmail);
-  console.log("targetEmail: ", targetEmail);
-
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
     port: 465,
