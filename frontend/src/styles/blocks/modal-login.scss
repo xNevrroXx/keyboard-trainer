@@ -57,6 +57,7 @@
     flex-direction: column;
     padding: 0 50px;
     height: 100%;
+    width: 100%;
     text-align: center;
   }
 
@@ -107,25 +108,27 @@
 
   .container.active-right .sign-in-container {
     transform: translateX(100%);
-    display: none; // todo add line
-    animation: 0 linear 0.5s forwards disappear;
+    animation: 0.6s disappear forwards;
+  }
+  .container.active-left .sign-in-container {
+    animation: 0.6s appear forwards;
   }
 
   .sign-up-container {
-    display: none; // todo add line
     left: 0;
     width: 50%;
     opacity: 0;
     z-index: 1;
-    animation: 0 linear 0.5s forwards disappear;
   }
 
   .container.active-right .sign-up-container {
-    display: block; // todo add line
     transform: translateX(100%);
     opacity: 1;
     z-index: 5;
-    animation: show 0.6s;
+    animation: show 0.6s, 0.6s appear forwards;
+  }
+  .container.active-left .sign-up-container {
+    animation: 0.6s disappear forwards;
   }
 
   @keyframes show {
@@ -192,24 +195,28 @@
   }
 
   .overlay-left {
-    display: none;
     transform: translateX(-20%);
   }
 
   .container.active-right .overlay-left {
-    display: flex; // todo add line
     transform: translateX(0);
+    animation: 0.6s appear forwards;
+  }
+  .container.active-left .overlay-left {
+    animation: 0.6s disappear forwards;
   }
 
   .overlay-right {
-    display: flex; // todo add line
     right: 0;
     transform: translateX(0);
   }
 
   .container.active-right .overlay-right {
-    display: none; // todo add line
     transform: translateX(20%);
+    animation: 0.6s disappear forwards;
+  }
+  .container.active-left .overlay-right {
+    animation: 0.6s appear forwards;
   }
 
   .social-container {
@@ -263,16 +270,19 @@
   }
 }
 
-
+@keyframes appear {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
 @keyframes disappear {
   0% {
     opacity: 1;
   }
-  99% {
-    opacity: 0;
-    display: flex;
-  }
   100% {
-    display: none;
+    opacity: 0;
   }
 }

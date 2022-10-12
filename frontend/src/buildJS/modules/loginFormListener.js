@@ -11,9 +11,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import validate from "./validate";
 import { register, signIn } from "../services";
 import form from "./form";
-function loginFormListener() {
+function loginFormListener(MATCH_PAGES_URL) {
     const signInFormElem = document.querySelector("#sign-in"), registerFormElem = document.querySelector("#register");
-    const formBindSignIn = form.bind(signInFormElem, (data) => validate(data, false, true, true, false), (data) => __awaiter(this, void 0, void 0, function* () { return yield signIn(data); }), () => { }, false, false, false);
+    const formBindSignIn = form.bind(signInFormElem, (data) => validate(data, false, true, true, false), (data) => __awaiter(this, void 0, void 0, function* () { return yield signIn(data); }), () => window.location.href = MATCH_PAGES_URL["testing"].pathname, false, false, false);
     const formBindRegister = form.bind(registerFormElem, (data) => validate(data, true, true, true, false), (data) => __awaiter(this, void 0, void 0, function* () { return yield register(data); }), () => { }, false, false, false);
     signInFormElem.addEventListener("submit", formBindSignIn);
     registerFormElem.addEventListener("submit", formBindRegister);

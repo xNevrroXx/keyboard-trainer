@@ -1,13 +1,13 @@
-import {dataErrors, dataLogin, dataRegister, dataRecover__stageEmail, dataRecover__stageCode, dataRecover__stagePassword} from "../types";
+import {IDataErrors, IDataLogin, IDataRegister, IDataRecover__stageEmail, IDataRecover__stageCode, IDataRecover__stagePassword} from "../types";
 
 function validate(
-  data: dataLogin | dataRegister | dataRecover__stageEmail | dataRecover__stageCode | dataRecover__stagePassword,
+  data: IDataLogin | IDataRegister | IDataRecover__stageEmail | IDataRecover__stageCode | IDataRecover__stagePassword,
   isName: boolean,
   isPassword: boolean,
   isEmail: boolean,
-  isRepeatPassword: boolean): dataErrors
+  isRepeatPassword: boolean): IDataErrors
 {
-  const errors: dataErrors = {};
+  const errors: IDataErrors = {};
   const nameRegex = /^\D{2,}$/ig,
     emailRegex =  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
     passwordRegex = /^(?=.*[0-9])(?=.*[(!@#$%^&*])[a-zA-Z0-9(!@#$%^&*]{6,16}$/,

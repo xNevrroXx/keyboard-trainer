@@ -47,7 +47,7 @@ function getProfile() {
                 const status = response.response.status;
                 if (status === 400) {
                     localStorage.setItem("isAuthorized", "no");
-                    window.location.href = "/pages/login.html";
+                    window.location.href = "/views/login.html";
                 }
                 else if (status === 403) {
                     localStorage.setItem("isAuthorized", "no");
@@ -56,7 +56,7 @@ function getProfile() {
                         return yield getProfile();
                     }
                     else {
-                        window.location.href = "/pages/login.html";
+                        window.location.href = "/views/login.html";
                     }
                 }
             }
@@ -90,7 +90,6 @@ function signIn(data) {
             localStorage.setItem("isAuthorized", "yes");
             localStorage.setItem("accessToken", response.data.accessToken);
             localStorage.setItem("refreshToken", response.data.refreshToken);
-            window.location.href = "/";
         })
             .catch(error => {
             const status = error.response.status;

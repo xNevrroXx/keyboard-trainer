@@ -7,15 +7,14 @@ const rename = require('gulp-rename');
 const ts = require("gulp-typescript");
 const tsProject = ts.createProject("tsconfig.json");
 const rigger = require("gulp-rigger");
-const {series} = require("gulp-cli/lib/shared/cli-options");
 
 const dist = "./dist/";
 const src = "./src/";
 
-gulp.task("copy-html-pages", () => {
-  return gulp.src("./src/pages/*.html")
+gulp.task("copy-html-views", () => {
+  return gulp.src("./src/views/*.html")
     .pipe(rigger())
-    .pipe(gulp.dest(dist + "/pages"))
+    .pipe(gulp.dest(dist + "/views"))
     .pipe(browsersync.stream());
 });
 
@@ -99,7 +98,7 @@ gulp.task("watch", () => {
     notify: true
   });
 
-  gulp.watch("./src/**/*.html", gulp.parallel("build-html", "copy-html-pages"));
+  gulp.watch("./src/**/*.html", gulp.parallel("build-html", "copy-html-views"));
   gulp.watch("./data.json", gulp.parallel("copy-json"));
   gulp.watch("./src/scripts/**/*.ts", gulp.series("build-ts", "build-js"));
   // gulp.watch("./src/buildJS/**/*.js", gulp.parallel("build-js"));
@@ -108,6 +107,6 @@ gulp.task("watch", () => {
   gulp.watch("./src/fonts/**/*.*", gulp.parallel("copy-fonts"));
 })
 
-gulp.task("build", gulp.parallel("build-html", "copy-html-pages", /*"copy-json",*/ gulp.series("build-ts", "build-js"), "build-styles", "copy-assets", /*"copy-fonts"*/));
+gulp.task("build", gulp.parallel("build-html", "copy-html-views", /*"copy-json",*/ gulp.series("build-ts", "build-js"), "build-styles", "copy-assets", /*"copy-fonts"*/));
 
 gulp.task("default", gulp.parallel("watch", "build"))

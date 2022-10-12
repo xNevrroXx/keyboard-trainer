@@ -96,9 +96,7 @@ function keyboard() {
 
 // Digital keyboard sync
   keys.forEach((key, index) => {
-    document
-      .getElementById(keys[index])
-      .addEventListener("click", function (event) {
+    document.getElementById(keys[index]).addEventListener("click", function (event) {
         const target: EventTarget = event.target;
         if(target instanceof HTMLElement) {
           checkForKonamiCode(target.id);
@@ -110,7 +108,6 @@ function keyboard() {
     if (keys.includes(event.code)) {
       document.getElementById(event.code).classList.add("active");
       if(event.getModifierState && event.getModifierState("CapsLock")) {
-        console.log(event.getModifierState("CapsLock"))
         document.getElementById("CapsLock").classList.add("activated");
       }
       else {
@@ -125,9 +122,6 @@ function keyboard() {
       document.getElementById(code).classList.remove("active");
     }
   });
-
-
-// Responsive scaling
 }
 
 export default keyboard;

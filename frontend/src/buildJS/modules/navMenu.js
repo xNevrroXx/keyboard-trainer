@@ -7,6 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+// own modules
 import { logout } from "../services";
 function navMenu() {
     const menuElem = document.querySelector("nav.menu");

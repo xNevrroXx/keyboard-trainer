@@ -1,16 +1,16 @@
 import axios from "axios";
 import {
-  backendUrls,
-  dataLogin,
-  dataRecover__stageCode,
-  dataRecover__stageEmail,
-  dataRecover__stagePassword,
-  dataRegister
+  IBackendUrls,
+  IDataLogin,
+  IDataRecover__stageCode,
+  IDataRecover__stageEmail,
+  IDataRecover__stagePassword,
+  IDataRegister
 } from "./types";
 
 
 const backendMainUrlStr = "http://localhost:5000";
-const backendUrlsObj: backendUrls = {
+const backendUrlsObj: IBackendUrls = {
   login: backendMainUrlStr + "/login",
   register: backendMainUrlStr + "/register",
   refreshToken: backendMainUrlStr + "/refreshtoken",
@@ -47,7 +47,7 @@ async function getProfile(): Promise<any> {
       const status = response.response.status;
       if(status === 400) {
         localStorage.setItem("isAuthorized", "no");
-        window.location.href = "/pages/login.html";
+        window.location.href = "/views/login.html";
       }
       else if (status === 403) {
         localStorage.setItem("isAuthorized", "no");
@@ -56,14 +56,14 @@ async function getProfile(): Promise<any> {
           return await getProfile();
         }
         else {
-          window.location.href = "/pages/login.html";
+          window.location.href = "/views/login.html";
         }
       }
     }
   }
 }
 
-async function refreshToken(backendUrlsObj: backendUrls) {
+async function refreshToken(backendUrlsObj: IBackendUrls) {
   const refreshToken = localStorage.getItem("refreshToken");
 
   try{
@@ -84,14 +84,12 @@ async function refreshToken(backendUrlsObj: backendUrls) {
   }
 }
 
-async function signIn(data: dataLogin) {
+async function signIn(data: IDataLogin) {
   await axios.post(backendUrlsObj.login, data)
     .then(response => {
       localStorage.setItem("isAuthorized", "yes");
       localStorage.setItem("accessToken", response.data.accessToken);
       localStorage.setItem("refreshToken", response.data.refreshToken);
-
-      window.location.href = "/";
     })
     .catch(error => {
       const status = error.response.status;
@@ -107,7 +105,7 @@ async function signIn(data: dataLogin) {
     });
 }
 
-async function register(data: dataRegister) {
+async function register(data: IDataRegister) {
   await axios.post(backendUrlsObj.register, data)
     .then(async () => {
       alert("Success registration");
@@ -136,18 +134,18 @@ async function logout() {
   localStorage.setItem("refreshToken", "null");
 }
 
-async function recoverStageEmail(data: dataRecover__stageEmail) {
+async function recoverStageEmail(data: IDataRecover__stageEmail) {
   return await axios.post(backendUrlsObj.recover.stageEmail, data);
 }
 
-async function recoverStageCode(data: dataRecover__stageCode) {
+async function recoverStageCode(data: IDataRecover__stageCode) {
   return await axios.post(backendUrlsObj.recover.stageCode, data);
 }
 
-async function recoverStagePassword(data: dataRecover__stagePassword) {
+async function recoverStagePassword(data: IDataRecover__stagePassword) {
   axios.post(backendUrlsObj.recover.stagePassword, data)
     .then((response) => {
-      const dataLogin: dataLogin = {
+      const dataLogin: IDataLogin = {
         email: data.email,
         password: data.password
       };

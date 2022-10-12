@@ -1,30 +1,66 @@
-function loginFormTab() {
-    const signUpButton = document.getElementById('signUp');
-    const signUpButtonMenu = document.querySelector(`.menu__item.menu__item_login > button[data-target-point="/pages/login.html"][data-target-point-extra="?register"]`);
-    const signInButton = document.getElementById('signIn');
-    const signInButtonMenu = document.querySelector(`.menu__item.menu__item_login > button[data-target-point="/pages/login.html"][data-target-point-extra="?sign-in"]`);
+function loginFormTab(MATCH_PAGES_URL) {
     const container = document.getElementById('container');
-    if (window.location.search === "?register") {
+    const registerButtonElems = [
+        document.getElementById('signUp'),
+        document.querySelector(`.menu__item.menu__item_login > button[data-target-point="${MATCH_PAGES_URL["login"].pathname}"][data-target-point-extra="${MATCH_PAGES_URL["login"].possibleHashValue[1]}"]`)
+    ], signInButtonElems = [
+        document.getElementById('signIn'),
+        document.querySelector(`.menu__item.menu__item_login > button[data-target-point="${MATCH_PAGES_URL["login"].pathname}"][data-target-point-extra="${MATCH_PAGES_URL["login"].possibleHashValue[0]}"]`)
+    ], hiddenOnRegisterElems = [
+        document.querySelector("div.sign-in-container"),
+        document.querySelector("div.overlay-right")
+    ], hiddenOnSignInElems = [
+        document.querySelector("div.sign-up-container"),
+        document.querySelector("div.overlay-left")
+    ], delayBeforeHiding = 400;
+    console.log(window.location);
+    if (window.location.hash === "#register") {
         container.classList.add("active-right");
+        container.classList.remove("active-left");
+        hiddenOnRegisterElems.forEach(elemForHide => {
+            elemForHide.style.display = "none";
+        });
     }
-    if (window.location.search === "?sign-in") {
+    if (window.location.hash === "#sign-in") {
         container.classList.remove("active-right");
+        container.classList.add("active-left");
+        hiddenOnSignInElems.forEach(elemForHide => {
+            elemForHide.style.display = "none";
+        });
     }
-    signUpButton.addEventListener('click', () => {
-        container.classList.add("active-right");
-        window.history.replaceState({}, "", "/pages/login.html?register");
+    registerButtonElems.forEach(registerButtonElem => {
+        registerButtonElem.addEventListener('click', () => {
+            container.classList.add("active-right");
+            container.classList.remove("active-left");
+            window.history.replaceState({}, "", `${MATCH_PAGES_URL["login"].pathname}${MATCH_PAGES_URL["login"].possibleHashValue[1]}`);
+            hiddenOnRegisterElems.forEach(elemForHide => {
+                setTimeout(() => {
+                    elemForHide.style.display = "none";
+                }, delayBeforeHiding);
+            });
+            hiddenOnSignInElems.forEach(elemForHide => {
+                setTimeout(() => {
+                    elemForHide.style.display = "flex";
+                }, delayBeforeHiding);
+            });
+        });
     });
-    signUpButtonMenu.addEventListener('click', () => {
-        container.classList.add("active-right");
-        window.history.replaceState({}, "", "/pages/login.html?register");
-    });
-    signInButton.addEventListener('click', () => {
-        container.classList.remove("active-right");
-        window.history.replaceState({}, "", "/pages/login.html?sign-in");
-    });
-    signInButtonMenu.addEventListener('click', () => {
-        container.classList.remove("active-right");
-        window.history.replaceState({}, "", "/pages/login.html?sign-in");
+    signInButtonElems.forEach(signInButtonElem => {
+        signInButtonElem.addEventListener('click', () => {
+            container.classList.remove("active-right");
+            container.classList.add("active-left");
+            window.history.replaceState({}, "", `${MATCH_PAGES_URL["login"].pathname}${MATCH_PAGES_URL["login"].possibleHashValue[0]}`);
+            hiddenOnSignInElems.forEach(elemForHide => {
+                setTimeout(() => {
+                    elemForHide.style.display = "none";
+                }, delayBeforeHiding);
+            });
+            hiddenOnRegisterElems.forEach(elemForHide => {
+                setTimeout(() => {
+                    elemForHide.style.display = "flex";
+                }, delayBeforeHiding);
+            });
+        });
     });
 }
 export default loginFormTab;

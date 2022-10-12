@@ -8,77 +8,73 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 // owm modules
-import initTraining from "./modules/initTraining";
-import keyboard from "./modules/keyboard";
-import initModal from "./modules/modal";
-import makeChart from "./modules/makeChart";
 import plugToImgOnError from "./modules/plugToImgOnError";
 import scaleElements from "./modules/scaleElements";
-import loginFormTab from "./modules/loginFormTab";
-import loginFormListener from "./modules/loginFormListener";
 import authorize from "./modules/authorize";
 import navMenu from "./modules/navMenu";
-import recoverFormListener from "./modules/recoverFormListener";
-import recoverFormRender from "./modules/recoverFormRender";
+import login from "./pagesSplitting/login";
+import recovery from "./pagesSplitting/recovery";
+import testing from "./pagesSplitting/testing";
+import results from "./pagesSplitting/results";
+const MAIN_URL = "http://localhost:5001";
+const MATCH_PAGES_URL = {
+    "profile": {
+        pathname: "/profile",
+        possibleHashValue: [],
+        possibleSearchValue: []
+    },
+    "editprofile": {
+        pathname: "/editprofile",
+        possibleHashValue: [],
+        possibleSearchValue: []
+    },
+    "login": {
+        pathname: "/login",
+        possibleHashValue: ["#sign-in", "#register"],
+        possibleSearchValue: []
+    },
+    "testing": {
+        pathname: "/testing",
+        possibleHashValue: [],
+        possibleSearchValue: []
+    },
+    "results": {
+        pathname: "/results",
+        possibleHashValue: [],
+        possibleSearchValue: []
+    },
+    "recovery": {
+        pathname: "/recovery",
+        possibleHashValue: [],
+        possibleSearchValue: []
+    },
+};
 window.addEventListener("DOMContentLoaded", () => __awaiter(void 0, void 0, void 0, function* () {
     navMenu();
     plugToImgOnError();
     yield authorize();
-    const chartStatistic = [];
     scaleElements(document.querySelector("body"), document.querySelectorAll("body > *"));
     window.addEventListener("resize", () => {
         scaleElements(document.querySelector("body"), document.querySelectorAll("body > *"));
     });
-    if (window.location.pathname === "/") {
-        const modalStartPrint = document.querySelector(".modal_start-print");
-        keyboard();
-        initModal({
-            modalSelector: ".modal_start-print",
-            activeClass: "modal_active",
-            triggerCloseSelector: ".modal__close-trigger",
-            next: function () {
-                const startPrintBtn = modalStartPrint.querySelector(".modal__start-print-btn");
-                startPrintBtn.addEventListener("click", handleClick);
-                document.addEventListener("keydown", handleKeyDown);
-                // handler functions
-                function handleKeyDown(event) {
-                    if (event.code === "Enter" || event.code === "Space") {
-                        modalStartPrint.dispatchEvent(new CustomEvent("closeModal"));
-                        initTraining(chartStatistic);
-                        document.removeEventListener("keydown", handleKeyDown);
-                        startPrintBtn.removeEventListener("click", handleClick);
-                    }
-                }
-                function handleClick(event) {
-                    modalStartPrint.dispatchEvent(new CustomEvent("closeModal"));
-                    initTraining(chartStatistic);
-                    startPrintBtn.removeEventListener("click", handleClick);
-                    document.removeEventListener("keydown", handleKeyDown);
-                }
-            }
-        });
+    console.log(window.location);
+    if (window.location.pathname === MATCH_PAGES_URL["testing"].pathname) {
+        testing(MATCH_PAGES_URL);
     }
-    else if (window.location.pathname === "/pages/results.html") {
-        makeChart(chartStatistic);
+    else if (window.location.pathname === MATCH_PAGES_URL["results"].pathname) {
+        results();
     }
-    else if (window.location.pathname === "/pages/login.html") {
-        if (localStorage.getItem("isAuthorized") === "yes" && localStorage.getItem("accessToken") && localStorage.getItem("refreshToken")) {
-            window.location.href = "/";
-        }
-        document.querySelector("button#forgot-password").addEventListener("click", () => {
-            window.location.href = "/pages/recovery.html?email";
-        });
-        loginFormTab();
-        loginFormListener();
+    else if (window.location.pathname === MATCH_PAGES_URL["login"].pathname) {
+        login(MATCH_PAGES_URL);
     }
-    else if (window.location.pathname === "/pages/recovery.html") {
-        if (localStorage.getItem("isAuthorized") === "yes" && localStorage.getItem("accessToken") && localStorage.getItem("refreshToken")) {
-            window.location.href = "/";
-        }
-        document.querySelector("button#try-again").addEventListener("click", () => {
-            window.location.href = "/pages/login.html?sign-in";
-        });
-        recoverFormRender();
-        recoverFormListener();
+    else if (window.location.pathname === MATCH_PAGES_URL["recovery"].pathname) {
+        recovery();
+    }
+    else if (window.location.pathname === MATCH_PAGES_URL["profile"].pathname) {
+    }
+    else if (window.location.pathname === MATCH_PAGES_URL["editprofile"].pathname) {
+    }
+    else if (window.location.pathname === "/") {
+        window.location.href = MATCH_PAGES_URL["testing"].pathname;
     }
 }));

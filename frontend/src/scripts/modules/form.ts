@@ -2,17 +2,17 @@
 import validate from "./validate";
 // types
 import {
-  dataErrors,
-  dataLogin,
-  dataRecover__stageCode,
-  dataRecover__stageEmail,
-  dataRecover__stagePassword,
-  dataRegister
+  IDataErrors,
+  IDataLogin,
+  IDataRecover__stageCode,
+  IDataRecover__stageEmail,
+  IDataRecover__stagePassword,
+  IDataRegister
 } from "../types";
 
 async function form(
-  validateFunc: (data: dataRecover__stageEmail | dataRecover__stageCode | dataRecover__stagePassword | dataRegister | dataLogin) => dataErrors,
-  serviceFunc: (data: dataRecover__stageEmail | dataRecover__stageCode | dataRecover__stagePassword | dataRegister | dataLogin) => Promise<any>,
+  validateFunc: (data: IDataRecover__stageEmail | IDataRecover__stageCode | IDataRecover__stagePassword | IDataRegister | IDataLogin) => IDataErrors,
+  serviceFunc: (data: IDataRecover__stageEmail | IDataRecover__stageCode | IDataRecover__stagePassword | IDataRegister | IDataLogin) => Promise<any>,
   next: (email?: string, code?: string) => void,
   isNeedEmail?: boolean,
   isNeedCode?: boolean,
@@ -84,7 +84,7 @@ async function form(
     this.querySelectorAll(".error-description").forEach((errorElem: Element) => {
       errorElem.remove();
     })
-    for (const key of Object.keys(errors) as (keyof dataErrors)[]) {
+    for (const key of Object.keys(errors) as (keyof IDataErrors)[]) {
       const inputWithError = this.querySelector(`input[name="${key}"]`);
       const errorDescriptionElem = document.createElement("div");
       errorDescriptionElem.classList.add("error-description")

@@ -1,42 +1,51 @@
+
+export interface IMatchPagesUrl {
+  [namePath: string]: {
+    pathname: string,
+    possibleSearchValue: string[],
+    possibleHashValue: string[]
+  }
+}
+
 export interface IChartStatistic {
   accuracy: number,
   speed: number,
   time: number
 }
 
-export interface dataLogin {
+export interface IDataLogin {
   email: string,
   password: string
 }
 
-export interface dataRegister {
+export interface IDataRegister {
   name: string,
   email: string,
   password: string
 }
 
-export interface dataRecover__stageEmail {
+export interface IDataRecover__stageEmail {
   email: string
 }
-export interface dataRecover__stageCode {
+export interface IDataRecover__stageCode {
   email: string,
   code: string
 }
-export interface dataRecover__stagePassword {
+export interface IDataRecover__stagePassword {
   email: string,
   code: string,
   password: string,
   "repeat-password": string
 }
 
-export interface dataErrors {
+export interface IDataErrors {
   name?: string,
   email?: string,
   password?: string,
   "repeat-password"?: string
 }
 
-export interface backendUrls {
+export interface IBackendUrls {
   login: string,
   register: string,
   refreshToken: string,

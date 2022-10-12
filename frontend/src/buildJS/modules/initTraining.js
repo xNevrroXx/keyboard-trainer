@@ -1,5 +1,5 @@
 import splitText from "./splitText";
-function initTraining(chartStatistic) {
+function initTraining(chartStatistic, next = null) {
     const textElem = document.querySelector(".text"), statisticElem = document.querySelector(".statistic");
     let indexTargetChar = 0, pastTime = 0, countErrors = 0, wasError = false;
     const statistic = {
@@ -41,7 +41,11 @@ function initTraining(chartStatistic) {
                 wasError = false;
             }
             if (textElem.textContent.length - 1 === indexTargetChar) {
-                endTraining();
+                onEndTraining();
+                if (next) {
+                    console.log("start next initTraining");
+                    next();
+                }
                 return;
             }
             buffer.push(code);
@@ -56,9 +60,8 @@ function initTraining(chartStatistic) {
             countErrors++;
         }
     }
-    function endTraining() {
+    function onEndTraining() {
         window.removeEventListener("keydown", handlerKeyDownTraining);
-        window.location.href = "http://localhost:4000/pages/results.html";
     }
     function toggleClassTextChar(textElementWithSpans, indexHighlight, className) {
         textElementWithSpans.querySelectorAll("span")[indexHighlight].classList.toggle(className);

@@ -4,7 +4,7 @@ function recoverFormRender() {
         window.location.href = window.location.pathname + "?email";
     }
     else if (window.location.search !== "?email" && !window.location.search.includes("?code&email=") && !/\?password&code=\d{6}&email=.*$/.test(window.location.search)) {
-        window.location.href = "/pages/recovery.html?email";
+        window.location.href = "/views/recovery.html?email";
     }
     if (window.location.search === "?email") {
         stageEmailForm.classList.add("active");

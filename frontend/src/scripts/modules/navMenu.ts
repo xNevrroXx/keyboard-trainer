@@ -1,3 +1,6 @@
+// types
+import {IMatchPagesUrl} from "../types";
+// own modules
 import {logout} from "../services";
 
 function navMenu() {

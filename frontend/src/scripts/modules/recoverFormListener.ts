@@ -1,9 +1,9 @@
 import validate from "./validate";
 import {recoverStageCode, recoverStageEmail, recoverStagePassword, register, signIn} from "../services";
 import {
-  dataRecover__stageCode,
-  dataRecover__stageEmail,
-  dataRecover__stagePassword,
+  IDataRecover__stageCode,
+  IDataRecover__stageEmail,
+  IDataRecover__stagePassword,
 } from "../types";
 import form from "./form";
 
@@ -13,8 +13,8 @@ function recoverFormListener() {
     stagePasswordForm = document.querySelector("#password");
 
   const formBindStageEmail = form.bind(stageEmailForm,
-    (data: dataRecover__stageEmail) => validate(data, false, false, true, false),
-    async (data: dataRecover__stageEmail) => await recoverStageEmail(data),
+    (data: IDataRecover__stageEmail) => validate(data, false, false, true, false),
+    async (data: IDataRecover__stageEmail) => await recoverStageEmail(data),
     (email: string) => window.location.href = `/pages/recovery.html?code&email=${email}`,
     true,
     false,
@@ -22,15 +22,15 @@ function recoverFormListener() {
   )
   const formBindStageCode = form.bind(stageCodeForm,
     () => {}, // we don't need to validate the verification code
-    async (data: dataRecover__stageCode) => await recoverStageCode(data),
+    async (data: IDataRecover__stageCode) => await recoverStageCode(data),
     (email: string, code: number) => window.location.href = `/pages/recovery.html?password&code=${code}&email=${email}`,
     true,
     true,
     false
   );
   const formBindStagePassword = form.bind(stagePasswordForm,
-    (data: dataRecover__stagePassword) => validate(data,false, true, false, true),
-    async (data: dataRecover__stagePassword) => await recoverStagePassword(data),
+    (data: IDataRecover__stagePassword) => validate(data,false, true, false, true),
+    async (data: IDataRecover__stagePassword) => await recoverStagePassword(data),
     false,
     false,
     true
