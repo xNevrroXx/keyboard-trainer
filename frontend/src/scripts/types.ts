@@ -11,10 +11,20 @@ export interface IMatchPagesUrl {
   }
 }
 
-export interface IChartStatistic {
-  accuracy: number,
-  speed: number,
-  time: number
+/*
+* char - some one character;
+*
+* speed - speed values typing of this character(x);
+*
+* example: {char: "a", speed: [250]}
+* */
+export interface IDataStatisticSpeed {
+  char: string,
+  speed: number[]
+}
+export interface IAdditionalDataStatisticSpeed {
+  char: string,
+  speed: number
 }
 
 export interface IDataLogin {

@@ -1,6 +1,7 @@
 import makeChart from "../modules/makeChart";
 function results() {
-    const chartStatistic = [];
-    makeChart(chartStatistic);
+    let chartData = [];
+    // todo  get-query for chart data
+    makeChart(chartData);
 }
 export default results;

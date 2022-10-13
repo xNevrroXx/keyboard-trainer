@@ -7,7 +7,7 @@ const {query} = require("express");
 * @param {Object} db
 *   Pool to the database.
 * @param {String || Number} userData
-*   Email value or index value that the user should have.
+*   Email isToggle or index isToggle that the user should have.
 * @param {String} nameColumn
 *   Describes required type of column, where "userData" should be found. Example: "email":
 * */

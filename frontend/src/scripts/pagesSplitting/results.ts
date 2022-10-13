@@ -1,10 +1,11 @@
 import makeChart from "../modules/makeChart";
-import {IChartStatistic} from "../types";
+import {IDataStatisticSpeed} from "../types";
 
 function results() {
-  const chartStatistic: IChartStatistic[] = [];
+  let chartData: IDataStatisticSpeed[] = [];
+  // todo  get-query for chart data
 
-  makeChart(chartStatistic);
+  makeChart(chartData);
 }
 
 export default results;

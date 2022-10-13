@@ -1,38 +1,33 @@
 import { Chart, registerables } from "chart.js";
-function makeChart(chartStatistic) {
+function makeChart(chartData) {
     Chart.register(...registerables);
     const canvasContext = document.getElementById('myChart').getContext('2d');
-    const labels = [
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-    ];
-    const data = {
-        labels: labels,
+    const dataTest = {
         datasets: [{
-                label: 'My testing',
+                label: 'My testing 2',
                 backgroundColor: 'rgb(255, 99, 132)',
                 borderColor: 'rgb(255, 99, 132)',
-                data: chartStatistic
+                data: [{ x: "a", y: 200 }, { x: "b", y: 210 }, { x: "c", y: 230 }]
             }]
     };
     const config = {
-        type: 'line',
-        data: data,
+        type: "line",
+        data: dataTest,
         options: {
             responsive: true,
             scales: {
+                y: {
+                    ticks: {
+                        callback: function (value, index) {
+                            return this.getLabelForValue(value) + " ch/min";
+                        }
+                    }
+                },
                 x: {
                     ticks: {
-                        // Include a dollar sign in the ticks
-                        display: true,
-                        text: "seconds",
-                        // callback: function(value: string, index: string, ticks: string) {
-                        //   return value;
-                        // }
+                        callback: function (value, index) {
+                            return this.getLabelForValue(value);
+                        }
                     }
                 }
             }
