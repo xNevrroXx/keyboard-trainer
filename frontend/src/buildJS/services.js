@@ -47,7 +47,7 @@ function getProfile() {
                 const status = response.response.status;
                 if (status === 400) {
                     localStorage.setItem("isAuthorized", "no");
-                    window.location.href = "/views/login.html";
+                    window.location.href = "/login";
                 }
                 else if (status === 403) {
                     localStorage.setItem("isAuthorized", "no");
@@ -56,7 +56,7 @@ function getProfile() {
                         return yield getProfile();
                     }
                     else {
-                        window.location.href = "/views/login.html";
+                        window.location.href = "/login";
                     }
                 }
             }
@@ -85,35 +85,38 @@ function refreshToken(backendUrlsObj) {
 }
 function signIn(data) {
     return __awaiter(this, void 0, void 0, function* () {
-        yield axios.post(backendUrlsObj.login, data)
-            .then(response => {
+        try {
+            const response = yield axios.post(backendUrlsObj.login, data);
             localStorage.setItem("isAuthorized", "yes");
             localStorage.setItem("accessToken", response.data.accessToken);
             localStorage.setItem("refreshToken", response.data.refreshToken);
-        })
-            .catch(error => {
+            window.location.href = "/testing";
+        }
+        catch (error) {
             const status = error.response.status;
             localStorage.setItem("isAuthorized", "no");
             if (status === 401) {
-                alert("Incorrect password or username");
+                throw new Error("Incorrect password or username");
             }
             else {
-                console.log(error);
-                alert(error.response.data.message);
+                throw new Error(error.response.data.message);
             }
-        });
+        }
     });
 }
 function register(data) {
     return __awaiter(this, void 0, void 0, function* () {
-        yield axios.post(backendUrlsObj.register, data)
-            .then(() => __awaiter(this, void 0, void 0, function* () {
+        try {
+            const response = yield axios.post(backendUrlsObj.register, data);
+            console.log(response);
             alert("Success registration");
-            yield signIn(data);
-        }))
-            .catch((error) => {
+            return yield signIn(data);
+        }
+        catch (error) {
+            console.log(error);
             alert(error.response.data.message);
-        });
+            throw new Error(error.response.data.message);
+        }
     });
 }
 function logout() {
@@ -128,6 +131,7 @@ function logout() {
         })
             .catch(error => {
             alert(error.response.data.message);
+            throw new Error(error.response.data.message);
         });
         localStorage.setItem("isAuthorized", "no");
         localStorage.setItem("accessToken", "null");

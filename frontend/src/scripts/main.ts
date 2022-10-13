@@ -15,33 +15,33 @@ const MAIN_URL = "http://localhost:5001";
 const MATCH_PAGES_URL: IMatchPagesUrl = {
   "profile": {
     pathname: "/profile",
-    possibleHashValue: [],
-    possibleSearchValue: []
   },
   "editprofile": {
     pathname: "/editprofile",
-    possibleHashValue: [],
-    possibleSearchValue: []
   },
   "login": {
     pathname: "/login",
-    possibleHashValue: ["#sign-in", "#register"],
-    possibleSearchValue: []
+    possibleHashValue: {
+      "#sign-in": "#sign-in",
+      "#register": "#register"
+    },
   },
   "testing": {
     pathname: "/testing",
-    possibleHashValue: [],
-    possibleSearchValue: []
   },
   "results": {
     pathname: "/results",
-    possibleHashValue: [],
-    possibleSearchValue: []
   },
   "recovery": {
     pathname: "/recovery",
-    possibleHashValue: [],
-    possibleSearchValue: []
+  },
+
+  // not for html routes
+  "assets": {
+    pathname: "/assets",
+    possibleSearchValue: {
+      "?file": "?file"
+    }
   },
 }
 
@@ -55,7 +55,6 @@ window.addEventListener("DOMContentLoaded", async () => {
     scaleElements(document.querySelector("body"), document.querySelectorAll("body > *"));
   })
 
-  console.log(window.location)
   if (window.location.pathname === MATCH_PAGES_URL["testing"].pathname) {
     testing(MATCH_PAGES_URL);
   } else if (window.location.pathname === MATCH_PAGES_URL["results"].pathname) {

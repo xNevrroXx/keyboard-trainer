@@ -47,7 +47,7 @@ async function getProfile(): Promise<any> {
       const status = response.response.status;
       if(status === 400) {
         localStorage.setItem("isAuthorized", "no");
-        window.location.href = "/views/login.html";
+        window.location.href = "/login";
       }
       else if (status === 403) {
         localStorage.setItem("isAuthorized", "no");
@@ -56,7 +56,7 @@ async function getProfile(): Promise<any> {
           return await getProfile();
         }
         else {
-          window.location.href = "/views/login.html";
+          window.location.href = "/login";
         }
       }
     }
@@ -85,35 +85,39 @@ async function refreshToken(backendUrlsObj: IBackendUrls) {
 }
 
 async function signIn(data: IDataLogin) {
-  await axios.post(backendUrlsObj.login, data)
-    .then(response => {
-      localStorage.setItem("isAuthorized", "yes");
-      localStorage.setItem("accessToken", response.data.accessToken);
-      localStorage.setItem("refreshToken", response.data.refreshToken);
-    })
-    .catch(error => {
-      const status = error.response.status;
+  try {
+    const response = await axios.post(backendUrlsObj.login, data);
 
-      localStorage.setItem("isAuthorized", "no");
-      if(status === 401) {
-        alert("Incorrect password or username");
-      }
-      else {
-        console.log(error)
-        alert(error.response.data.message);
-      }
-    });
+    localStorage.setItem("isAuthorized", "yes");
+    localStorage.setItem("accessToken", response.data.accessToken);
+    localStorage.setItem("refreshToken", response.data.refreshToken);
+
+    window.location.href = "/testing";
+  } catch (error) {
+    const status = error.response.status;
+
+    localStorage.setItem("isAuthorized", "no");
+    if (status === 401) {
+      throw new Error("Incorrect password or username");
+    } else {
+      throw new Error(error.response.data.message);
+    }
+  }
 }
 
 async function register(data: IDataRegister) {
-  await axios.post(backendUrlsObj.register, data)
-    .then(async () => {
-      alert("Success registration");
-      await signIn(data);
-    })
-    .catch((error) => {
-      alert(error.response.data.message)
-    });
+  try {
+    const response = await axios.post(backendUrlsObj.register, data)
+
+    console.log(response)
+    alert("Success registration");
+    return await signIn(data);
+  }
+  catch (error) {
+    console.log(error)
+    alert(error.response.data.message)
+    throw new Error(error.response.data.message);
+  }
 }
 
 async function logout() {
@@ -128,6 +132,7 @@ async function logout() {
   })
     .catch (error => {
       alert(error.response.data.message);
+      throw new Error(error.response.data.message);
     })
   localStorage.setItem("isAuthorized", "no");
   localStorage.setItem("accessToken", "null");

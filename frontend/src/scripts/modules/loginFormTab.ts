@@ -7,11 +7,11 @@ function loginFormTab(MATCH_PAGES_URL: IMatchPagesUrl) {
   const
     registerButtonElems = [
       document.getElementById('signUp'),
-      document.querySelector(`.menu__item.menu__item_login > button[data-target-point="${MATCH_PAGES_URL["login"].pathname}"][data-target-point-extra="${MATCH_PAGES_URL["login"].possibleHashValue[1]}"]`)
+      document.querySelector(`.menu__item.menu__item_login > button[data-target-point="${MATCH_PAGES_URL["login"].pathname}"][data-target-point-extra="${MATCH_PAGES_URL["login"].possibleHashValue["#register"]}"]`)
     ],
     signInButtonElems = [
       document.getElementById('signIn'),
-      document.querySelector(`.menu__item.menu__item_login > button[data-target-point="${MATCH_PAGES_URL["login"].pathname}"][data-target-point-extra="${MATCH_PAGES_URL["login"].possibleHashValue[0]}"]`)
+      document.querySelector(`.menu__item.menu__item_login > button[data-target-point="${MATCH_PAGES_URL["login"].pathname}"][data-target-point-extra="${MATCH_PAGES_URL["login"].possibleHashValue["#sign-in"]}"]`)
     ],
     hiddenOnRegisterElems: HTMLElement[] = [
       document.querySelector("div.sign-in-container"),
@@ -23,8 +23,7 @@ function loginFormTab(MATCH_PAGES_URL: IMatchPagesUrl) {
     ],
     delayBeforeHiding = 400;
 
-  console.log(window.location)
-  if (window.location.hash === "#register") {
+  if (window.location.hash === MATCH_PAGES_URL["login"].possibleHashValue["#register"]) {
     container.classList.add("active-right");
     container.classList.remove("active-left");
 
@@ -32,7 +31,7 @@ function loginFormTab(MATCH_PAGES_URL: IMatchPagesUrl) {
       elemForHide.style.display = "none";
     })
   }
-  if (window.location.hash === "#sign-in") {
+  if (window.location.hash === MATCH_PAGES_URL["login"].possibleHashValue["#sign-in"]) {
     container.classList.remove("active-right");
     container.classList.add("active-left");
 
@@ -45,7 +44,7 @@ function loginFormTab(MATCH_PAGES_URL: IMatchPagesUrl) {
     registerButtonElem.addEventListener('click', () => {
       container.classList.add("active-right");
       container.classList.remove("active-left");
-      window.history.replaceState({}, "", `${MATCH_PAGES_URL["login"].pathname}${MATCH_PAGES_URL["login"].possibleHashValue[1]}`);
+      window.history.replaceState({}, "", `${MATCH_PAGES_URL["login"].pathname}${MATCH_PAGES_URL["login"].possibleHashValue["#register"]}`);
 
       hiddenOnRegisterElems.forEach(elemForHide => {
         setTimeout(() => {
@@ -65,7 +64,7 @@ function loginFormTab(MATCH_PAGES_URL: IMatchPagesUrl) {
     signInButtonElem.addEventListener('click', () => {
       container.classList.remove("active-right");
       container.classList.add("active-left");
-      window.history.replaceState({}, "", `${MATCH_PAGES_URL["login"].pathname}${MATCH_PAGES_URL["login"].possibleHashValue[0]}`);
+      window.history.replaceState({}, "", `${MATCH_PAGES_URL["login"].pathname}${MATCH_PAGES_URL["login"].possibleHashValue["#sign-in"]}`);
 
       hiddenOnSignInElems.forEach(elemForHide => {
         setTimeout(() => {

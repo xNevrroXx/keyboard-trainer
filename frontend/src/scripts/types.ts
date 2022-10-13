@@ -2,8 +2,12 @@
 export interface IMatchPagesUrl {
   [namePath: string]: {
     pathname: string,
-    possibleSearchValue: string[],
-    possibleHashValue: string[]
+    possibleSearchValue?: {
+      [searchName: string]: string
+    },
+    possibleHashValue?: {
+      [searchName: string]: string
+    }
   }
 }
 
