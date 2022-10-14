@@ -1,5 +1,6 @@
 import axios from "axios";
 import {
+  IAdditionalDataStatisticSpeed,
   IBackendUrls,
   IDataLogin,
   IDataRecover__stageCode,
@@ -20,6 +21,16 @@ const backendUrlsObj: IBackendUrls = {
     stageEmail: backendMainUrlStr + "/recover/getcode",
     stageCode: backendMainUrlStr + "/recover/verifycode",
     stagePassword: backendMainUrlStr + "/recover/changepassword"
+  },
+  statistic: {
+    post: {
+      speed: backendMainUrlStr + "/statistic/speed/post",
+      accuracy: backendMainUrlStr + "/statistic/accuracy/post"
+    },
+    get: {
+      speed: backendMainUrlStr + "/statistic/speed/get",
+      accuracy: backendMainUrlStr + "/statistic/accuracy/get"
+    }
   }
 };
 
@@ -67,17 +78,19 @@ async function refreshToken(backendUrlsObj: IBackendUrls) {
   const refreshToken = localStorage.getItem("refreshToken");
 
   try{
-    const response = await axios.post(backendUrlsObj.refreshToken, {}, {
+    const response = await axios.post(backendUrlsObj.refreshToken + "?last", {}, {
       headers: {refreshtoken: `Bearer ${refreshToken}`}
     });
 
     localStorage.setItem("isAuthorized", "yes");
+    localStorage.setItem("userId", response.data.userId);
     localStorage.setItem("accessToken", response.data.accessToken);
     localStorage.setItem("refreshToken", response.data.refreshToken);
     return true;
   }
   catch (response) {
     localStorage.setItem("isAuthorized", "no");
+    localStorage.setItem("userId", "null");
     localStorage.setItem("accessToken", "null");
     localStorage.setItem("refreshToken", "null");
     return false;
@@ -89,6 +102,7 @@ async function signIn(data: IDataLogin) {
     const response = await axios.post(backendUrlsObj.login, data);
 
     localStorage.setItem("isAuthorized", "yes");
+    localStorage.setItem("userId", response.data.userId);
     localStorage.setItem("accessToken", response.data.accessToken);
     localStorage.setItem("refreshToken", response.data.refreshToken);
 
@@ -109,14 +123,12 @@ async function register(data: IDataRegister) {
   try {
     const response = await axios.post(backendUrlsObj.register, data)
 
-    console.log(response)
     alert("Success registration");
     return await signIn(data);
   }
   catch (error) {
-    console.log(error)
     alert(error.response.data.message)
-    throw new Error(error.response.data.message);
+    return new Error(error.response.data.message);
   }
 }
 
@@ -134,7 +146,9 @@ async function logout() {
       alert(error.response.data.message);
       throw new Error(error.response.data.message);
     })
+
   localStorage.setItem("isAuthorized", "no");
+  localStorage.setItem("userId", "null");
   localStorage.setItem("accessToken", "null");
   localStorage.setItem("refreshToken", "null");
 }
@@ -148,18 +162,60 @@ async function recoverStageCode(data: IDataRecover__stageCode) {
 }
 
 async function recoverStagePassword(data: IDataRecover__stagePassword) {
-  axios.post(backendUrlsObj.recover.stagePassword, data)
-    .then((response) => {
-      const dataLogin: IDataLogin = {
-        email: data.email,
-        password: data.password
-      };
+  try {
+    const response = await axios.post(backendUrlsObj.recover.stagePassword, data);
 
-      signIn(dataLogin);
-    })
-    .catch((error) => {
-      alert(error.response.data.message)
-    })
+    const dataLogin: IDataLogin = {
+      email: data.email,
+      password: data.password
+    };
+
+    await signIn(dataLogin);
+  } catch (error) {
+    alert(error.response.data.message)
+  }
 }
 
-export {getData, getProfile, refreshToken, signIn, register, recoverStageEmail, recoverStageCode, recoverStagePassword, logout};
+async function statisticDataPost(dataStatisticSpeed: IAdditionalDataStatisticSpeed[]) {
+  const accessToken = localStorage.getItem("accessToken");
+  const data = {
+    "statistic-data": dataStatisticSpeed,
+  }
+
+  try {
+    const response = await axios.post(backendUrlsObj.statistic.post.speed, data, {
+      headers: {"authorization": `Bearer ${accessToken}`}
+    });
+    console.log("ok in post")
+    return response.data.message;
+  } catch (error) {
+    console.log("error in post")
+    return new Error(error);
+  }
+}
+
+async function statisticDataGet() {
+  const accessToken = localStorage.getItem("accessToken");
+
+  try {
+    const response: any = await axios.post(backendUrlsObj.statistic.get.speed + "?which=last", {}, {
+      headers: {"authorization": `Bearer ${accessToken}`}
+    });
+    const formattingData: IAdditionalDataStatisticSpeed[] = [];
+
+    for (const dataStatisticSlice of response.data.data) {
+      formattingData.push({
+        char: dataStatisticSlice["char_value"],
+        speed: dataStatisticSlice["speed_value"]
+      })
+    }
+
+    console.log("ok in get")
+    return formattingData;
+  } catch (error) {
+    console.log("error in get")
+    return new Error(error);
+  }
+}
+
+export {getData, getProfile, refreshToken, signIn, register, recoverStageEmail, recoverStageCode, recoverStagePassword, logout, statisticDataPost, statisticDataGet};

@@ -1,18 +1,19 @@
-const {searchData, createTemporaryCode, changeData} = require("../modules/database");
-const createRandomValue = require("../modules/createRandomValue");
-const sendMail = require("../modules/nodemailer");
+const {searchData, createTemporaryCode, changeData} = require("../../modules/database");
+const createRandomValue = require("../../modules/createRandomValue");
+const sendMail = require("../../modules/nodemailer");
 const argon2 = require("argon2");
 
-const recoverRoutes = (app, db) => {
+function recoverRoutes (app, db) {
   app.post("/recover/getcode", async (request, response) => {
     const email = request.body.email;
 
     try {
       const findingResult = await searchData(db, "user", email, "email");
+      const user = findingResult.data[0];
       const temporaryValue = createRandomValue(1e5, 1e6-1);
 
       try {
-        await createTemporaryCode(db, "temporary_code", findingResult.data.id, findingResult.data.email, temporaryValue.value, temporaryValue.endTime);
+        await createTemporaryCode(db, "temporary_code", user.id, user.email, temporaryValue.value, temporaryValue.endTime);
         await sendMail(email, temporaryValue.value);
 
         response.status(202).json({
@@ -36,8 +37,9 @@ const recoverRoutes = (app, db) => {
 
     try {
       const findingResult = await searchData(db, "temporary_code", email, "user_email");
+      const findingCode = findingResult.data[0];
 
-      if(findingResult.data.value === code && +findingResult.data["end_time"] > new Date().getTime()) {
+      if(findingCode.value === code && +findingCode["end_time"] > new Date().getTime()) {
         response.status(200).json({
           message: "success"
         });
@@ -65,7 +67,7 @@ const recoverRoutes = (app, db) => {
       try {
         const findingResultCode = await searchData(db, "temporary_code", code, "value");
 
-        if(findingResultCode.data.value === code) {
+        if(findingResultCode.data[0].value === code) {
           try {
             const updatingResult = await changeData(db, "user", email, "email", password, "password");
             response.status(200).json({

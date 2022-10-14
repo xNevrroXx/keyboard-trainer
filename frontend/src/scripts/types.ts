@@ -14,13 +14,13 @@ export interface IMatchPagesUrl {
 /*
 * char - some one character;
 *
-* speed - speed values typing of this character(x);
+* speedArr - speedArr values typing of this character(x);
 *
-* example: {char: "a", speed: [250]}
+* example: {char: "a", speedArr: [250]}
 * */
 export interface IDataStatisticSpeed {
   char: string,
-  speed: number[]
+  speedArr: number[]
 }
 export interface IAdditionalDataStatisticSpeed {
   char: string,
@@ -69,5 +69,15 @@ export interface IBackendUrls {
     stageEmail: string,
     stageCode: string,
     stagePassword: string
+  },
+  statistic: {
+    post: {
+      speed: string,
+      accuracy: string
+    },
+    get: {
+      speed: string,
+      accuracy: string
+    }
   }
 }

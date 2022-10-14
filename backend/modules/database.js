@@ -1,5 +1,4 @@
 const mysql = require("mysql");
-const {query} = require("express");
 
 
 /*
@@ -34,7 +33,36 @@ async function searchData(db, tableName, data, nameColumn) {
         resolve({
           status: 200,
           message: `${data} exist`,
-          data: result[0]
+          data: result
+        })
+      })
+    })
+  })
+}
+
+async function searchDataCustom(db, searchStrSQL) {
+  return new Promise((resolve, reject) => {
+    db.getConnection(async (error, connection) => {
+      const searchQuerySQL = mysql.format(searchStrSQL);
+
+      connection.query(searchQuerySQL, (error, result) => {
+        connection.release();
+
+        if (error) {
+          return reject(error);
+        }
+
+        if (!result || result.length === 0) {
+          return reject({
+            status: 401,
+            message: `data does not exist`
+          });
+        }
+
+        resolve({
+          status: 200,
+          message: `data exist`,
+          data: result
         })
       })
     })
@@ -89,7 +117,6 @@ async function changeData(db, tableName, valueStrFind, nameColumnFind, newUserDa
 async function createTemporaryCode(db, tableName, userId, userEmail, value, endTime) {
   try {
     const findingResultToken = await searchData(db, tableName, userId, "user_id");
-    console.log("start update!");
 
     return new Promise((resolve, reject) => {
       db.getConnection((error, connection) => {
@@ -112,7 +139,6 @@ async function createTemporaryCode(db, tableName, userId, userEmail, value, endT
     })
   }
   catch {
-    console.log("start create from scratch!");
     return new Promise((resolve, reject) => {
       db.getConnection((error, connection) => {
         if (error) {
@@ -120,8 +146,6 @@ async function createTemporaryCode(db, tableName, userId, userEmail, value, endT
         }
 
         const insertStrSQL = `INSERT INTO ${tableName}(user_id, user_email, value, end_time) VALUES (?, ?, ?, ?)`;
-        console.log(insertStrSQL)
-        console.log("VALUES: ", [userId, userEmail, value, endTime]);
         const insertQuerySQL = mysql.format(insertStrSQL, [userId, userEmail, value, endTime]);
 
         connection.query(insertQuerySQL, (error, result) => {
@@ -200,4 +224,27 @@ async function changeToken(db, tableName, userId, value) {
   }
 }
 
-module.exports = {searchData, createUser, changeToken, createTemporaryCode, changeData}
+function createUserStatistic(db, tableName, timestamp, userId, charValue, speedValue) {
+  return new Promise((resolve, reject) => {
+    db.getConnection((error, connection) => {
+      if(error) {
+        throw new Error(error);
+      }
+
+      const createStrSql = `INSERT INTO ${tableName} (timestamp, user_id, char_value, speed_value) VALUES(?, ?, ?, ?)`;
+      const createQuerySql = mysql.format(createStrSql, [timestamp, userId, charValue, speedValue]);
+
+      connection.query(createQuerySql, (error, result) => {
+        connection.release();
+
+        if(error) {
+          reject(error);
+        }
+
+        resolve();
+      })
+    })
+  })
+}
+
+module.exports = {searchData, createUser, changeToken, createTemporaryCode, changeData, createUserStatistic, searchDataCustom}

@@ -1,4 +1,7 @@
-function recoverFormRender() {
+// types
+import {IMatchPagesUrl} from "../types";
+
+function recoverFormRender(MATCH_PAGES_URL: IMatchPagesUrl) {
   const stageEmailForm = document.querySelector("#stage-email"),
     stageCodeForm = document.querySelector("#stage-code"),
     stageNewPasswordForm = document.querySelector("#stage-new-password");
@@ -7,7 +10,7 @@ function recoverFormRender() {
     window.location.href = window.location.pathname + "?email";
   }
   else if(window.location.search !== "?email" && !window.location.search.includes("?code&email=") && !/\?password&code=\d{6}&email=.*$/.test(window.location.search)) {
-    window.location.href = "/views/recovery.html?email";
+    window.location.href = MATCH_PAGES_URL["recovery"].pathname + "?" + MATCH_PAGES_URL["recovery"].possibleSearchValue["email"];
   }
 
   if (window.location.search === "?email") {

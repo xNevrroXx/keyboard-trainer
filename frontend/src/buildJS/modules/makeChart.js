@@ -2,12 +2,19 @@ import { Chart, registerables } from "chart.js";
 function makeChart(chartData) {
     Chart.register(...registerables);
     const canvasContext = document.getElementById('myChart').getContext('2d');
+    const formattingData = [];
+    for (let i = 0, length = chartData.length; i < length; i++) {
+        formattingData.push({
+            x: chartData[i].char,
+            y: chartData[i].speed
+        });
+    }
     const dataTest = {
         datasets: [{
                 label: 'My testing 2',
                 backgroundColor: 'rgb(255, 99, 132)',
                 borderColor: 'rgb(255, 99, 132)',
-                data: [{ x: "a", y: 200 }, { x: "b", y: 210 }, { x: "c", y: 230 }]
+                data: formattingData
             }]
     };
     const config = {

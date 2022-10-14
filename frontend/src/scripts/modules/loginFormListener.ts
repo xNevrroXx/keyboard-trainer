@@ -1,5 +1,3 @@
-// third-party modules
-import axios from "axios";
 // own modules
 import validate from "./validate";
 import {register, signIn} from "../services";

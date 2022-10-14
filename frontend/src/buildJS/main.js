@@ -27,8 +27,8 @@ const MATCH_PAGES_URL = {
     "login": {
         pathname: "/login",
         possibleHashValue: {
-            "#sign-in": "#sign-in",
-            "#register": "#register"
+            "sign-in": "#sign-in",
+            "register": "#register"
         },
     },
     "testing": {
@@ -39,12 +39,17 @@ const MATCH_PAGES_URL = {
     },
     "recovery": {
         pathname: "/recovery",
+        possibleSearchValue: {
+            "email": "email",
+            "code": "code",
+            "password": "password"
+        }
     },
     // not for html routes
     "assets": {
         pathname: "/assets",
         possibleSearchValue: {
-            "?file": "?file"
+            "file": "?file"
         }
     },
 };
@@ -66,7 +71,7 @@ window.addEventListener("DOMContentLoaded", () => __awaiter(void 0, void 0, void
         login(MATCH_PAGES_URL);
     }
     else if (window.location.pathname === MATCH_PAGES_URL["recovery"].pathname) {
-        recovery();
+        recovery(MATCH_PAGES_URL);
     }
     else if (window.location.pathname === MATCH_PAGES_URL["profile"].pathname) {
     }

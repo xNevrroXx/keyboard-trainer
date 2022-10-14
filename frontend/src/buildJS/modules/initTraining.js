@@ -1,7 +1,17 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 import splitText from "./splitText";
 // types
 import DataStatisticSpeed from "./DataStatisticSpeed";
-function initTraining(next = null) {
+import { statisticDataPost } from "../services";
+function initTraining(next) {
     const textElem = document.querySelector(".text"), statisticElem = document.querySelector(".statistic");
     let indexTargetChar = 0, countErrors = 0, wasError = false;
     const statistic = {
@@ -46,7 +56,6 @@ function initTraining(next = null) {
                 key = " ";
             }
             else if (isClickShift.isClicked || isClickCapsLock.isClicked) {
-                console.log(true);
                 key = target.textContent.toUpperCase();
             }
             else if (event.getModifierState && (event.getModifierState("CapsLock") || event.getModifierState("Shift"))) {
@@ -82,39 +91,52 @@ function initTraining(next = null) {
         processingTraining(key, code);
     }
     function processingTraining(key, code) {
-        if (isClickShift.isClicked) {
-            dispatchKeyDown(isClickShift, ["ShiftLeft", "ShiftRight"], "keyup");
-        }
-        if (textElem.textContent[indexTargetChar] === key && !specialKeyCodes.includes(code)) {
-            if (wasError) {
-                toggleClassTextChar(textElem, indexTargetChar, "text_failed");
-                wasError = false;
+        return __awaiter(this, void 0, void 0, function* () {
+            if (isClickShift.isClicked) {
+                dispatchKeyDown(isClickShift, ["ShiftLeft", "ShiftRight"], "keyup");
             }
-            if (textElem.textContent.length - 1 === indexTargetChar) {
-                onEndTraining();
-                if (next) {
-                    next();
+            if (textElem.textContent[indexTargetChar] === key && !specialKeyCodes.includes(code)) {
+                if (wasError) {
+                    toggleClassTextChar(textElem, indexTargetChar, "text_failed");
+                    wasError = false;
                 }
-                return;
+                if (textElem.textContent.length - 1 === indexTargetChar) {
+                    try {
+                        const response = yield onEndTraining();
+                        console.log(response);
+                        if (next) {
+                            console.log("go next");
+                            next();
+                        }
+                        return;
+                    }
+                    catch (error) {
+                        console.log(error);
+                        return;
+                    }
+                }
+                buffer.push(code);
+                updateStatistic();
+                dataStatisticSpeed.addData({ char: key.toLowerCase(), speed: statistic.speed });
+                toggleClassTextChar(textElem, indexTargetChar, "text_passed");
+                toggleClassTextChar(textElem, indexTargetChar, "text_target");
+                indexTargetChar++;
+                toggleClassTextChar(textElem, indexTargetChar, "text_target");
             }
-            buffer.push(code);
-            updateStatistic();
-            dataStatisticSpeed.addData({ char: key.toLowerCase(), speed: statistic.speed });
-            console.log("data: ", dataStatisticSpeed.data);
-            toggleClassTextChar(textElem, indexTargetChar, "text_passed");
-            toggleClassTextChar(textElem, indexTargetChar, "text_target");
-            indexTargetChar++;
-            toggleClassTextChar(textElem, indexTargetChar, "text_target");
-        }
-        else if (!specialKeyCodes.includes(code) && !wasError) {
-            wasError = true;
-            toggleClassTextChar(textElem, indexTargetChar, "text_failed");
-            countErrors++;
-        }
+            else if (!specialKeyCodes.includes(code) && !wasError) {
+                wasError = true;
+                toggleClassTextChar(textElem, indexTargetChar, "text_failed");
+                countErrors++;
+            }
+        });
     }
     function onEndTraining() {
-        clearInterval(idFastInterval);
-        window.removeEventListener("keydown", handleKeyDownTraining);
+        return __awaiter(this, void 0, void 0, function* () {
+            clearInterval(idFastInterval);
+            window.removeEventListener("keydown", handleKeyDownTraining);
+            window.removeEventListener("click", handleClick);
+            return yield statisticDataPost(dataStatisticSpeed.withAvgSpeed());
+        });
     }
     function toggleClassTextChar(textElementWithSpans, indexHighlight, className) {
         textElementWithSpans.querySelectorAll("span")[indexHighlight].classList.toggle(className);
@@ -126,7 +148,6 @@ function initTraining(next = null) {
     function dispatchKeyDown(toggler, codeKeys, typeEvent) {
         codeKeys.forEach(codeKey => window.dispatchEvent(new KeyboardEvent(typeEvent, { code: codeKey })));
         toggler.isClicked = !toggler.isClicked;
-        console.log(toggler);
     }
 }
 export default initTraining;

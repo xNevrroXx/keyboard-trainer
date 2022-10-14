@@ -7,7 +7,7 @@ class DataStatisticSpeed {
     addData(additionalStatisticSpeedData) {
         for (const dataStatisticSpeedValue of this.data) {
             if (dataStatisticSpeedValue.char === additionalStatisticSpeedData.char) {
-                dataStatisticSpeedValue.speed.push(additionalStatisticSpeedData.speed);
+                dataStatisticSpeedValue.speedArr.push(additionalStatisticSpeedData.speed);
                 return;
             }
         }

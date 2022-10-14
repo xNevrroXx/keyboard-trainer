@@ -1,9 +1,13 @@
 const jwt = require("jsonwebtoken");
-const {changeToken} = require("./database");
+const dotenv = require("dotenv");
 
-function validateToken(request, response, next, db, secretToken) {
-  const authHeader = request.headers["authorization"] || request.headers["refreshtoken"];
+dotenv.config();
+
+function validateToken(secretToken, header, request, response, next, db) {
+  console.log(request.body)
+  const authHeader = request.headers[header];
   const token = authHeader.split(" ")[1];
+
 
   if (token == null) {
     response.sendStatus(400);
@@ -11,19 +15,19 @@ function validateToken(request, response, next, db, secretToken) {
 
   jwt.verify(token, secretToken, (error, user) => {
     if (error) {
-      // if (request.body.id && secretToken === process.env.ACCESS_TOKEN_SECRET) {
-      //   changeToken(db, "access_token", request.body.id, " ");
-      // }
-      // else if(request.body.id) {
-      //   changeToken(db, "refresh_token", request.body.id, " ");
-      // }
+      console.log("error")
       response.status(403).send("Token invalid");
     }
     else {
+      console.log("start action")
       request.user = user;
       next();
     }
   })
 }
 
+const validateTokenAccessBind = validateToken.bind(null, process.env.ACCESS_TOKEN_SECRET, "authorization");
+const validateTokenRefreshBind = validateToken.bind(null, process.env.REFRESH_TOKEN_SECRET, "refreshtoken");
+
 module.exports = validateToken;
+module.exports = {validateTokenAccessBind, validateTokenRefreshBind};

@@ -1,8 +1,9 @@
 import splitText from "./splitText";
 // types
 import DataStatisticSpeed from "./DataStatisticSpeed";
+import {statisticDataPost} from "../services";
 
-function initTraining(next: () => void = null) {
+function initTraining(next?: () => void) {
   const textElem: HTMLElement = document.querySelector(".text"),
     statisticElem = document.querySelector(".statistic");
 
@@ -35,7 +36,6 @@ function initTraining(next: () => void = null) {
   const statisticSpeedValueElem = statisticElem.querySelector(".statistic-item_print-speed .statistic-item__value"),
     statisticAccuracyElem = statisticElem.querySelector(".statistic-item_accuracy .statistic-item__value");
 
-
   textElem.textContent = textElem.textContent.trim();
   splitText(textElem);
   toggleClassTextChar(textElem, indexTargetChar, "text_target");
@@ -64,7 +64,6 @@ function initTraining(next: () => void = null) {
       if (code === "Space") {
         key = " ";
       } else if (isClickShift.isClicked || isClickCapsLock.isClicked) {
-        console.log(true)
         key = target.textContent.toUpperCase();
       } else if (event.getModifierState && (event.getModifierState("CapsLock") || event.getModifierState("Shift"))) {
         key = target.textContent.toUpperCase();
@@ -95,43 +94,53 @@ function initTraining(next: () => void = null) {
   function handleKeyDownTraining({key, code}: KeyboardEvent) {
     processingTraining(key, code);
   }
-  function processingTraining(key: string, code: string) {
-    if(isClickShift.isClicked) {
+  async function processingTraining(key: string, code: string) {
+    if (isClickShift.isClicked) {
       dispatchKeyDown(isClickShift, ["ShiftLeft", "ShiftRight"], "keyup");
     }
 
-    if(textElem.textContent[indexTargetChar] === key && !specialKeyCodes.includes(code)) {
-      if(wasError) {
+    if (textElem.textContent[indexTargetChar] === key && !specialKeyCodes.includes(code)) {
+      if (wasError) {
         toggleClassTextChar(textElem, indexTargetChar, "text_failed");
         wasError = false;
       }
 
-      if(textElem.textContent.length - 1 === indexTargetChar) {
-        onEndTraining();
-        if(next) {
-          next();
+      if (textElem.textContent.length - 1 === indexTargetChar) {
+        try {
+          const response = await onEndTraining();
+
+          console.log(response);
+          if (next) {
+            console.log("go next")
+            next();
+          }
+          return;
         }
-        return;
+        catch (error) {
+          console.log(error);
+          return;
+        }
       }
       buffer.push(code);
       updateStatistic();
       dataStatisticSpeed.addData({char: key.toLowerCase(), speed: statistic.speed});
-      console.log("data: ", dataStatisticSpeed.data)
       toggleClassTextChar(textElem, indexTargetChar, "text_passed");
       toggleClassTextChar(textElem, indexTargetChar, "text_target");
 
       indexTargetChar++;
       toggleClassTextChar(textElem, indexTargetChar, "text_target");
-    }
-    else if(!specialKeyCodes.includes(code) && !wasError) {
+    } else if (!specialKeyCodes.includes(code) && !wasError) {
       wasError = true;
       toggleClassTextChar(textElem, indexTargetChar, "text_failed");
       countErrors++;
     }
   }
-  function onEndTraining() {
+  async function onEndTraining() {
     clearInterval(idFastInterval);
     window.removeEventListener("keydown", handleKeyDownTraining);
+    window.removeEventListener("click", handleClick);
+
+    return await statisticDataPost(dataStatisticSpeed.withAvgSpeed());
   }
   function toggleClassTextChar(textElementWithSpans: HTMLElement, indexHighlight: number, className: string) {
     textElementWithSpans.querySelectorAll("span")[indexHighlight].classList.toggle(className);
@@ -145,7 +154,6 @@ function initTraining(next: () => void = null) {
       window.dispatchEvent(new KeyboardEvent(typeEvent, {code: codeKey}))
     )
     toggler.isClicked = !toggler.isClicked;
-    console.log(toggler)
   }
 }
 

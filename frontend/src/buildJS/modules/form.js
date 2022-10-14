@@ -52,11 +52,9 @@ function form(validateFunc, serviceFunc, next, isNeedEmail, isNeedCode, bothCode
                 });
             }
             else {
-                console.log("start sign in");
                 serviceFunc(data)
                     .then((response) => {
                     if (next) {
-                        console.log("response: ", response);
                         next();
                     }
                 })

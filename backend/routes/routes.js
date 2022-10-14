@@ -7,7 +7,9 @@ const generateRefreshToken = require("../modules/generateRefreshToken");
 const validateToken = require("../modules/validateToken");
 const sendMail = require("../modules/nodemailer");
 const createTemporaryCode = require("../modules/createRandomValue");
-const recoverRoutes = require("./recover");
+const recoverRoutes = require("./subroutes/recover");
+const statisticRoutes = require("./subroutes/statistic");
+const {validateTokenAccessBind, validateTokenRefreshBind} = require("../modules/validateToken");
 
 let refreshTokenList = [];
 
@@ -103,31 +105,40 @@ async function routes(app, db) {
       const findingResult = await searchData(db, "user", email, "email");
 
       if (findingResult.status === 200) {
-        const user = findingResult.data;
+        const user = findingResult.data[0];
 
         if (await argon2.verify(user.password, password)) {
-          const accessToken = generateAccessToken({
-            id: user.id,
-            name: user.name
-          });
-          const refreshToken = generateRefreshToken({
-            id: user.id,
-            name: user.name
-          });
-
           try {
-            await changeToken(db, "access_token", user.id, accessToken);
-            await changeToken(db, "refresh_token", user.id, refreshToken);
-            refreshTokenList.push(refreshToken);
+            const accessToken = generateAccessToken({
+              id: user.id,
+              name: user.name
+            });
+            const refreshToken = generateRefreshToken({
+              id: user.id,
+              name: user.name
+            });
 
-            response.json({
-              accessToken: accessToken,
-              refreshToken: refreshToken
-            });
-          } catch (error) {
+            try {
+              await changeToken(db, "access_token", user.id, accessToken);
+              await changeToken(db, "refresh_token", user.id, refreshToken);
+              refreshTokenList.push(refreshToken);
+
+              response.json({
+                userId: user.id,
+                accessToken: accessToken,
+                refreshToken: refreshToken
+              });
+            } catch (error) {
+              response.status(500).json({
+                message: "unknown error"
+              });
+            }
+          }
+          catch (error) {
             response.status(500).json({
-              message: "unknown error"
-            });
+              error: error,
+              message: "interval server error"
+            })
           }
         } else {
           response.status(401).json({
@@ -142,25 +153,30 @@ async function routes(app, db) {
     }
   })
 
-  app.post("/refreshtoken", async (request, response) => {
+  app.post("/refreshtoken",
+    (request, response, next) => validateTokenRefreshBind(request, response, next, db),
+    async (request, response) =>
+    {
     const providedToken = request.headers["refreshtoken"].split(" ")[1];
 
     try {
       const currentRefreshToken = await searchData(db, "refresh_token", providedToken, "value");
+      const tokenData = currentRefreshToken.data[0];
 
-      if (currentRefreshToken.data["value"] === providedToken) {
-        const user = await searchData(db, "user", currentRefreshToken.data["user_id"], "id");
+      if (tokenData["value"] === providedToken) {
+        const findingResultUser = await searchData(db, "user", tokenData["user_id"], "id");
+        const user = findingResultUser.data[0];
 
         const accessToken = generateAccessToken({
-          id: user.data.id,
-          name: user.data.name
+          id: user.id,
+          name: user.name
         });
         const refreshToken = generateRefreshToken({
-          id: user.data.id,
-          name: user.data.name
+          id: user.id,
+          name: user.name
         });
-        await changeToken(db, "access_token", user.data.id, accessToken);
-        await changeToken(db, "refresh_token", user.data.id, refreshToken);
+        await changeToken(db, "access_token", user.id, accessToken);
+        await changeToken(db, "refresh_token", user.id, refreshToken);
 
         response.json({
           accessToken: accessToken,
@@ -184,14 +200,15 @@ async function routes(app, db) {
 
     changeData(db, "access_token", accessToken, "value", "", "value");
     changeData(db, "refresh_token", refreshToken, "value", "", "value");
-    // changeToken(db, "access_token", accessToken, "");
-    // changeToken(db, "refresh_token", refreshToken, "");
     response.status(204).json({
       message: "logged out!"
     });
   })
 
-  app.post("/posts", (req, res, next) => validateToken(req, res, next, db, process.env.ACCESS_TOKEN_SECRET), async (request, response) => {
+  app.post("/posts",
+    (request, response, next) => validateTokenAccessBind(request, response, next, db),
+    async (request, response) =>
+    {
     const user = request.user;
     // todo send some info about user
 
@@ -199,8 +216,8 @@ async function routes(app, db) {
       const findingResult = await searchData(db, "user", user.id, "id");
 
       response.json({
-        id: findingResult.data.id,
-        name: findingResult.data.name
+        id: findingResult.data[0].id,
+        name: findingResult.data[0].name
       })
     } catch (error) {
       response.status(400).json({
@@ -210,6 +227,7 @@ async function routes(app, db) {
   })
 
   recoverRoutes(app, db);
+  statisticRoutes(app, db);
 }
 
 module.exports = routes;

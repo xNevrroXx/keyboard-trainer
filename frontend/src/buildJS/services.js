@@ -19,6 +19,16 @@ const backendUrlsObj = {
         stageEmail: backendMainUrlStr + "/recover/getcode",
         stageCode: backendMainUrlStr + "/recover/verifycode",
         stagePassword: backendMainUrlStr + "/recover/changepassword"
+    },
+    statistic: {
+        post: {
+            speed: backendMainUrlStr + "/statistic/speed/post",
+            accuracy: backendMainUrlStr + "/statistic/accuracy/post"
+        },
+        get: {
+            speed: backendMainUrlStr + "/statistic/speed/get",
+            accuracy: backendMainUrlStr + "/statistic/accuracy/get"
+        }
     }
 };
 function getData() {
@@ -67,16 +77,18 @@ function refreshToken(backendUrlsObj) {
     return __awaiter(this, void 0, void 0, function* () {
         const refreshToken = localStorage.getItem("refreshToken");
         try {
-            const response = yield axios.post(backendUrlsObj.refreshToken, {}, {
+            const response = yield axios.post(backendUrlsObj.refreshToken + "?last", {}, {
                 headers: { refreshtoken: `Bearer ${refreshToken}` }
             });
             localStorage.setItem("isAuthorized", "yes");
+            localStorage.setItem("userId", response.data.userId);
             localStorage.setItem("accessToken", response.data.accessToken);
             localStorage.setItem("refreshToken", response.data.refreshToken);
             return true;
         }
         catch (response) {
             localStorage.setItem("isAuthorized", "no");
+            localStorage.setItem("userId", "null");
             localStorage.setItem("accessToken", "null");
             localStorage.setItem("refreshToken", "null");
             return false;
@@ -88,6 +100,7 @@ function signIn(data) {
         try {
             const response = yield axios.post(backendUrlsObj.login, data);
             localStorage.setItem("isAuthorized", "yes");
+            localStorage.setItem("userId", response.data.userId);
             localStorage.setItem("accessToken", response.data.accessToken);
             localStorage.setItem("refreshToken", response.data.refreshToken);
             window.location.href = "/testing";
@@ -108,14 +121,12 @@ function register(data) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const response = yield axios.post(backendUrlsObj.register, data);
-            console.log(response);
             alert("Success registration");
             return yield signIn(data);
         }
         catch (error) {
-            console.log(error);
             alert(error.response.data.message);
-            throw new Error(error.response.data.message);
+            return new Error(error.response.data.message);
         }
     });
 }
@@ -134,6 +145,7 @@ function logout() {
             throw new Error(error.response.data.message);
         });
         localStorage.setItem("isAuthorized", "no");
+        localStorage.setItem("userId", "null");
         localStorage.setItem("accessToken", "null");
         localStorage.setItem("refreshToken", "null");
     });
@@ -150,17 +162,59 @@ function recoverStageCode(data) {
 }
 function recoverStagePassword(data) {
     return __awaiter(this, void 0, void 0, function* () {
-        axios.post(backendUrlsObj.recover.stagePassword, data)
-            .then((response) => {
+        try {
+            const response = yield axios.post(backendUrlsObj.recover.stagePassword, data);
             const dataLogin = {
                 email: data.email,
                 password: data.password
             };
-            signIn(dataLogin);
-        })
-            .catch((error) => {
+            yield signIn(dataLogin);
+        }
+        catch (error) {
             alert(error.response.data.message);
-        });
+        }
     });
 }
-export { getData, getProfile, refreshToken, signIn, register, recoverStageEmail, recoverStageCode, recoverStagePassword, logout };
+function statisticDataPost(dataStatisticSpeed) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const accessToken = localStorage.getItem("accessToken");
+        const data = {
+            "statistic-data": dataStatisticSpeed,
+        };
+        try {
+            const response = yield axios.post(backendUrlsObj.statistic.post.speed, data, {
+                headers: { "authorization": `Bearer ${accessToken}` }
+            });
+            console.log("ok in post");
+            return response.data.message;
+        }
+        catch (error) {
+            console.log("error in post");
+            return new Error(error);
+        }
+    });
+}
+function statisticDataGet() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const accessToken = localStorage.getItem("accessToken");
+        try {
+            const response = yield axios.post(backendUrlsObj.statistic.get.speed + "?which=last", {}, {
+                headers: { "authorization": `Bearer ${accessToken}` }
+            });
+            const formattingData = [];
+            for (const dataStatisticSlice of response.data.data) {
+                formattingData.push({
+                    char: dataStatisticSlice["char_value"],
+                    speed: dataStatisticSlice["speed_value"]
+                });
+            }
+            console.log("ok in get");
+            return formattingData;
+        }
+        catch (error) {
+            console.log("error in get");
+            return new Error(error);
+        }
+    });
+}
+export { getData, getProfile, refreshToken, signIn, register, recoverStageEmail, recoverStageCode, recoverStagePassword, logout, statisticDataPost, statisticDataGet };

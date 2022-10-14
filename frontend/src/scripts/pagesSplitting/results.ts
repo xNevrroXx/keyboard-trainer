@@ -1,11 +1,17 @@
 import makeChart from "../modules/makeChart";
-import {IDataStatisticSpeed} from "../types";
+// types
+import {IAdditionalDataStatisticSpeed} from "../types";
+import {statisticDataGet} from "../services";
 
-function results() {
-  let chartData: IDataStatisticSpeed[] = [];
-  // todo  get-query for chart data
+async function results() {
+  try {
+    const response: IAdditionalDataStatisticSpeed[] | Error = await statisticDataGet();
 
-  makeChart(chartData);
+    makeChart(response as IAdditionalDataStatisticSpeed[]);
+  }
+  catch (error) {
+    console.log("error in result: ", error);
+  }
 }
 
 export default results;

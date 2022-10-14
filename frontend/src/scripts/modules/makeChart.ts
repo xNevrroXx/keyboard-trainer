@@ -1,16 +1,23 @@
 import {Chart, registerables } from "chart.js";
-import {IDataStatisticSpeed} from "../types";
+import {IAdditionalDataStatisticSpeed} from "../types";
 
-function makeChart(chartData: IDataStatisticSpeed[]) {
+function makeChart(chartData: IAdditionalDataStatisticSpeed[]) {
   Chart.register(...registerables);
   const canvasContext = (<HTMLCanvasElement>document.getElementById('myChart')).getContext('2d');
 
+  const formattingData = [];
+  for (let i = 0, length = chartData.length; i < length; i++) {
+    formattingData.push({
+      x: chartData[i].char,
+      y: chartData[i].speed
+    })
+  }
   const dataTest = {
     datasets: [{
       label: 'My testing 2',
       backgroundColor: 'rgb(255, 99, 132)',
       borderColor: 'rgb(255, 99, 132)',
-      data: [{x: "a", y: 200}, {x: "b", y: 210}, {x: "c", y: 230}]
+      data: formattingData
     }]
   }
   const config = {
