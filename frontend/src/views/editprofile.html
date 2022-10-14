@@ -10,45 +10,47 @@
   <title>Edit Profile Keyboard trainer - govorov</title>
 </head>
 <body>
-//= ../templates/header.html
+<div class="body-container-main">
+  //= ../templates/header.html
 
-<main class="container">
-  <div class="edit-profile">
-    <h1 class="edit-profile__title">Edit profile</h1>
+  <main class="container">
+    <div class="edit-profile">
+      <h1 class="edit-profile__title">Edit profile</h1>
 
-    <div class="edit-profile__wrapper-user-picture">
-      <object class="edit-profile__user-picture" data="" type="image/jpg">
-        <img src="" alt="">
-      </object>
-      <button class="button edit-profile__change-user-picture">Change picture</button>
-    </div>
+      <div class="edit-profile__wrapper-user-picture">
+        <object class="edit-profile__user-picture" data="" type="image/jpg">
+          <img src="" alt="">
+        </object>
+        <button class="button edit-profile__change-user-picture">Change picture</button>
+      </div>
 
-    <form class="edit-profile__form">
-      <div class="edit-profile__form-field">
-        <label for="name">Name</label>
+      <form class="edit-profile__form">
+        <div class="edit-profile__form-field">
+          <label for="name">Name</label>
           <input id="name" name="name" type="text" value="">
-      </div>
-      <div class="edit-profile__form-field">
-        <label for="email">Email</label>
-        <input id="email" name="email" type="text"value="">
-      </div>
+        </div>
+        <div class="edit-profile__form-field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="text"value="">
+        </div>
 
-      <div class="edit-profile__wrapper-form-choose">
-        <button class="button button_form edit-profile__save-btn">Save</button>
-        <button class="button button_form edit-profile__cancel-btn" type="button">Cancel</button>
-      </div>
-    </form>
+        <div class="edit-profile__wrapper-form-choose">
+          <button class="button button_form edit-profile__save-btn">Save</button>
+          <button class="button button_form edit-profile__cancel-btn" type="button">Cancel</button>
+        </div>
+      </form>
 
-    <button class="edit-profile__link">Change password</button>
-    <button class="edit-profile__link">Reset progress</button>
-    <button class="edit-profile__link">Delete my account</button>
-  </div>
-</main>
+      <button class="edit-profile__link">Change password</button>
+      <button class="edit-profile__link">Reset progress</button>
+      <button class="edit-profile__link">Delete my account</button>
+    </div>
+  </main>
 
-<footer>
-  <div class="container">
-    //= ../templates/copyright.html
-  </div>
-</footer>
+  <footer>
+    <div class="container">
+      //= ../templates/copyright.html
+    </div>
+  </footer>
+</div>
 </body>
 </html>

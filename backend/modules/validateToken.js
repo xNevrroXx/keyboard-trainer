@@ -4,7 +4,6 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 function validateToken(secretToken, header, request, response, next, db) {
-  console.log(request.body)
   const authHeader = request.headers[header];
   const token = authHeader.split(" ")[1];
 
@@ -15,11 +14,9 @@ function validateToken(secretToken, header, request, response, next, db) {
 
   jwt.verify(token, secretToken, (error, user) => {
     if (error) {
-      console.log("error")
       response.status(403).send("Token invalid");
     }
     else {
-      console.log("start action")
       request.user = user;
       next();
     }

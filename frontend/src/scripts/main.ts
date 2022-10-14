@@ -55,10 +55,10 @@ window.addEventListener("DOMContentLoaded", async () => {
   plugToImgOnError();
   await authorize();
 
-  scaleElements(document.querySelector("body"), document.querySelectorAll("body > *"));
-  window.addEventListener("resize", () => {
-    scaleElements(document.querySelector("body"), document.querySelectorAll("body > *"));
-  })
+  // scaleElements(document.querySelector("body"), document.querySelectorAll("body > *"));
+  // window.addEventListener("resize", () => {
+  //   scaleElements(document.querySelector("body"), document.querySelectorAll("body > *"));
+  // })
 
   if (window.location.pathname === MATCH_PAGES_URL["testing"].pathname) {
     testing(MATCH_PAGES_URL);

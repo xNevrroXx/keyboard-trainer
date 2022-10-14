@@ -22,12 +22,12 @@ const backendUrlsObj = {
     },
     statistic: {
         post: {
-            speed: backendMainUrlStr + "/statistic/speed/post",
-            accuracy: backendMainUrlStr + "/statistic/accuracy/post"
+            speed: backendMainUrlStr + "/statistic/speed",
+            accuracy: backendMainUrlStr + "/statistic/accuracy"
         },
         get: {
-            speed: backendMainUrlStr + "/statistic/speed/get",
-            accuracy: backendMainUrlStr + "/statistic/accuracy/get"
+            speed: backendMainUrlStr + "/statistic/speed",
+            accuracy: backendMainUrlStr + "/statistic/accuracy"
         }
     }
 };
@@ -81,14 +81,12 @@ function refreshToken(backendUrlsObj) {
                 headers: { refreshtoken: `Bearer ${refreshToken}` }
             });
             localStorage.setItem("isAuthorized", "yes");
-            localStorage.setItem("userId", response.data.userId);
             localStorage.setItem("accessToken", response.data.accessToken);
             localStorage.setItem("refreshToken", response.data.refreshToken);
             return true;
         }
         catch (response) {
             localStorage.setItem("isAuthorized", "no");
-            localStorage.setItem("userId", "null");
             localStorage.setItem("accessToken", "null");
             localStorage.setItem("refreshToken", "null");
             return false;
@@ -100,7 +98,6 @@ function signIn(data) {
         try {
             const response = yield axios.post(backendUrlsObj.login, data);
             localStorage.setItem("isAuthorized", "yes");
-            localStorage.setItem("userId", response.data.userId);
             localStorage.setItem("accessToken", response.data.accessToken);
             localStorage.setItem("refreshToken", response.data.refreshToken);
             window.location.href = "/testing";
@@ -145,7 +142,6 @@ function logout() {
             throw new Error(error.response.data.message);
         });
         localStorage.setItem("isAuthorized", "no");
-        localStorage.setItem("userId", "null");
         localStorage.setItem("accessToken", "null");
         localStorage.setItem("refreshToken", "null");
     });
@@ -194,11 +190,11 @@ function statisticDataPost(dataStatisticSpeed) {
         }
     });
 }
-function statisticDataGet() {
+function statisticDataGet(searchWhichResult) {
     return __awaiter(this, void 0, void 0, function* () {
         const accessToken = localStorage.getItem("accessToken");
         try {
-            const response = yield axios.post(backendUrlsObj.statistic.get.speed + "?which=last", {}, {
+            const response = yield axios.get(backendUrlsObj.statistic.get.speed + `?which=${searchWhichResult}`, {
                 headers: { "authorization": `Bearer ${accessToken}` }
             });
             const formattingData = [];

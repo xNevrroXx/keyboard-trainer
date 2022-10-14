@@ -5,7 +5,7 @@ import {statisticDataGet} from "../services";
 
 async function results() {
   try {
-    const response: IAdditionalDataStatisticSpeed[] | Error = await statisticDataGet();
+    const response: IAdditionalDataStatisticSpeed[] | Error = await statisticDataGet("last");
 
     makeChart(response as IAdditionalDataStatisticSpeed[]);
   }

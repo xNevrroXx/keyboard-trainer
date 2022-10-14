@@ -9,7 +9,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 // owm modules
 import plugToImgOnError from "./modules/plugToImgOnError";
-import scaleElements from "./modules/scaleElements";
 import authorize from "./modules/authorize";
 import navMenu from "./modules/navMenu";
 import login from "./pagesSplitting/login";
@@ -57,10 +56,10 @@ window.addEventListener("DOMContentLoaded", () => __awaiter(void 0, void 0, void
     navMenu();
     plugToImgOnError();
     yield authorize();
-    scaleElements(document.querySelector("body"), document.querySelectorAll("body > *"));
-    window.addEventListener("resize", () => {
-        scaleElements(document.querySelector("body"), document.querySelectorAll("body > *"));
-    });
+    // scaleElements(document.querySelector("body"), document.querySelectorAll("body > *"));
+    // window.addEventListener("resize", () => {
+    //   scaleElements(document.querySelector("body"), document.querySelectorAll("body > *"));
+    // })
     if (window.location.pathname === MATCH_PAGES_URL["testing"].pathname) {
         testing(MATCH_PAGES_URL);
     }

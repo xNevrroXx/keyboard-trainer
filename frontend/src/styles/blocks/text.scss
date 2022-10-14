@@ -7,6 +7,7 @@
   background-color: white;
   width: calc(#{$size} * #{$columns} + (#{$spacing} * #{$columns+1}));
   height: 10rem;
+  overflow-y: hidden;
   &_passed {
     //background-color: rgb(154, 154, 154);
     //border-radius: .2rem;

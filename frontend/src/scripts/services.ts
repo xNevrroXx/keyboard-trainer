@@ -24,12 +24,12 @@ const backendUrlsObj: IBackendUrls = {
   },
   statistic: {
     post: {
-      speed: backendMainUrlStr + "/statistic/speed/post",
-      accuracy: backendMainUrlStr + "/statistic/accuracy/post"
+      speed: backendMainUrlStr + "/statistic/speed",
+      accuracy: backendMainUrlStr + "/statistic/accuracy"
     },
     get: {
-      speed: backendMainUrlStr + "/statistic/speed/get",
-      accuracy: backendMainUrlStr + "/statistic/accuracy/get"
+      speed: backendMainUrlStr + "/statistic/speed",
+      accuracy: backendMainUrlStr + "/statistic/accuracy"
     }
   }
 };
@@ -83,14 +83,12 @@ async function refreshToken(backendUrlsObj: IBackendUrls) {
     });
 
     localStorage.setItem("isAuthorized", "yes");
-    localStorage.setItem("userId", response.data.userId);
     localStorage.setItem("accessToken", response.data.accessToken);
     localStorage.setItem("refreshToken", response.data.refreshToken);
     return true;
   }
   catch (response) {
     localStorage.setItem("isAuthorized", "no");
-    localStorage.setItem("userId", "null");
     localStorage.setItem("accessToken", "null");
     localStorage.setItem("refreshToken", "null");
     return false;
@@ -102,7 +100,6 @@ async function signIn(data: IDataLogin) {
     const response = await axios.post(backendUrlsObj.login, data);
 
     localStorage.setItem("isAuthorized", "yes");
-    localStorage.setItem("userId", response.data.userId);
     localStorage.setItem("accessToken", response.data.accessToken);
     localStorage.setItem("refreshToken", response.data.refreshToken);
 
@@ -148,7 +145,6 @@ async function logout() {
     })
 
   localStorage.setItem("isAuthorized", "no");
-  localStorage.setItem("userId", "null");
   localStorage.setItem("accessToken", "null");
   localStorage.setItem("refreshToken", "null");
 }
@@ -194,11 +190,11 @@ async function statisticDataPost(dataStatisticSpeed: IAdditionalDataStatisticSpe
   }
 }
 
-async function statisticDataGet() {
+async function statisticDataGet(searchWhichResult: string) {
   const accessToken = localStorage.getItem("accessToken");
 
   try {
-    const response: any = await axios.post(backendUrlsObj.statistic.get.speed + "?which=last", {}, {
+    const response: any = await axios.get(backendUrlsObj.statistic.get.speed + `?which=${searchWhichResult}`, {
       headers: {"authorization": `Bearer ${accessToken}`}
     });
     const formattingData: IAdditionalDataStatisticSpeed[] = [];

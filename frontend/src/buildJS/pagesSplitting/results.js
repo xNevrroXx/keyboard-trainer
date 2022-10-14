@@ -12,7 +12,7 @@ import { statisticDataGet } from "../services";
 function results() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const response = yield statisticDataGet();
+            const response = yield statisticDataGet("last");
             makeChart(response);
         }
         catch (error) {

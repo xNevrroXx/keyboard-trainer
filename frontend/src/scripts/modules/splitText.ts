@@ -1,5 +1,9 @@
 function splitText(textElem: HTMLElement) {
-  textElem.innerHTML = textElem.innerHTML.split("").map(char => {
+  const text = textElem.textContent
+    .replace(/\r?\n|\r|\n/g, " ")
+    .replace(/\s+/g, " ");
+
+  textElem.innerHTML = text.split("").map(char => {
     return `<span class="char">${char}</span>`
   }).join("");
 }
