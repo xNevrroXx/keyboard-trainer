@@ -6,7 +6,7 @@ import {
   IDataRecover__stageCode,
   IDataRecover__stageEmail,
   IDataRecover__stagePassword,
-  IDataRegister
+  IDataRegister, IDataStatistic
 } from "./types";
 
 
@@ -197,19 +197,11 @@ async function statisticDataGet(searchWhichResult: string) {
     const response: any = await axios.get(backendUrlsObj.statistic.get.speed + `?which=${searchWhichResult}`, {
       headers: {"authorization": `Bearer ${accessToken}`}
     });
-    const formattingData: IAdditionalDataStatisticSpeed[] = [];
+    const data: IDataStatistic = response.data.data;
 
-    for (const dataStatisticSlice of response.data.data) {
-      formattingData.push({
-        char: dataStatisticSlice["char_value"],
-        speed: dataStatisticSlice["speed_value"]
-      })
-    }
-
-    console.log("ok in get")
-    return formattingData;
+    console.log(data)
+    return data;
   } catch (error) {
-    console.log("error in get")
     return new Error(error);
   }
 }

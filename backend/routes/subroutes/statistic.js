@@ -45,11 +45,14 @@ function statisticRoutes (app, db) {
         try {
           let findingResult = null;
           if (query.which === "all") {
-            findingResult = await searchData(db, "user_statistic_speed_typing", userId, "user_id");
+            findingResult = await searchDataCustom(db,
+              `SELECT timestamp, user_id, char_value AS "char", speed_value FROM user_statistic_speed_typing ORDER BY "timestamp" DESC, "char" ASC`);
           }
           else if (query.which === "last") {
             findingResult = await searchDataCustom(db,
-              `SELECT user_id, char_value, speed_value, timestamp FROM user_statistic_speed_typing WHERE timestamp = (SELECT MAX(timestamp) FROM user_statistic_speed_typing)`);
+              `SELECT user_id, char_value AS "char", speed_value as "speed", timestamp FROM user_statistic_speed_typing 
+                              WHERE timestamp = (SELECT MAX(timestamp) FROM user_statistic_speed_typing) ORDER BY char_value`
+            );
           }
           else {
             response.status(400).json({
@@ -57,8 +60,19 @@ function statisticRoutes (app, db) {
             })
           }
 
+          const data = {};
+          findingResult.data.forEach(charStatistic => {
+            if(!data[charStatistic["timestamp"]]) {
+              data[charStatistic["timestamp"]] = [];
+            }
+            data[charStatistic["timestamp"]].push({
+              char: charStatistic["char"],
+              speed: charStatistic["speed"],
+            })
+          })
+
           response.json({
-            data: findingResult.data
+            data: data
           })
         }
         catch (error) {
@@ -69,73 +83,6 @@ function statisticRoutes (app, db) {
         }
 
       })
-  // app.post("/statistic/speed/post",
-  //   (request, response, next) => validateTokenAccessBind(request, response, next, db),
-  //   async (request, response) => {
-  //   // start function
-  //   const user = request.user;
-  //   const userId = user.id;
-  //   const statisticData = request.body["statistic-data"];
-  //   const timestamp = new Date().getTime().toString();
-  //
-  //   try {
-  //     for (let i = 0; i < statisticData.length; i++) {
-  //       await createUserStatistic(
-  //         db,
-  //         "user_statistic_speed_typing",
-  //         timestamp,
-  //         userId,
-  //         statisticData[i]["char"],
-  //         statisticData[i]["speed"]
-  //       );
-  //     }
-  //
-  //     response.json({
-  //       message: "data has been posted"
-  //     })
-  //   }
-  //   catch (error) {
-  //     response.status(400).json({
-  //       error: error,
-  //       message: error.message
-  //     })
-  //   }
-  // })
-
-  // app.get("/statistic/speed/get",
-  //   (request, response, next) => validateTokenAccessBind(request, response, next, db),
-  //   async (request, response) => {
-  //   // start function
-  //   const user = request.user;
-  //   const userId = user.id;
-  //   const query = await request.query;
-  //
-  //   try {
-  //     let findingResult = null;
-  //     if (query.which === "all") {
-  //       findingResult = await searchData(db, "user_statistic_speed_typing", userId, "user_id");
-  //     }
-  //     else if (query.which === "last") {
-  //       findingResult = await searchDataCustom(db,
-  //         `SELECT user_id, char_value, speed_value, timestamp FROM user_statistic_speed_typing WHERE timestamp = (SELECT MAX(timestamp) FROM user_statistic_speed_typing)`);
-  //     }
-  //     else {
-  //       response.status(400).json({
-  //         message: "there is no search value"
-  //       })
-  //     }
-  //
-  //     response.json({
-  //       data: findingResult.data
-  //     })
-  //   }
-  //   catch (error) {
-  //     response.status(400).json({
-  //       error: error,
-  //       message: "statistic speed data doesn't exist"
-  //     })
-  //   }
-  // })
 }
 
 module.exports = statisticRoutes;

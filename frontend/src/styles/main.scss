@@ -71,10 +71,8 @@ li {
 .body-container-main {
     padding: 8vw;
     background-color: $soft-light-blue;
-    //display: flex;
-    //flex-direction: column;
-    //align-items: center;
-    //justify-content: space-around;
+    display: flex;
+    justify-content: center;
     min-height: 100vh;
     position: relative;
 }
@@ -118,6 +116,7 @@ h1 {
 @import "blocks/profile-submenu";
 @import "blocks/profile";
 @import "blocks/editprofile";
+@import "blocks/results";
 
 .feedback {
     font-size: 1.5rem;

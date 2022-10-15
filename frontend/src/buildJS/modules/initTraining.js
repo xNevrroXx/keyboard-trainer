@@ -35,7 +35,8 @@ function initTraining(next) {
     const statisticSpeedValueElem = statisticElem.querySelector(".statistic-item_print-speed .statistic-item__value"), statisticAccuracyElem = statisticElem.querySelector(".statistic-item_accuracy .statistic-item__value");
     textElem.textContent = textElem.textContent.trim();
     splitText(textElem);
-    toggleClassTextChar(textElem, indexTargetChar, "text_target");
+    toggleClassTextChar(textElem, indexTargetChar, "text__char-target");
+    scrollToTarget();
     window.addEventListener("keydown", handleKeyDownTraining);
     window.addEventListener("click", handleClick);
     // const changePastTimeFastBind = updateStatistic.bind(null, pastTime, 10);
@@ -96,8 +97,9 @@ function initTraining(next) {
                 dispatchKeyDown(isClickShift, ["ShiftLeft", "ShiftRight"], "keyup");
             }
             if (textElem.textContent[indexTargetChar] === key && !specialKeyCodes.includes(code)) {
+                scrollToTarget();
                 if (wasError) {
-                    toggleClassTextChar(textElem, indexTargetChar, "text_failed");
+                    toggleClassTextChar(textElem, indexTargetChar, "text__char-failed");
                     wasError = false;
                 }
                 if (textElem.textContent.length - 1 === indexTargetChar) {
@@ -118,14 +120,14 @@ function initTraining(next) {
                 buffer.push(code);
                 updateStatistic();
                 dataStatisticSpeed.addData({ char: key.toLowerCase(), speed: statistic.speed });
-                toggleClassTextChar(textElem, indexTargetChar, "text_passed");
-                toggleClassTextChar(textElem, indexTargetChar, "text_target");
+                toggleClassTextChar(textElem, indexTargetChar, "text__char-passed");
+                toggleClassTextChar(textElem, indexTargetChar, "text__char-target");
                 indexTargetChar++;
-                toggleClassTextChar(textElem, indexTargetChar, "text_target");
+                toggleClassTextChar(textElem, indexTargetChar, "text__char-target");
             }
             else if (!specialKeyCodes.includes(code) && !wasError) {
                 wasError = true;
-                toggleClassTextChar(textElem, indexTargetChar, "text_failed");
+                toggleClassTextChar(textElem, indexTargetChar, "text__char-failed");
                 countErrors++;
             }
         });
@@ -148,6 +150,10 @@ function initTraining(next) {
     function dispatchKeyDown(toggler, codeKeys, typeEvent) {
         codeKeys.forEach(codeKey => window.dispatchEvent(new KeyboardEvent(typeEvent, { code: codeKey })));
         toggler.isClicked = !toggler.isClicked;
+    }
+    function scrollToTarget() {
+        textElem.querySelector(".text__char-target").scrollIntoView(true);
+        document.querySelector(".text").scrollTop += -3;
     }
 }
 export default initTraining;

@@ -1,7 +1,7 @@
 import { Chart, registerables } from "chart.js";
-function makeChart(chartData) {
+function makeChart(chartData, canvasSelector) {
     Chart.register(...registerables);
-    const canvasContext = document.getElementById('myChart').getContext('2d');
+    const canvasContext = document.querySelector(canvasSelector).getContext('2d');
     const formattingData = [];
     for (let i = 0, length = chartData.length; i < length; i++) {
         formattingData.push({
@@ -33,7 +33,27 @@ function makeChart(chartData) {
                 x: {
                     ticks: {
                         callback: function (value, index) {
+                            if (this.getLabelForValue(value) === " ") {
+                                return "Space";
+                            }
                             return this.getLabelForValue(value);
+                        }
+                    }
+                }
+            },
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function (context) {
+                            let label = context.dataset.label;
+                            return label;
+                        },
+                        beforeLabel: function (context) {
+                            let label = "avg speed - ";
+                            if (context.parsed.y) {
+                                label += context.parsed.y;
+                            }
+                            return label;
                         }
                     }
                 }

@@ -1,13 +1,16 @@
 import makeChart from "../modules/makeChart";
 // types
-import {IAdditionalDataStatisticSpeed} from "../types";
+import {IAdditionalDataStatisticSpeed, IDataStatistic} from "../types";
 import {statisticDataGet} from "../services";
 
 async function results() {
   try {
-    const response: IAdditionalDataStatisticSpeed[] | Error = await statisticDataGet("last");
+    const response: IDataStatistic | Error = await statisticDataGet("last");
+    const data = response as IDataStatistic;
 
-    makeChart(response as IAdditionalDataStatisticSpeed[]);
+    for (const timestamp in data) {
+      makeChart(data[timestamp], "#myChart");
+    }
   }
   catch (error) {
     console.log("error in result: ", error);

@@ -27,6 +27,14 @@ export interface IAdditionalDataStatisticSpeed {
   speed: number
 }
 
+export interface IDataStatistic {
+  [timestamp: string]: {
+    char: string
+    speed?: number,
+    accuracy?: number
+  }[]
+}
+
 export interface IDataLogin {
   email: string,
   password: string

@@ -13,7 +13,10 @@ function results() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const response = yield statisticDataGet("last");
-            makeChart(response);
+            const data = response;
+            for (const timestamp in data) {
+                makeChart(data[timestamp], "#myChart");
+            }
         }
         catch (error) {
             console.log("error in result: ", error);

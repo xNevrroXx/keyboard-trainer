@@ -8,17 +8,21 @@
   width: calc(#{$size} * #{$columns} + (#{$spacing} * #{$columns+1}));
   height: 10rem;
   overflow-y: hidden;
-  &_passed {
+  line-height: 2.6rem;
+  &__char {
+    color: rgb(59, 59, 59);
+  }
+  &__char-passed {
     //background-color: rgb(154, 154, 154);
     //border-radius: .2rem;
     //opacity: .4;
     color: rgb(91, 197, 56);
   }
-  &_target {
+  &__char-target {
     color: white;
     background-color: rgb(91, 197, 56);
   }
-  &_failed {
+  &__char-failed {
     color: white;
     background-color: rgb(243, 103, 71);
   }

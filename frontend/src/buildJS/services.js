@@ -197,18 +197,11 @@ function statisticDataGet(searchWhichResult) {
             const response = yield axios.get(backendUrlsObj.statistic.get.speed + `?which=${searchWhichResult}`, {
                 headers: { "authorization": `Bearer ${accessToken}` }
             });
-            const formattingData = [];
-            for (const dataStatisticSlice of response.data.data) {
-                formattingData.push({
-                    char: dataStatisticSlice["char_value"],
-                    speed: dataStatisticSlice["speed_value"]
-                });
-            }
-            console.log("ok in get");
-            return formattingData;
+            const data = response.data.data;
+            console.log(data);
+            return data;
         }
         catch (error) {
-            console.log("error in get");
             return new Error(error);
         }
     });

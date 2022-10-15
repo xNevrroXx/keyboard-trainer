@@ -38,7 +38,9 @@ function initTraining(next?: () => void) {
 
   textElem.textContent = textElem.textContent.trim();
   splitText(textElem);
-  toggleClassTextChar(textElem, indexTargetChar, "text_target");
+  toggleClassTextChar(textElem, indexTargetChar, "text__char-target");
+  scrollToTarget();
+
   window.addEventListener("keydown", handleKeyDownTraining)
   window.addEventListener("click", handleClick);
 
@@ -100,8 +102,9 @@ function initTraining(next?: () => void) {
     }
 
     if (textElem.textContent[indexTargetChar] === key && !specialKeyCodes.includes(code)) {
+      scrollToTarget();
       if (wasError) {
-        toggleClassTextChar(textElem, indexTargetChar, "text_failed");
+        toggleClassTextChar(textElem, indexTargetChar, "text__char-failed");
         wasError = false;
       }
 
@@ -124,14 +127,14 @@ function initTraining(next?: () => void) {
       buffer.push(code);
       updateStatistic();
       dataStatisticSpeed.addData({char: key.toLowerCase(), speed: statistic.speed});
-      toggleClassTextChar(textElem, indexTargetChar, "text_passed");
-      toggleClassTextChar(textElem, indexTargetChar, "text_target");
+      toggleClassTextChar(textElem, indexTargetChar, "text__char-passed");
+      toggleClassTextChar(textElem, indexTargetChar, "text__char-target");
 
       indexTargetChar++;
-      toggleClassTextChar(textElem, indexTargetChar, "text_target");
+      toggleClassTextChar(textElem, indexTargetChar, "text__char-target");
     } else if (!specialKeyCodes.includes(code) && !wasError) {
       wasError = true;
-      toggleClassTextChar(textElem, indexTargetChar, "text_failed");
+      toggleClassTextChar(textElem, indexTargetChar, "text__char-failed");
       countErrors++;
     }
   }
@@ -154,6 +157,10 @@ function initTraining(next?: () => void) {
       window.dispatchEvent(new KeyboardEvent(typeEvent, {code: codeKey}))
     )
     toggler.isClicked = !toggler.isClicked;
+  }
+  function scrollToTarget() {
+    textElem.querySelector(".text__char-target").scrollIntoView(true);
+    document.querySelector(".text").scrollTop += -3;
   }
 }
 
