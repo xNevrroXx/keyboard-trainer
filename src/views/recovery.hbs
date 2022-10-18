@@ -1,0 +1,61 @@
+<div class="wrapper-login wrapper-login_recovery">
+  <div class="login-form container" id="container">
+    <div id="stage-email" class="form-container recovery-container active">
+      <form id="email">
+        <h1>Password Recovery</h1>
+        <!--                <div class="social-container">  // todo upgrade-->
+        <!--                    <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>-->
+        <!--                    <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>-->
+        <!--                    <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>-->
+        <!--                </div>-->
+        <!--                <span>or use your email for registration</span>-->
+        <label>
+          <input name="email" type="text" placeholder="Email"/>
+        </label>
+        <button class="button button_login button_recover">Send me email</button>
+      </form>
+    </div>
+    <div id="stage-code" class="form-container recovery-container">
+      <form id="code">
+        <h1>Enter code</h1>
+        <!--                <div class="social-container">  // todo upgrade-->
+        <!--                    <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>-->
+        <!--                    <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>-->
+        <!--                    <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>-->
+        <!--                </div>-->
+        <!--                <span>or use your email for registration</span>-->
+        <label>
+          <input name="code" type="text" placeholder="000000"/>
+        </label>
+        <button class="button button_login button_recover">Confirm code</button>
+      </form>
+    </div>
+    <div id="stage-new-password" class="form-container recovery-container">
+      <form id="password">
+        <h1>Create new password</h1>
+        <!--                <div class="social-container">  // todo upgrade-->
+        <!--                    <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>-->
+        <!--                    <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>-->
+        <!--                    <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>-->
+        <!--                </div>-->
+        <!--                <span>or use your email for registration</span>-->
+        <label>
+          <input name="password" type="text" placeholder="new password"/>
+        </label>
+        <label>
+          <input name="repeat-password" type="text" placeholder="repeat password"/>
+        </label>
+        <button class="button button_login button_recover">Save</button>
+      </form>
+    </div>
+    <div class="overlay-container overlay-container_recovery">
+      <div class="overlay">
+        <div class="overlay-panel overlay-right">
+          <h1>Hello, Friend!</h1>
+          <p>Let's try recover your password</p>
+          <button class="button button_login ghost" id="try-again">Try again</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

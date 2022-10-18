@@ -1,8 +1,56 @@
 {
+  "name": "portfolio",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "start": "concurrently \"cd frontend && npm run dev\" \"cd backend && npm run serve\""
+    "dev": "gulp",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "author": "Vladimir Govorov",
+  "license": "ISC",
   "devDependencies": {
-    "concurrently": "^7.4.0"
+    "@babel/core": "^7.19.0",
+    "@babel/parser": "^7.19.0",
+    "@babel/preset-env": "^7.19.0",
+    "@babel/types": "^7.19.0",
+    "babel": "^6.23.0",
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.2.5",
+    "browser-sync": "^2.27.10",
+    "concurrently": "^7.4.0",
+    "core-js": "^3.25.1",
+    "dotenv": "^16.0.3",
+    "gulp": "^4.0.2",
+    "gulp-cli": "^2.3.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-dotenv": "^0.2.2",
+    "gulp-nodemon": "^2.5.0",
+    "gulp-rename": "^2.0.0",
+    "gulp-sass": "^5.1.0",
+    "gulp-sourcemaps": "^3.0.0",
+    "gulp-typescript": "^6.0.0-alpha.1",
+    "gulp-uglify-es": "^3.0.0",
+    "jest": "^29.0.2",
+    "nodemon": "^2.0.20",
+    "sass": "^1.54.9",
+    "ts-loader": "^9.3.1",
+    "typescript": "^4.8.3",
+    "webpack": "^5.74.0",
+    "webpack-stream": "^7.0.0"
+  },
+  "dependencies": {
+    "argon2": "^0.30.1",
+    "axios": "^1.0.0",
+    "chart.js": "^3.9.1",
+    "cookie-parser": "^1.4.6",
+    "express": "^4.18.2",
+    "express-handlebars": "^6.0.6",
+    "gsap": "^3.10.4",
+    "gulp-env": "^0.4.0",
+    "jsonwebtoken": "^8.5.1",
+    "mysql": "^2.18.1",
+    "nodemailer": "^6.8.0"
   }
 }
