@@ -132,6 +132,35 @@ function htmlPages(app, db) {
       })
     }
   })
+  app.get("/testing/custom",
+    (request, response, next) => validateTokenAccessBind(request, response, next, false),
+    (request, response) => {
+      const user = request.user;
+      const isUser = request.isUser;
+
+      if(isUser) {
+        response.render("testing-custom", {
+          title: "Custom Testing Keyboard trainer - govorov",
+          mainContainerClass: mainContainerTypes["body-container-full-page"],
+          userData: { // todo mock value(helpers)
+            exist: true,
+            name: user.name,
+            imagePath: user.imagePath || "/fake"
+          }
+        })
+      }
+      else {
+        response.render("testing-custom", {
+          title: "Testing Keyboard trainer - govorov",
+          mainContainerClass: mainContainerTypes["body-container-full-page"],
+          userData: { // todo mock value(helpers)
+            exist: false,
+            name: "",
+            imagePath: "/fake"
+          }
+        })
+      }
+    })
 
   app.get("/login",
     (request, response, next) => validateTokenAccessBind(request, response, next, false),

@@ -29,21 +29,24 @@ header.main-navbar {
     color: black;
   }
   &__main {
+    height: 100%;
+    align-items: center;
     display: flex;
     gap: 1.5rem;
   }
   &__right {
     position: relative;
+    height: 100%;
     display: flex;
     gap: 1rem;
     margin-left: auto;
     &::before {
       content: "";
       position: absolute;
-      top: 0;
+      top: 10%;
+      height: 80%;
       left: -1rem;
       display: block;
-      height: 100%;
       width: 1px;
       background: linear-gradient(45deg, rgb(74, 177, 232) 50%, transparent 100%);
     }
@@ -64,17 +67,24 @@ header.main-navbar {
       }
     }
   }
-  &__profile {
+  &__item {
+    display: flex;
+    align-items: center;
+    width: max-content;
+    height: 100%;
+    position: relative;
+  }
+  &-submenu {
     &:hover, &:focus {
-      +.profile-submenu {
+      +.submenu {
         display: block;
         opacity: 1;
       }
     }
   }
-  &__item_profile {
+  &__item {
     &:hover, &:focus {
-      .profile-submenu {
+      .submenu {
         display: block;
         opacity: 1;
       }

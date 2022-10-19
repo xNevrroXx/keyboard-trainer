@@ -4,7 +4,7 @@ import DataStatisticSpeed from "./DataStatisticSpeed";
 import {statisticDataPost} from "../services";
 
 function initTraining(next?: () => void) {
-  const textElem: HTMLElement = document.querySelector(".text"),
+  const testingTextElem: HTMLElement = document.querySelector("#testing-text"),
     statisticElem = document.querySelector(".statistic");
 
   let indexTargetChar: number = 0,
@@ -36,9 +36,9 @@ function initTraining(next?: () => void) {
   const statisticSpeedValueElem = statisticElem.querySelector(".statistic-item_print-speed .statistic-item__value"),
     statisticAccuracyElem = statisticElem.querySelector(".statistic-item_accuracy .statistic-item__value");
 
-  textElem.textContent = textElem.textContent.trim();
-  splitText(textElem);
-  toggleClassTextChar(textElem, indexTargetChar, "text__char-target");
+  testingTextElem.textContent = testingTextElem.textContent.trim();
+  splitText(testingTextElem);
+  toggleClassTextChar(testingTextElem, indexTargetChar, "text__char-target");
   scrollToTarget();
 
   window.addEventListener("keydown", handleKeyDownTraining)
@@ -101,14 +101,14 @@ function initTraining(next?: () => void) {
       dispatchKeyDown(isClickShift, ["ShiftLeft", "ShiftRight"], "keyup");
     }
 
-    if (textElem.textContent[indexTargetChar] === key && !specialKeyCodes.includes(code)) {
+    if (testingTextElem.textContent[indexTargetChar] === key && !specialKeyCodes.includes(code)) {
       scrollToTarget();
       if (wasError) {
-        toggleClassTextChar(textElem, indexTargetChar, "text__char-failed");
+        toggleClassTextChar(testingTextElem, indexTargetChar, "text__char-failed");
         wasError = false;
       }
 
-      if (textElem.textContent.length - 1 === indexTargetChar) {
+      if (testingTextElem.textContent.length - 1 === indexTargetChar) {
         try {
           const response = await onEndTraining();
 
@@ -127,14 +127,14 @@ function initTraining(next?: () => void) {
       buffer.push(code);
       updateStatistic();
       dataStatisticSpeed.addData({char: key.toLowerCase(), speed: statistic.speed});
-      toggleClassTextChar(textElem, indexTargetChar, "text__char-passed");
-      toggleClassTextChar(textElem, indexTargetChar, "text__char-target");
+      toggleClassTextChar(testingTextElem, indexTargetChar, "text__char-passed");
+      toggleClassTextChar(testingTextElem, indexTargetChar, "text__char-target");
 
       indexTargetChar++;
-      toggleClassTextChar(textElem, indexTargetChar, "text__char-target");
+      toggleClassTextChar(testingTextElem, indexTargetChar, "text__char-target");
     } else if (!specialKeyCodes.includes(code) && !wasError) {
       wasError = true;
-      toggleClassTextChar(textElem, indexTargetChar, "text__char-failed");
+      toggleClassTextChar(testingTextElem, indexTargetChar, "text__char-failed");
       countErrors++;
     }
   }
@@ -159,8 +159,8 @@ function initTraining(next?: () => void) {
     toggler.isClicked = !toggler.isClicked;
   }
   function scrollToTarget() {
-    textElem.querySelector(".text__char-target").scrollIntoView(true);
-    document.querySelector(".text").scrollTop += -3;
+    testingTextElem.querySelector(".text__char-target").scrollIntoView(true);
+    testingTextElem.scrollTop += -3;
   }
 }
 

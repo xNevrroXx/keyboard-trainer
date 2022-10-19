@@ -9,6 +9,7 @@ import testing from "./pagesSplitting/testing";
 import results from "./pagesSplitting/results";
 import editProfile from "./pagesSplitting/editProfile";
 import profile from "./pagesSplitting/profile";
+import testingCustom from "./pagesSplitting/testingCustom";
 // general data
 import {MATCH_PAGES_URL} from "./generalData";
 
@@ -23,6 +24,8 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   if (window.location.pathname === MATCH_PAGES_URL["testing"].pathname) {
     testing();
+  } else if (window.location.pathname === MATCH_PAGES_URL["testing-custom"].pathname) {
+    testingCustom();
   } else if (window.location.pathname === MATCH_PAGES_URL["results"].pathname) {
     results();
   } else if (window.location.pathname === MATCH_PAGES_URL["login"].pathname) {

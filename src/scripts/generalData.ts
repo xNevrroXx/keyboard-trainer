@@ -18,6 +18,9 @@ const MATCH_PAGES_URL: IMatchPagesUrl = {
   "testing": {
     pathname: "/testing",
   },
+  "testing-custom": {
+    pathname: "/testing/custom"
+  },
   "results": {
     pathname: "/results",
   },

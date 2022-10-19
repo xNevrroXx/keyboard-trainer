@@ -1,6 +1,7 @@
 @import "../modules/variables";
 
-.text {
+#testing-text {
+  overflow-wrap: anywhere;
   border-radius: .5rem;
   padding: 1.5rem 1rem 1.5rem 1rem;
   font-size: 2rem;
@@ -9,6 +10,9 @@
   height: 10rem;
   overflow-y: hidden;
   line-height: 2.6rem;
+}
+
+.text {
   &__char {
     color: rgb(59, 59, 59);
   }

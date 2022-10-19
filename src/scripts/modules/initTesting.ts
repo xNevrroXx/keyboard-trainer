@@ -18,8 +18,13 @@ function initTesting(next: () => void) {
 
 
       function handleKeyUp(event: KeyboardEvent) {
-        if (event.code === "Enter" || event.code === "Space") {
-          handleInitTraining();
+        const focusElement = document.activeElement;
+        const textAreaCustomText = document.querySelector("#text-area-custom-text");
+
+        if(textAreaCustomText !== focusElement) {
+          if (event.code === "Enter" || event.code === "Space") {
+            handleInitTraining();
+          }
         }
       }
 
