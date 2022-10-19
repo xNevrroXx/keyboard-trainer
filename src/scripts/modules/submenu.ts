@@ -1,3 +1,5 @@
+
+// todo!!! finalize the function
 function submenu() {
   const menuElem = document.querySelector("nav.menu");
   const profileMenuLinkBtn = menuElem.querySelector(".menu__profile.user-link");

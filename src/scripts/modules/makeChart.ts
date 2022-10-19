@@ -1,5 +1,5 @@
 import {Chart, registerables } from "chart.js";
-import {IAdditionalDataStatisticSpeed, IDataStatistic} from "../types";
+import {IDataStatistic} from "../types";
 
 function makeChart(chartData: IDataStatistic["timestamp"], canvasSelector: string) {
   Chart.register(...registerables);

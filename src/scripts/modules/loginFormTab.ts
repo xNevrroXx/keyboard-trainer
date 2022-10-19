@@ -1,7 +1,9 @@
 // types
 import {IMatchPagesUrl} from "../types";
+// general data
+import {MATCH_PAGES_URL} from "../generalData";
 
-function loginFormTab(MATCH_PAGES_URL: IMatchPagesUrl) {
+function loginFormTab() {
   const container = document.getElementById('container');
 
   const

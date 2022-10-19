@@ -1,5 +1,3 @@
-// types
-import {IMatchPagesUrl} from "../types";
 // own modules
 import {logout} from "../services";
 import submenu from "./submenu";

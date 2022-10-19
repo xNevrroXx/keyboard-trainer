@@ -3,9 +3,11 @@ import validate from "./validate";
 import {register, signIn} from "../services";
 import form from "./form";
 // types
-import {IDataLogin, IDataRegister, IMatchPagesUrl} from "../types";
+import {IDataLogin, IDataRegister} from "../types";
+// general data
+import {MATCH_PAGES_URL} from "../generalData";
 
-function loginFormListener(MATCH_PAGES_URL: IMatchPagesUrl) {
+function loginFormListener() {
   const signInFormElem = document.querySelector("#sign-in"),
     registerFormElem = document.querySelector("#register");
 
@@ -20,7 +22,7 @@ function loginFormListener(MATCH_PAGES_URL: IMatchPagesUrl) {
   const formBindRegister = form.bind(registerFormElem,
     (data: IDataRegister) => validate(data,true, true, true, false),
     async (data: IDataRegister) => await register(data),
-    () => {},
+    (data: IDataLogin) => formBindSignIn, // todo add data and formBindSignIn function as above to sign-in user automatically
     false,
     false,
     false

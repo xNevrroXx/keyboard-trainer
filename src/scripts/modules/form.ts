@@ -1,5 +1,3 @@
-// own modules
-import validate from "./validate";
 // types
 import {
   IDataErrors,
@@ -10,6 +8,7 @@ import {
   IDataRegister
 } from "../types";
 
+// todo!!! unifying function
 async function form(
   validateFunc: (data: IDataRecover__stageEmail | IDataRecover__stageCode | IDataRecover__stagePassword | IDataRegister | IDataLogin) => IDataErrors,
   serviceFunc: (data: IDataRecover__stageEmail | IDataRecover__stageCode | IDataRecover__stagePassword | IDataRegister | IDataLogin) => Promise<any>,
@@ -36,9 +35,6 @@ async function form(
       try {
         const response = await serviceFunc(data);
 
-        if (response.response && response.response.status && (response.response.status < 200 || response.response.status >= 300)) {
-          throw (response);
-        }
         if (next) {
           next();
         }
@@ -53,9 +49,6 @@ async function form(
       try {
         const response = await serviceFunc(data);
 
-        if (response.response && response.response.status && (response.response.status < 200 || response.response.status >= 300)) {
-          throw (response);
-        }
         if (next) {
           next(data.email, data.code);
         }
@@ -68,9 +61,6 @@ async function form(
       try {
         const response = await serviceFunc(data);
 
-        if (response.response && response.response.status && (response.response.status < 200 || response.response.status >= 300)) {
-          throw (response);
-        }
         if (next) {
           next(data.email);
         }
@@ -83,11 +73,6 @@ async function form(
       try {
         const response = await serviceFunc(data);
 
-        console.log(response);
-        if (response.response && response.response.status && (response.response.status < 200 || response.response.status >= 300)) {
-          console.log("here")
-          throw (response);
-        }
         if (next) {
           next();
         }
@@ -107,8 +92,8 @@ async function form(
     for (const key of Object.keys(errors) as (keyof IDataErrors)[]) {
       const inputWithError = this.querySelector(`input[name="${key}"]`);
       const errorDescriptionElem = document.createElement("div");
-      errorDescriptionElem.classList.add("error-description")
-      errorDescriptionElem.textContent = errors[key];
+      errorDescriptionElem.classList.add("error-description");
+      errorDescriptionElem.innerHTML = errors[key];
 
       inputWithError.classList.add("input-with-error")
       inputWithError.after(errorDescriptionElem);

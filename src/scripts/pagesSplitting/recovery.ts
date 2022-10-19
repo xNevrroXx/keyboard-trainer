@@ -1,16 +1,23 @@
 import recoverFormRender from "../modules/recoverFormRender";
 import recoverFormListener from "../modules/recoverFormListener";
-import {IMatchPagesUrl} from "../types";
+import {authenticate} from "../services";
+import initTesting from "../modules/initTesting";
+// general data
+import {MATCH_PAGES_URL} from "../generalData";
 
-function recovery(MATCH_PAGES_URL: IMatchPagesUrl) {
-  if (localStorage.getItem("isAuthorized") === "yes") {
-    window.location.href = MATCH_PAGES_URL["testing"].pathname;
+async function recovery() {
+  try {
+    const authenticateResponse = await authenticate();
+
+    initTesting(() => window.location.href = MATCH_PAGES_URL["testing"].pathname);
+  } catch {
+    document.querySelector("button#try-again").addEventListener("click", () => {
+      window.location.href = MATCH_PAGES_URL["login"].pathname + MATCH_PAGES_URL["login"].possibleHashValue["sign-in"];
+    });
+
+    recoverFormRender();
+    recoverFormListener();
   }
-  document.querySelector("button#try-again").addEventListener("click", () => {
-    window.location.href = MATCH_PAGES_URL["login"] + MATCH_PAGES_URL["login"].possibleHashValue["sign-in"];
-  });
-  recoverFormRender(MATCH_PAGES_URL);
-  recoverFormListener(MATCH_PAGES_URL);
 }
 
 export default recovery;

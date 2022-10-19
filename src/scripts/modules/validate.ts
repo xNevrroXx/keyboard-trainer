@@ -8,7 +8,7 @@ function validate(
   isRepeatPassword: boolean): IDataErrors
 {
   const errors: IDataErrors = {};
-  const nameRegex = /^\D{2,}$/ig,
+  const nameRegex = /^[a-zа-яё]{2,}$/ig,
     emailRegex =  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
     passwordRegex = /^(?=.*[0-9])(?=.*[(!@#$%^&*])[a-zA-Z0-9(!@#$%^&*]{6,16}$/,
     codeRegex = /^\d{6}$/;
@@ -28,13 +28,13 @@ function validate(
   if ("password" in data && data["password"] && passwordRegex.test(data["password"].trim())) {
   }
   else if (isPassword) {
-    errors["password"] = "Password should include (!@#$%^&* and be greater than 6 characters"
+    errors["password"] = "Should include (!@#$%^&*\r\nShould be greater than 6 characters"
   }
 
   if ("repeat-password" in data && data["repeat-password"] && passwordRegex.test(data["repeat-password"].trim())) {
   }
   else if (isRepeatPassword) {
-    errors["repeat-password"] = "Password should include !@#$%^&* and be greater than 6 characters"
+    errors["repeat-password"] = "Should include !@#$%^&*\r\nShould be greater than 6 characters"
   }
 
   return errors;

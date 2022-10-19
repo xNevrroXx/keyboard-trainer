@@ -1,43 +1,23 @@
 // types
 import {IMatchPagesUrl} from "../types";
 // own modules
-import keyboard from "../modules/keyboard";
-import initModal from "../modules/modal";
-import initTraining from "../modules/initTraining";
+import {authenticate} from "../services";
+import initTesting from "../modules/initTesting";
+// general data
+import {MATCH_PAGES_URL} from "../generalData";
 
+async function testing() {
+  try {
+    const authenticateResponse = await authenticate();
 
-function testing(MATCH_PAGES_URL: IMatchPagesUrl) {
-  const modalStartPrint: HTMLElement = document.querySelector(".modal_start-print");
+    initTesting(() => window.location.href = MATCH_PAGES_URL["results"].pathname);
+    // some logic
+  } catch {
+    // todo!!! try temporarily saving testing the test values in the backend. And save to DB this one when user sign-in/register
+    // todo send data to db
 
-  keyboard();
-  initModal({
-    modalSelector: ".modal_start-print",
-    activeClass: "modal_active",
-    triggerCloseSelector: ".modal__close-trigger",
-    next: function () {
-      const startPrintBtn = modalStartPrint.querySelector(".modal__start-print-btn");
-
-      startPrintBtn.addEventListener("click", handleInitTraining)
-      document.addEventListener("keyup", handleKeyUp);
-
-
-      function handleKeyUp(event: KeyboardEvent) {
-        if (event.code === "Enter" || event.code === "Space") {
-          handleInitTraining();
-        }
-      }
-      function handleInitTraining() {
-        modalStartPrint.dispatchEvent(new CustomEvent("closeModal"));
-
-        startPrintBtn.removeEventListener("click", handleInitTraining);
-        document.removeEventListener("keyup", handleKeyUp);
-
-        initTraining(
-          () => window.location.href = MATCH_PAGES_URL["results"].pathname
-        );
-      }
-    }
-  });
+    initTesting(() => window.location.href = MATCH_PAGES_URL["login"].pathname + MATCH_PAGES_URL["login"].possibleHashValue["sign-in"]);
+  }
 }
 
 export default testing;

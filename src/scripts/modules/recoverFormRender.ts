@@ -1,15 +1,12 @@
-// types
-import {IMatchPagesUrl} from "../types";
+// general data
+import {MATCH_PAGES_URL} from "../generalData";
 
-function recoverFormRender(MATCH_PAGES_URL: IMatchPagesUrl) {
+function recoverFormRender() {
   const stageEmailForm = document.querySelector("#stage-email"),
     stageCodeForm = document.querySelector("#stage-code"),
     stageNewPasswordForm = document.querySelector("#stage-new-password");
 
-  if(window.location.search === "") {
-    window.location.href = window.location.pathname + "?email";
-  }
-  else if(window.location.search !== "?email" && !window.location.search.includes("?code&email=") && !/\?password&code=\d{6}&email=.*$/.test(window.location.search)) {
+  if(window.location.search === "" || window.location.search !== "?email" && !window.location.search.includes("?code&email=") && !/\?password&code=\d{6}&email=.*$/.test(window.location.search)) {
     window.location.href = MATCH_PAGES_URL["recovery"].pathname + "?" + MATCH_PAGES_URL["recovery"].possibleSearchValue["email"];
   }
 

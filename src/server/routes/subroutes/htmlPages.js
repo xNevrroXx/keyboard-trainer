@@ -1,5 +1,6 @@
 // own modules
 const {validateTokenAccessBind} = require("../../modules/validateToken");
+const {searchData} = require("../../modules/database");
 
 
 const mainContainerTypes = {
@@ -7,15 +8,13 @@ const mainContainerTypes = {
   "body-container-full-page": "body-container-full-page"
 };
 
-function htmlPages(app) {
+function htmlPages(app, db) {
   app.get("/profile",
     (request, response, next) => validateTokenAccessBind(request, response, next, false),
-    (request, response) =>
-    {
+    (request, response) => {
       const user = request.user;
       const isUser = request.isUser;
 
-      console.log("isUser PROFILE: ", isUser )
       if(isUser) {
         response.render("profile", {
           title: "Profile Keyboard trainer - govorov",
@@ -23,7 +22,7 @@ function htmlPages(app) {
           userData: { // todo mock value(helpers)
             exist: true,
             name: user.name,
-            imagePath: user.imagePath || "fake"
+            imagePath: user.imagePath || "/fake"
           }
         })
       }
@@ -34,7 +33,7 @@ function htmlPages(app) {
           userData: { // todo mock value(helpers)
             exist: false,
             name: "",
-            imagePath: "fake",
+            imagePath: "/fake",
           }
         })
       }
@@ -42,39 +41,40 @@ function htmlPages(app) {
 
   app.get("/profile/edit",
     (request, response, next) => validateTokenAccessBind(request, response, next, false),
-    (request, response) =>
-    {
-    const user = request.user;
-    const isUser = request.isUser;
+    async (request, response) => {
+      const user = request.user;
+      const isUser = request.isUser;
 
-    if(isUser) {
-      response.render("profile-edit", {
-        title: "Edit profile Keyboard trainer - govorov",
-        mainContainerClass: mainContainerTypes["body-container-main"],
-        userData: { // todo mock value(helpers)
-          exist: true,
-          name: user.name,
-          imagePath: user.imagePath || "fake"
-        }
-      })
-    }
-    else {
-      response.render("profile-edit", {
-        title: "Edit profile Keyboard trainer - govorov",
-        mainContainerClass: mainContainerTypes["body-container-main"],
-        userData: { // todo mock value(helpers)
-          exist: false,
-          name: "",
-          imagePath: "fake"
-        }
-      })
-    }
-  })
+      if (isUser) {
+        const findingResultUser = await searchData(db, "user", user.id, "id");
+        const fullUserData = findingResultUser.data[0];
+
+        response.render("profile-edit", {
+          title: "Edit profile Keyboard trainer - govorov",
+          mainContainerClass: mainContainerTypes["body-container-main"],
+          userData: { // todo mock value(helpers)
+            exist: true,
+            name: fullUserData.name,
+            email: fullUserData.email,
+            imagePath: fullUserData.imagePath || "/fake"
+          }
+        })
+      } else {
+        response.render("profile-edit", {
+          title: "Edit profile Keyboard trainer - govorov",
+          mainContainerClass: mainContainerTypes["body-container-main"],
+          userData: { // todo mock value(helpers)
+            exist: false,
+            name: "",
+            imagePath: "/fake"
+          }
+        })
+      }
+    })
 
   app.get("/results",
     (request, response, next) => validateTokenAccessBind(request, response, next, false),
-    (request, response) =>
-    {
+    (request, response) => {
     const user = request.user;
     const isUser = request.isUser;
 
@@ -85,7 +85,7 @@ function htmlPages(app) {
         userData: { // todo mock value(helpers)
           exist: true,
           name: user.name,
-          imagePath: user.imagePath || "fake"
+          imagePath: user.imagePath || "/fake"
         }
       })
     }
@@ -96,7 +96,7 @@ function htmlPages(app) {
         userData: { // todo mock value(helpers)
           exist: false,
           name: "",
-          imagePath: "fake"
+          imagePath: "/fake"
         }
       })
     }
@@ -105,8 +105,7 @@ function htmlPages(app) {
   // this page can be provided to everyone. Both to the authenticating user and not.
   app.get("/testing",
     (request, response, next) => validateTokenAccessBind(request, response, next, false),
-    (request, response) =>
-    {
+    (request, response) => {
     const user = request.user;
     const isUser = request.isUser;
 
@@ -117,7 +116,7 @@ function htmlPages(app) {
         userData: { // todo mock value(helpers)
           exist: true,
           name: user.name,
-          imagePath: user.imagePath || "fake"
+          imagePath: user.imagePath || "/fake"
         }
       })
     }
@@ -128,7 +127,7 @@ function htmlPages(app) {
         userData: { // todo mock value(helpers)
           exist: false,
           name: "",
-          imagePath: "fake"
+          imagePath: "/fake"
         }
       })
     }
@@ -136,8 +135,7 @@ function htmlPages(app) {
 
   app.get("/login",
     (request, response, next) => validateTokenAccessBind(request, response, next, false),
-    (request, response) =>
-    {
+    (request, response) => {
     response.render("login", {
       title: "Login Keyboard trainer - govorov",
       mainContainerClass: mainContainerTypes["body-container-main"]
@@ -146,20 +144,41 @@ function htmlPages(app) {
 
   app.get("/recovery",
     (request, response, next) => validateTokenAccessBind(request, response, next, false),
-    (request, response) =>
-    {
+    (request, response) => {
     response.render("recovery", {
       title: "Recovery Keyboard trainer - govorov",
       mainContainerClass: mainContainerTypes["body-container-full-page"],
     })
   })
 
-  app.get("*", (request, response) => {
-    response.status(404).render("not-found", {
-      title: "Keyboard trainer - govorov",
-      mainContainerClass: mainContainerTypes["body-container-full-page"],
-      userImagePath: "test"
-    })
+  app.get("*",
+    (request, response, next) => validateTokenAccessBind(request, response, next, false),
+    (request, response) => {
+    const user = request.user;
+    const isUser = request.isUser;
+
+    if(isUser) {
+      response.status(404).render("not-found", {
+        title: "Keyboard trainer - govorov",
+        mainContainerClass: mainContainerTypes["body-container-full-page"],
+        userData: { // todo mock value(helpers)
+          exist: true,
+          name: user.name,
+          imagePath: user.imagePath || "/fake"
+        }
+      })
+    }
+    else {
+      response.status(404).render("not-found", {
+        title: "Keyboard trainer - govorov",
+        mainContainerClass: mainContainerTypes["body-container-full-page"],
+        userData: { // todo mock value(helpers)
+          exist: false,
+          name: "",
+          imagePath: "/fake"
+        }
+      })
+    }
   })
 }
 

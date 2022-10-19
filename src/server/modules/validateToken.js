@@ -16,7 +16,7 @@ function validateToken(secretToken, nameField, request, response, next, isThrowO
     else {
       setCookies(response, [
         {
-          "isAuthorized": false,
+          "isAuthenticate": false,
           modifyOptions: {
             httpOnly: false
           }
@@ -39,7 +39,7 @@ function validateToken(secretToken, nameField, request, response, next, isThrowO
           }
         },
         {
-          "isAuthorized": false,
+          "isAuthenticate": false,
           modifyOptions: { 
             httpOnly: false
           }

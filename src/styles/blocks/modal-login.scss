@@ -235,6 +235,9 @@
   }
 
   .error-description {
+    padding-left: 2rem;
+    text-align: left;
+    white-space: pre;
     margin-bottom: 1rem;
     font-size: .9rem;
     color: $soft-pink;

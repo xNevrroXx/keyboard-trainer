@@ -4,10 +4,30 @@ const argon2 = require("argon2");
 const {changeToken, searchData, createUser, changeData} = require("../../modules/database");
 const generateAccessToken = require("../../modules/generateAccessToken");
 const generateRefreshToken = require("../../modules/generateRefreshToken");
-const {validateTokenRefreshBind} = require("../../modules/validateToken");
+const {validateTokenRefreshBind, validateTokenAccessBind} = require("../../modules/validateToken");
 const setCookies = require("../../modules/setCookies");
 
 function authentication(app, db) {
+  app.post("/authenticate",
+    (request, response, next) => validateTokenAccessBind(request, response, next),
+    async (request, response) =>
+    {
+    const user = request.user;
+
+    try {
+      const findingResult = await searchData(db, "user", user.id, "id");
+      const userData = findingResult.data[0];
+
+      response.json({
+        message: "success authenticate"
+      })
+    } catch (error) {
+      response.status(400).json({
+        message: "user doesn't exist"
+      });
+    }
+  })
+
   app.post("/register", async (request, response) => {
     const name = request.body.name;
     const hashedPassword = await argon2.hash(request.body.password);
@@ -66,7 +86,7 @@ function authentication(app, db) {
               setCookies(response, [
                 {"accessToken": accessToken},
                 {"refreshToken": refreshToken},
-                {"isAuthorized": true}
+                {"isAuthenticate": true}
               ]);
 
               response.status(200).json({
@@ -103,7 +123,6 @@ function authentication(app, db) {
     {
       const providedToken = request.cookies.refreshToken;
 
-      console.log("start refresh");
       try {
         const currentRefreshToken = await searchData(db, "refresh_token", providedToken, "value");
         const tokenData = currentRefreshToken.data[0];
@@ -123,11 +142,10 @@ function authentication(app, db) {
           await changeToken(db, "access_token", user.id, accessToken);
           await changeToken(db, "refresh_token", user.id, refreshToken);
 
-          console.log("success refresh and response cookies");
           setCookies(response, [
             {"accessToken": accessToken},
             {"refreshToken": refreshToken},
-            {"isAuthorized": true}
+            {"isAuthenticate": true}
           ])
           response.status(200).json({
             message: "refresh successfully"
@@ -146,9 +164,8 @@ function authentication(app, db) {
                 maxAge: 0
               }
             },
-            {"isAuthorized": false}
+            {"isAuthenticate": false}
           ])
-          console.log("error in refresh pre-end")
           response.status(400).json({
             message: "refresh token invalid"
           });
@@ -167,9 +184,8 @@ function authentication(app, db) {
                 maxAge: 0
               }
             },
-            {"isAuthorized": false}
+            {"isAuthenticate": false}
           ])
-        console.log("error in refresh end", error)
         response.status(400).json({
           message: "refresh token invalid"
         });
@@ -192,7 +208,7 @@ function authentication(app, db) {
         "refreshToken": "",
         modifyOptions: {maxAge: 0}
       },
-      {"isAuthorized": false}
+      {"isAuthenticate": false}
     ])
     response.status(204).json({
       message: "logged out!"

@@ -7,8 +7,10 @@ import {
   IMatchPagesUrl,
 } from "../types";
 import form from "./form";
+// general data
+import {MATCH_PAGES_URL} from "../generalData";
 
-function recoverFormListener(MATCH_PAGES_URL: IMatchPagesUrl) {
+function recoverFormListener() {
   const stageEmailForm = document.querySelector("#email"),
     stageCodeForm = document.querySelector("#code"),
     stagePasswordForm = document.querySelector("#password");
@@ -31,9 +33,9 @@ function recoverFormListener(MATCH_PAGES_URL: IMatchPagesUrl) {
     false
   );
   const formBindStagePassword = form.bind(stagePasswordForm,
-    (data: IDataRecover__stagePassword) => validate(data,false, true, false, true),
+    (data: IDataRecover__stagePassword) => validate(data, false, true, false, true),
     async (data: IDataRecover__stagePassword) => await recoverStagePassword(data),
-    () => {},
+    () => window.location.href = MATCH_PAGES_URL["login"].pathname + MATCH_PAGES_URL["login"].possibleHashValue["sign-in"],
     false,
     false,
     true

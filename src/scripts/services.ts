@@ -10,7 +10,8 @@ import {
   IDataRecover__stageCode,
   IDataRecover__stageEmail,
   IDataRecover__stagePassword,
-  IDataRegister, IDataStatistic
+  IDataRegister,
+  IDataStatistic
 } from "./types";
 
 
@@ -20,7 +21,7 @@ const backendUrlsObj: IBackendUrls = {
   register: backendMainUrlStr + "/register",
   refreshToken: backendMainUrlStr + "/refreshtoken",
   logout: backendMainUrlStr + "/logout",
-  posts: backendMainUrlStr + "/posts",
+  authenticate: backendMainUrlStr + "/authenticate",
   recover: {
     stageEmail: backendMainUrlStr + "/recover/getcode",
     stageCode: backendMainUrlStr + "/recover/verifycode",
@@ -38,74 +39,40 @@ const backendUrlsObj: IBackendUrls = {
   }
 };
 
-async function getData() {
-  // const result = await fetch('https://baconipsum.com/api/?type=meat-and-filler&paras=1');
-  const result = await fetch('https://www.googleapis.com/books/v1/volumes?q=энциклопедия');
-  try {
-    return result.json();
-  }
-  catch (e) {
-    console.log(e);
-  }
-}
-
-async function getProfile(): Promise<any> {
+async function authenticate(): Promise<any> {
   const cookies = getCookies();
-  if (cookies.isAuthorized && cookies.isAuthorized === "false"
-  && cookies.refreshToken && cookies.refreshToken.length > 0)
+
+  if (cookies.accessToken && cookies.accessToken.length > 0
+  || cookies.refreshToken && cookies.refreshToken.length > 0)
   {
     try {
-      const response = await axios.post(backendUrlsObj.posts);
-
-      return response.data;
+      return await axios.post(backendUrlsObj.authenticate);
     }
     catch (error) {
-      try {
-        const refreshResponse = await refreshToken();
-        console.log("refreshResponse: ", refreshResponse);
-        if(refreshResponse.response.status < 200 || refreshResponse.response.status >= 300) {
-          console.log("in error block")
-          throw refreshResponse;
-        }
-        return await getProfile();
-      }
-      catch (error) {
-        console.log("redirect to login");
-        window.location.href = "/login";
-      }
+      refreshToken();
     }
+  }
+  else {
+    throw new Error("there are no tokens");
   }
 }
 
 async function refreshToken() {
   try{
-    console.log("start refresh");
-    const response = await axios.post(backendUrlsObj.refreshToken, {});
+    await axios.post(backendUrlsObj.refreshToken);
 
     window.location.reload();
-    return response;
   }
   catch (error) {
-    return error;
+    window.location.reload();
   }
 }
 
 async function signIn(data: IDataLogin) {
   try {
-    const response = await axios.post(backendUrlsObj.login, data);
-
-    return response;
+    return await axios.post(backendUrlsObj.login, data);
   } catch (error) {
-    const status = error.response.status;
-
-    if (status === 401) {
-      return error;
-    } else if (status === 409) {
-      return error;
-    }
-    else {
-      return error;
-    }
+    throw error;
   }
 }
 
@@ -114,10 +81,10 @@ async function register(data: IDataRegister) {
     const response = await axios.post(backendUrlsObj.register, data)
 
     alert("Success registration");
-    return await signIn(data);
+    return response;
   }
   catch (error) {
-    return error;
+    throw error;
   }
 }
 
@@ -135,16 +102,10 @@ async function recoverStageCode(data: IDataRecover__stageCode) {
 
 async function recoverStagePassword(data: IDataRecover__stagePassword) {
   try {
-    const response = await axios.post(backendUrlsObj.recover.stagePassword, data);
-
-    const dataLogin: IDataLogin = {
-      email: data.email,
-      password: data.password
-    };
-
-    await signIn(dataLogin);
+    return await axios.post(backendUrlsObj.recover.stagePassword, data);
   } catch (error) {
     alert(error.response.data.message)
+    throw error;
   }
 }
 
@@ -154,10 +115,9 @@ async function statisticDataPost(dataStatisticSpeed: IAdditionalDataStatisticSpe
   }
 
   try {
-    const response = await axios.post(backendUrlsObj.statistic.post.speed, data);
-    return response.data.message;
+    return await axios.post(backendUrlsObj.statistic.post.speed, data);
   } catch (error) {
-    return new Error(error);
+    throw error;
   }
 }
 
@@ -168,8 +128,8 @@ async function statisticDataGet(searchWhichResult: string) {
 
     return data;
   } catch (error) {
-    return new Error(error);
+    throw error;
   }
 }
 
-export {getData, getProfile, refreshToken, signIn, register, recoverStageEmail, recoverStageCode, recoverStagePassword, logout, statisticDataPost, statisticDataGet};
+export {authenticate, refreshToken, signIn, register, recoverStageEmail, recoverStageCode, recoverStagePassword, logout, statisticDataPost, statisticDataGet};

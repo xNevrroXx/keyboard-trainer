@@ -72,7 +72,7 @@ export interface IBackendUrls {
   register: string,
   refreshToken: string,
   logout: string,
-  posts: string,
+  authenticate: string,
   recover: {
     stageEmail: string,
     stageCode: string,
