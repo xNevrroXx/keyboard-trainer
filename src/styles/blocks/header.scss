@@ -23,11 +23,6 @@ header.main-navbar {
   padding: 0 1.5rem 0 1.5rem;
   display: flex;
   align-items: center;
-  .logo {
-    display: block;
-    margin-right: 4rem;
-    color: black;
-  }
   &__main {
     height: 100%;
     align-items: center;
@@ -73,6 +68,11 @@ header.main-navbar {
     width: max-content;
     height: 100%;
     position: relative;
+    &_logo {
+      display: block;
+      margin-right: 4rem;
+      color: black;
+    }
   }
   &-submenu {
     &:hover, &:focus {

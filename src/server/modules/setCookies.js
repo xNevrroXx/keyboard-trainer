@@ -4,7 +4,7 @@ const options = {
   httpOnly: false,
   secure: false,
   path: "/",
-  samesite: "lax",
+  sameSite: "Lax",
   maxAge: ageExpiresCookie
   // domain: www.site.com
 }

@@ -1,10 +1,14 @@
 <header class="main-navbar">
   <div class="container">
     <nav class="menu">
-      <button class="logo" data-target-point="/trainer">govorov</button>
+      <ul class="menu__left">
+        <li class="menu__item menu__item_logo">
+          <button class="menu__main-link logo" data-target-point="/trainer">govorov</button>
+        </li>
+      </ul>
       <ul class="menu__main">
         <li class="menu__item">
-          <button class="menu__main-link" data-target-point="/testing">Testing</button>
+          <button class="menu__main-link menu__main-link_with-submenu" data-target-point="/testing">Testing</button>
           <div class="menu-submenu submenu">
             <ul class="submenu__list">
               <li class="submenu__item"><button tabindex="0" data-target-point="/testing/custom">Custom text</button></li>
@@ -21,11 +25,11 @@
       <ul class="menu__right">
         {{#if userData.exist}}
           <li class="menu__item menu__item_profile">
-            <button class="menu__main-link menu__profile user-link" data-target-point="/profile"> <!--todo on mouseover appear list of users characteristic-->
+            <button class="menu__main-link menu__main-link_with-submenu menu__profile user-link" data-target-point="/profile"> <!--todo on mouseover appear list of users characteristic-->
               {{> userImageObject}}
               <span class="user-name">{{userData.name}}</span>
             </button>
-            <div class="menu__profile-menu submenu">
+            <div class="menu-submenu submenu">
               <ul class="submenu__list">
                 <li class="submenu__item"><button tabindex="0" data-target-point="/profile">My profile</button></li>
                 <li class="submenu__item"><button tabindex="0" data-target-point="/profile">Test results</button></li>
