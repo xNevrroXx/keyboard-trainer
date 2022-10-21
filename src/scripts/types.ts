@@ -22,9 +22,10 @@ export interface IDataStatisticSpeed {
   char: string,
   speedArr: number[]
 }
-export interface IAdditionalDataStatisticSpeed {
+export interface IAdditionalDataStatistic {
   char: string,
-  speed: number
+  speed?: number,
+  accuracy?: number
 }
 
 export interface IDataStatistic {
@@ -33,6 +34,14 @@ export interface IDataStatistic {
     speed?: number,
     accuracy?: number
   }[]
+}
+
+
+export interface IResponseStatistic {
+  [timestamp: string]: {
+    text: string,
+    statistic: IAdditionalDataStatistic[]
+  }
 }
 
 export interface IDataLogin {

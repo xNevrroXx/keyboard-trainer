@@ -4,7 +4,7 @@ function splitText(textElem: HTMLElement) {
     .replace(/\s+/g, " ");
 
   textElem.innerHTML = text.split("").map(char => {
-    if(/[a-zа-яё0-9}{\[\]:;'\/"<>,.?!@#$%^&*()_+№\-= ]/ig.test(char) === false) {
+    if(/[a-zа-яё0-9}{\[\]:;'\/"<>,.~?!@#$%^&*()_+№\-= ]/ig.test(char) === false) {
       return "";
     }
     return `<span class="text__char">${char}</span>`

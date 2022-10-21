@@ -7,7 +7,7 @@ import {
   IMatchPagesUrl,
 } from "../types";
 import form from "./form";
-// general data
+// general statisticData
 import {MATCH_PAGES_URL} from "../generalData";
 
 function recoverFormListener() {

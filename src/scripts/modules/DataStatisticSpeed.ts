@@ -1,22 +1,26 @@
-import {IAdditionalDataStatisticSpeed, IDataStatisticSpeed} from "../types";
+import {IAdditionalDataStatistic, IDataStatisticSpeed} from "../types";
 
 class DataStatisticSpeed {
-  data: IDataStatisticSpeed[] = [];
+  readonly statisticData: IDataStatisticSpeed[] = [];
+  private text: string = null;
 
   constructor(data: IDataStatisticSpeed[] = []) {
-    this.data = data;
+    this.statisticData = data;
   };
 
-  addData(additionalStatisticSpeedData: IAdditionalDataStatisticSpeed) {
-    for (const dataStatisticSpeedValue of this.data) {
-      if (dataStatisticSpeedValue.char === additionalStatisticSpeedData.char) {
-        dataStatisticSpeedValue.speedArr.push(additionalStatisticSpeedData.speed);
+  setText(text: string) {
+    this.text = text;
+  }
+  addStatisticData(additionalStatisticSpeedData: IAdditionalDataStatistic) {
+    for (const statisticCharSlice of this.statisticData) {
+      if (statisticCharSlice.char === additionalStatisticSpeedData.char) {
+        statisticCharSlice.speedArr.push(additionalStatisticSpeedData.speed);
 
         return;
       }
     }
 
-    this.data.push({
+    this.statisticData.push({
       char: additionalStatisticSpeedData.char,
       speedArr: [additionalStatisticSpeedData.speed]
     })
@@ -25,21 +29,24 @@ class DataStatisticSpeed {
   };
 
   withAvgSpeed() {
-    const resultData: IAdditionalDataStatisticSpeed[] = [];
+    const statisticData: IAdditionalDataStatistic[] = [];
 
-    this.data.forEach((value: IDataStatisticSpeed) => {
+    this.statisticData.forEach((value: IDataStatisticSpeed) => {
       const speed = value.speedArr;
 
       const sum = speed.reduce((sum, currentValue) => sum + currentValue, 0);
       let averageSpeed = Math.round(sum / speed.length);
 
-      resultData.push({
+      statisticData.push({
         char: value.char,
         speed: averageSpeed
       })
     })
 
-    return resultData;
+    return {
+      text: this.text,
+      statisticData: statisticData
+    };
   }
 }
 

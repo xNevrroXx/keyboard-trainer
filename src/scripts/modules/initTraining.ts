@@ -38,13 +38,13 @@ function initTraining(next?: () => void) {
 
   testingTextElem.textContent = testingTextElem.textContent.trim();
   splitText(testingTextElem);
+  dataStatisticSpeed.setText(testingTextElem.textContent);
   toggleClassTextChar(testingTextElem, indexTargetChar, "text__char-target");
   scrollToTarget();
 
   window.addEventListener("keydown", handleKeyDownTraining)
   window.addEventListener("click", handleClick);
 
-  // const changePastTimeFastBind = updateStatistic.bind(null, pastTime, 10);
   const idFastInterval = setInterval(() => {
     pastTime.time = pastTime.time + 100;
     updateStatistic();
@@ -112,21 +112,18 @@ function initTraining(next?: () => void) {
         try {
           const response = await onEndTraining();
 
-          console.log(response);
           if (next) {
-            console.log("go next")
             next();
           }
           return;
         }
         catch (error) {
-          console.log(error);
           return;
         }
       }
       buffer.push(code);
       updateStatistic();
-      dataStatisticSpeed.addData({char: key.toLowerCase(), speed: statistic.speed});
+      dataStatisticSpeed.addStatisticData({char: key.toLowerCase(), speed: statistic.speed});
       toggleClassTextChar(testingTextElem, indexTargetChar, "text__char-passed");
       toggleClassTextChar(testingTextElem, indexTargetChar, "text__char-target");
 

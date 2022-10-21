@@ -4,7 +4,7 @@ import {IDataStatistic, IMatchPagesUrl} from "../types";
 import loginFormTab from "../modules/loginFormTab";
 import loginFormListener from "../modules/loginFormListener";
 import {authenticate} from "../services";
-// general data
+// general statisticData
 import {MATCH_PAGES_URL} from "../generalData";
 
 async function login() {

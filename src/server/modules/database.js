@@ -2,7 +2,7 @@ const mysql = require("mysql");
 
 
 /*
-* find user in db. Will return some error or data of an existing user.
+* find user in db. Will return some error or statisticData of an existing user.
 * @param {Object} db
 *   Pool to the database.
 * @param {String || Number} userData
@@ -107,7 +107,7 @@ async function changeData(db, tableName, valueStrFind, nameColumnFind, newUserDa
 
         resolve({
           status: 200,
-          message: "data updated"
+          message: "statisticData updated"
         })
       })
     });
@@ -228,7 +228,7 @@ function createUserStatistic(db, tableName, timestamp, userId, charValue, speedV
   return new Promise((resolve, reject) => {
     db.getConnection((error, connection) => {
       if(error) {
-        throw new Error(error);
+        throw error;
       }
 
       const createStrSql = `INSERT INTO ${tableName} (timestamp, user_id, char_value, speed_value) VALUES(?, ?, ?, ?)`;
@@ -247,4 +247,27 @@ function createUserStatistic(db, tableName, timestamp, userId, charValue, speedV
   })
 }
 
-module.exports = {searchData, createUser, changeToken, createTemporaryCode, changeData, createUserStatistic, searchDataCustom}
+function createUserStatisticText(db, tableName, timestamp, userId, value) {
+  return new Promise((resolve, reject) => {
+    db.getConnection((error, connection) => {
+      if(error) {
+        throw error;
+      }
+
+      const createStrSql = `INSERT INTO ${tableName} (timestamp, user_id, value) VALUES(?, ?, ?)`;
+      const createQuerySql = mysql.format(createStrSql, [timestamp, userId, value]);
+
+      connection.query(createQuerySql, (error, result) => {
+        connection.release();
+
+        if(error) {
+          reject(error);
+        }
+
+        resolve();
+      })
+    })
+  })
+}
+
+module.exports = {searchData, createUser, changeToken, createTemporaryCode, changeData, createUserStatistic, createUserStatisticText, searchDataCustom}

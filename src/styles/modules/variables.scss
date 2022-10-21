@@ -10,3 +10,14 @@ $bright-orange: #eb7131;
 $soft-light-blue: #6ae6ff;
 $soft-pink: #f34f7d;
 $menu-color: rgb(59 194 245);
+
+@mixin beforePseudoLine {
+  content: "";
+  position: absolute;
+  top: 0;
+  height: 100%;
+  left: -1rem;
+  display: block;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent 0%, rgb(74, 177, 232) 90%, transparent);
+}

@@ -1,7 +1,7 @@
 import {Chart, registerables } from "chart.js";
 import {IDataStatistic} from "../types";
 
-function makeChart(chartData: IDataStatistic["timestamp"], canvasSelector: string) {
+function makeChart(chartData: IDataStatistic["timestamp"], canvasSelector: string, label: string) {
   Chart.register(...registerables);
   const canvasContext = (<HTMLCanvasElement>document.querySelector(canvasSelector)).getContext('2d');
 
@@ -14,7 +14,7 @@ function makeChart(chartData: IDataStatistic["timestamp"], canvasSelector: strin
   }
   const dataTest = {
     datasets: [{
-      label: 'My testing 2',
+      label: label,
       backgroundColor: 'rgb(255, 99, 132)',
       borderColor: 'rgb(255, 99, 132)',
       data: formattingData

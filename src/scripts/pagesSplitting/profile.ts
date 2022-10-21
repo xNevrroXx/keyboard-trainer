@@ -1,6 +1,6 @@
 import {IMatchPagesUrl} from "../types";
 import {authenticate} from "../services";
-// general data
+// general statisticData
 import {MATCH_PAGES_URL} from "../generalData";
 
 async function profile() {

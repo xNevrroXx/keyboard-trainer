@@ -4,14 +4,15 @@ import axios from "axios";
 import getCookies from "./modules/getCookies";
 // types
 import {
-  IAdditionalDataStatisticSpeed,
+  IAdditionalDataStatistic,
   IBackendUrls,
   IDataLogin,
   IDataRecover__stageCode,
   IDataRecover__stageEmail,
   IDataRecover__stagePassword,
   IDataRegister,
-  IDataStatistic
+  IDataStatistic,
+  IResponseStatistic
 } from "./types";
 
 
@@ -109,9 +110,9 @@ async function recoverStagePassword(data: IDataRecover__stagePassword) {
   }
 }
 
-async function statisticDataPost(dataStatisticSpeed: IAdditionalDataStatisticSpeed[]) {
+async function statisticDataPost(dataStatisticSpeed: {text: string, statisticData: IAdditionalDataStatistic[]}) {
   const data = {
-    "statistic-data": dataStatisticSpeed,
+    "statistic": dataStatisticSpeed,
   }
 
   try {
@@ -124,7 +125,7 @@ async function statisticDataPost(dataStatisticSpeed: IAdditionalDataStatisticSpe
 async function statisticDataGet(searchWhichResult: string) {
   try {
     const response: any = await axios.get(backendUrlsObj.statistic.get.speed + `?which=${searchWhichResult}`);
-    const data: IDataStatistic = response.data.data;
+    const data: IResponseStatistic = response.data.data;
 
     return data;
   } catch (error) {

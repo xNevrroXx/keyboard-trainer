@@ -4,6 +4,7 @@ import initTraining from "./initTraining";
 
 function initTesting(next: () => void) {
   const modalStartPrint: HTMLElement = document.querySelector(".modal_start-print");
+  const testingText = document.querySelector("#testing-text");
 
   keyboard();
   initModal({
@@ -29,14 +30,19 @@ function initTesting(next: () => void) {
       }
 
       function handleInitTraining() {
-        modalStartPrint.dispatchEvent(new CustomEvent("closeModal"));
+        if(testingText.textContent.length !== 0) {
+          modalStartPrint.dispatchEvent(new CustomEvent("closeModal"));
 
-        startPrintBtn.removeEventListener("click", handleInitTraining);
-        document.removeEventListener("keyup", handleKeyUp);
+          startPrintBtn.removeEventListener("click", handleInitTraining);
+          document.removeEventListener("keyup", handleKeyUp);
 
-        initTraining(
-          next
-        );
+          initTraining(
+            next
+          );
+        }
+        else {
+          alert("There is no testing text yet");
+        }
       }
     }
   });

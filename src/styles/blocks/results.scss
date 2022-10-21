@@ -1,5 +1,68 @@
+@import "../modules/variables";
+
+
 .results {
   display: flex;
   flex-direction: column;
   align-items: center;
+  &__hidden {
+    display: none;
+  }
+
+  &__wrapper-title {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 1.5rem;
+  }
+  &__date {
+    text-align: center;
+    font-size: 2.5rem;
+    line-height: 2.5rem;
+    color: $soft-pink;
+  }
+  &__title {
+    text-align: center;
+  }
+  &__feedback {
+    font-size: 1.5rem;
+    margin-bottom: 4rem;
+  }
+  &__statistic {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    grid-template-rows: 2rem 30rem;
+    gap: 2rem;
+  }
+  &__subtitle {
+    order: 1;
+    text-align: center;
+  }
+  &__testing-text {
+    overflow-y: auto;
+    order: 2;
+    position: relative;
+    padding: 3rem 1rem 1rem 1rem;
+    line-height: 1.5rem;
+    color: rgba(black, .7);
+    &::before {
+      @include beforePseudoLine;
+      left: 0;
+    }
+  }
+  &__canvas-container {
+    height: 100%;
+    width: 100%;
+    padding: 1rem;
+    order: 2;
+    position: relative;
+    &::before {
+      @include beforePseudoLine;
+    }
+  }
+  &__statistic-canvas {
+    width: 100%;
+    height: 100%;
+  }
 }

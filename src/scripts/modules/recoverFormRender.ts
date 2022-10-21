@@ -1,4 +1,4 @@
-// general data
+// general statisticData
 import {MATCH_PAGES_URL} from "../generalData";
 
 function recoverFormRender() {

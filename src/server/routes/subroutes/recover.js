@@ -71,7 +71,7 @@ function recoverRoutes (app, db) {
           try {
             const updatingResult = await changeData(db, "user", email, "email", password, "password");
             response.status(200).json({
-              message: "data has been updated!"
+              message: "statisticData has been updated!"
             })
           } catch (error) {
             response.sendStatus(500).json({

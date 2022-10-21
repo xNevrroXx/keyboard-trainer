@@ -2,7 +2,7 @@ import recoverFormRender from "../modules/recoverFormRender";
 import recoverFormListener from "../modules/recoverFormListener";
 import {authenticate} from "../services";
 import initTesting from "../modules/initTesting";
-// general data
+// general statisticData
 import {MATCH_PAGES_URL} from "../generalData";
 
 async function recovery() {

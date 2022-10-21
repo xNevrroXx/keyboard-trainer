@@ -1,9 +1,17 @@
 <main class="container">
+  <div class="plug title hidden">
+    <h1 class="title">There is no results yet</h1>
+  </div>
   <div class="results">
-    <h1>Your results</h1>
-    <p class="feedback">Keep it up! Your accuracy wasn't below than <span style="color: red">98%</span></p>
-    <div class="result-statistic">
-      <canvas class="result-statistic-canvas" id="myChart"></canvas>
+    <div class="results__wrapper-title"><h1 class="results__title title">Your results from</h1><span class="results__date"></span></div>
+    <p class="results__feedback"><!--Keep it up! Your accuracy wasn't below than <span style="color: red">98%</span>--></p>
+    <div class="results__statistic">
+      <h3 class="results__subtitle subtitle">Text</h3>
+      <p class="results__testing-text"></p>
+      <h3 class="results__subtitle subtitle">Speed and accuracy statistic</h3>
+      <div class="results__canvas-container">
+        <canvas class="results__statistic-canvas" id="myChart"></canvas>
+      </div>
     </div>
   </div>
 </main>

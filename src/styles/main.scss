@@ -45,6 +45,16 @@ html {
 body {
     font-family: "Montserrat", sans-serif;
 }
+.plug {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+.hidden {
+    display: none;
+}
 footer {
     position: absolute;
     bottom: 0;
@@ -71,7 +81,7 @@ li {
     list-style-type: none;
 }
 .body-container-main {
-    padding: 8vw;
+    padding: 7vw;
     background-color: $soft-light-blue;
     display: flex;
     justify-content: center;
@@ -93,6 +103,15 @@ li {
 h1 {
     font-size: 4rem;
     text-align: center;
+}
+.title {
+    line-height: 3.5rem;
+    font-size: 3.5rem;
+}
+.subtitle {
+    line-height: 1.5rem;
+    font-size: 1.5rem;
+    opacity: .9;
 }
 .wrapper-content {
     display: flex;
@@ -119,7 +138,3 @@ h1 {
 @import "blocks/profile";
 @import "blocks/editprofile";
 @import "blocks/results";
-
-.feedback {
-    font-size: 1.5rem;
-}

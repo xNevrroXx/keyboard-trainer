@@ -1,32 +1,55 @@
-const {createUserStatistic, searchData, searchDataCustom} = require("../../modules/database");
+const {createUserStatistic, searchData, searchDataCustom, createUserStatisticText} = require("../../modules/database");
 const {validateTokenAccessBind} = require("../../modules/validateToken");
 
 
 function statistic (app, db) {
   app.route("/statistic/speed")
-    .post((request, response, next) => validateTokenAccessBind(request, response, next, db),
+    .post((request, response, next) => validateTokenAccessBind(request, response, next),
     async (request, response) => {
       // start function
       const user = request.user;
       const userId = user.id;
-      const statisticData = request.body["statistic-data"];
+      const statistic = request.body["statistic"];
+      const statisticData = statistic["statisticData"];
       const timestamp = new Date().getTime().toString();
 
       try {
-        for (let i = 0; i < statisticData.length; i++) {
-          await createUserStatistic(
-            db,
-            "user_statistic_speed_typing",
-            timestamp,
-            userId,
-            statisticData[i]["char"],
-            statisticData[i]["speed"]
-          );
+        const responseErrors = {};
+
+        try {
+          await createUserStatisticText(db, "user_statistic_texts", timestamp, userId, statistic["text"]);
+        }
+        catch (error) {
+          responseErrors["text"] = error;
         }
 
-        response.json({
-          message: "data has been posted"
-        })
+        for (let i = 0; i < statisticData.length; i++) {
+          try {
+            await createUserStatistic(
+              db,
+              "user_statistic_speed_typing",
+              timestamp,
+              userId,
+              statisticData[i]["char"],
+              statisticData[i]["speed"]
+            );
+          }
+          catch (error) {
+            responseErrors["statisticData"] = error;
+          }
+        }
+
+        if(responseErrors["text"] || responseErrors["statisticData"]) {
+          response.json({
+            errors: responseErrors,
+            message: "statisticData has been posted"
+          })
+        }
+        else {
+          response.json({
+            message: "statisticData has been posted"
+          })
+        }
       }
       catch (error) {
         response.status(400).json({
@@ -41,17 +64,36 @@ function statistic (app, db) {
         const user = request.user;
         const userId = user.id;
         const query = await request.query;
+        let findingResult = {
+          texts: [],
+          statistic: []
+        };
 
         try {
-          let findingResult = null;
           if (query.which === "all") {
-            findingResult = await searchDataCustom(db,
-              `SELECT timestamp, user_id, char_value AS "char", speed_value FROM user_statistic_speed_typing ORDER BY "timestamp" DESC, "char" ASC`);
+
+            findingResult["statistic"] = await searchDataCustom(db,
+              `SELECT timestamp, user_id, char_value AS "char", speed_value FROM user_statistic_speed_typing
+                            WHERE user_id = ${userId}
+                            ORDER BY "timestamp" DESC, "char" ASC`
+            );
           }
           else if (query.which === "last") {
-            findingResult = await searchDataCustom(db,
+            findingResult["texts"] = await searchDataCustom(db,
+              `SELECT user_id, timestamp, value FROM user_statistic_texts
+                              WHERE 
+                                (user_id = ${userId})
+                              AND
+                                (timestamp = (SELECT MAX(timestamp) FROM user_statistic_texts))`
+            );
+
+            findingResult["statistic"] = await searchDataCustom(db,
               `SELECT user_id, char_value AS "char", speed_value as "speed", timestamp FROM user_statistic_speed_typing 
-                              WHERE timestamp = (SELECT MAX(timestamp) FROM user_statistic_speed_typing) ORDER BY char_value`
+                              WHERE 
+                                (user_id = ${userId})
+                              AND
+                                (timestamp = (SELECT MAX(timestamp) FROM user_statistic_speed_typing)) 
+                              ORDER BY char_value`
             );
           }
           else {
@@ -61,14 +103,30 @@ function statistic (app, db) {
           }
 
           const data = {};
-          findingResult.data.forEach(charStatistic => {
-            if(!data[charStatistic["timestamp"]]) {
-              data[charStatistic["timestamp"]] = [];
+          const statisticData = findingResult.statistic;
+          const texts = findingResult.texts;
+
+          statisticData.data.forEach(charStatisticSlice => {
+            const timestamp = charStatisticSlice["timestamp"];
+            if(!data[timestamp]) {
+              data[timestamp] = {
+                text: "",
+                statistic: []
+              };
             }
-            data[charStatistic["timestamp"]].push({
-              char: charStatistic["char"],
-              speed: charStatistic["speed"],
+
+            data[timestamp].statistic.push({
+              char: charStatisticSlice["char"],
+              speed: charStatisticSlice["speed"],
             })
+          })
+
+          texts.data.forEach(textStatisticSlice => {
+            if(!data[textStatisticSlice["timestamp"]]) {
+              data[textStatisticSlice["timestamp"]] = {};
+            }
+
+            data[textStatisticSlice["timestamp"]]["text"] = textStatisticSlice["value"];
           })
 
           response.json({
@@ -76,10 +134,7 @@ function statistic (app, db) {
           })
         }
         catch (error) {
-          response.status(400).json({
-            error: error,
-            message: "statistic speed data doesn't exist"
-          })
+          response.status(404).json(error)
         }
 
       })
