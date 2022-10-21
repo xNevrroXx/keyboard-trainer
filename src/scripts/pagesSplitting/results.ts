@@ -21,7 +21,7 @@ async function results() {
         const testingData = data[timestamp];
 
         testDateElem.textContent = new Date(+timestamp).toLocaleString();
-        testTextElem.textContent = testingData.text;
+        testTextElem.innerHTML = testingData.text;
         makeChart(testingData.statistic, "#myChart", "speed");
       }
     }

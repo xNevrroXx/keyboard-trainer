@@ -36,9 +36,6 @@ function makeChart(chartData: IDataStatistic["timestamp"], canvasSelector: strin
         x: {
           ticks: {
             callback: function (value: any, index: any) {
-              if (this.getLabelForValue(value) === " ") {
-                return "Space";
-              }
               return this.getLabelForValue(value);
             }
           }

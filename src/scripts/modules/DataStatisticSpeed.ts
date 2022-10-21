@@ -11,6 +11,7 @@ class DataStatisticSpeed {
   setText(text: string) {
     this.text = text;
   }
+
   addStatisticData(additionalStatisticSpeedData: IAdditionalDataStatistic) {
     for (const statisticCharSlice of this.statisticData) {
       if (statisticCharSlice.char === additionalStatisticSpeedData.char) {
@@ -22,24 +23,30 @@ class DataStatisticSpeed {
 
     this.statisticData.push({
       char: additionalStatisticSpeedData.char,
-      speedArr: [additionalStatisticSpeedData.speed]
+      speedArr: [additionalStatisticSpeedData.speed],
+      accuracyArr: [additionalStatisticSpeedData.accuracy]
     })
 
     return;
   };
 
-  withAvgSpeed() {
+  getAvgStatistic() {
     const statisticData: IAdditionalDataStatistic[] = [];
 
     this.statisticData.forEach((value: IDataStatisticSpeed) => {
       const speed = value.speedArr;
+      const accuracy = value.accuracyArr;
 
-      const sum = speed.reduce((sum, currentValue) => sum + currentValue, 0);
-      let averageSpeed = Math.round(sum / speed.length);
+      const sumSpeed = speed.reduce((sum, currentValue) => sum + currentValue, 0);
+      let averageSpeed = Math.round(sumSpeed / speed.length);
+
+      const sumAccuracy = speed.reduce((sum, currentValue) => sum + currentValue, 0);
+      let averageAccuracy = Math.round(sumAccuracy / speed.length);
 
       statisticData.push({
         char: value.char,
-        speed: averageSpeed
+        speed: averageSpeed,
+        accuracy: averageAccuracy
       })
     })
 

@@ -11,7 +11,7 @@ function initTraining(next?: () => void) {
     countErrors: number = 0,
     wasError: boolean = false;
 
-  const statistic = {
+  const statistic: {speed: number, accuracy: number} = {
     speed: 0,
     accuracy: 0
   },
@@ -37,8 +37,10 @@ function initTraining(next?: () => void) {
     statisticAccuracyElem = statisticElem.querySelector(".statistic-item_accuracy .statistic-item__value");
 
   testingTextElem.textContent = testingTextElem.textContent.trim();
-  splitText(testingTextElem);
-  dataStatisticSpeed.setText(testingTextElem.textContent);
+  const testingText = splitText(testingTextElem);
+
+  // logic
+  dataStatisticSpeed.setText(testingText);
   toggleClassTextChar(testingTextElem, indexTargetChar, "text__char-target");
   scrollToTarget();
 
@@ -62,10 +64,16 @@ function initTraining(next?: () => void) {
       const code = target.getAttribute("id");
 
       let key = null;
+      let codeKey = null;
 
       if (code === "Space") {
         key = " ";
-      } else if (isClickShift.isClicked || isClickCapsLock.isClicked) {
+        codeKey = "Space";
+      } else if (code === "Enter") {
+        key = "";
+        codeKey = "Enter";
+      }
+      else if (isClickShift.isClicked || isClickCapsLock.isClicked) {
         key = target.textContent.toUpperCase();
       } else if (event.getModifierState && (event.getModifierState("CapsLock") || event.getModifierState("Shift"))) {
         key = target.textContent.toUpperCase();
@@ -74,7 +82,7 @@ function initTraining(next?: () => void) {
       }
 
       if (!specialKeyCodes.includes(code)) {
-        processingTraining(key, code);
+        processingTraining(key, codeKey);
       } else {
         if (code === "CapsLock") {
           if (!isClickCapsLock.isClicked) {
@@ -97,18 +105,37 @@ function initTraining(next?: () => void) {
     processingTraining(key, code);
   }
   async function processingTraining(key: string, code: string) {
-    if (isClickShift.isClicked) {
+    if (isClickShift.isClicked) { // canceling the Shift key press which was pressed with a mouse click
       dispatchKeyDown(isClickShift, ["ShiftLeft", "ShiftRight"], "keyup");
     }
 
-    if (testingTextElem.textContent[indexTargetChar] === key && !specialKeyCodes.includes(code)) {
+    if (testingText[indexTargetChar] === key && !specialKeyCodes.includes(code) || (testingText[indexTargetChar].charCodeAt(0) === 10 && code === "Enter")) {
       scrollToTarget();
+
+      buffer.push(code);
+      updateStatistic();
+      if (code === "Space" || code === "Enter") {
+        dataStatisticSpeed.addStatisticData({char: code, speed: statistic.speed, accuracy: wasError ? 0 : 100});
+      }
+      else {
+        dataStatisticSpeed.addStatisticData({char: key.toLowerCase(), speed: statistic.speed, accuracy: wasError ? 0 : 100});
+      }
+
       if (wasError) {
         toggleClassTextChar(testingTextElem, indexTargetChar, "text__char-failed");
         wasError = false;
       }
 
-      if (testingTextElem.textContent.length - 1 === indexTargetChar) {
+      if (testingText[indexTargetChar].charCodeAt(0) === 10) {
+        toggleClassTextChar(testingTextElem, indexTargetChar, "text__char-passed-svg");
+      }
+      toggleClassTextChar(testingTextElem, indexTargetChar, "text__char-passed");
+      toggleClassTextChar(testingTextElem, indexTargetChar, "text__char-target");
+
+      indexTargetChar++;
+      toggleClassTextChar(testingTextElem, indexTargetChar, "text__char-target");
+
+      if (testingText.length - 1 === indexTargetChar) {
         try {
           const response = await onEndTraining();
 
@@ -121,14 +148,6 @@ function initTraining(next?: () => void) {
           return;
         }
       }
-      buffer.push(code);
-      updateStatistic();
-      dataStatisticSpeed.addStatisticData({char: key.toLowerCase(), speed: statistic.speed});
-      toggleClassTextChar(testingTextElem, indexTargetChar, "text__char-passed");
-      toggleClassTextChar(testingTextElem, indexTargetChar, "text__char-target");
-
-      indexTargetChar++;
-      toggleClassTextChar(testingTextElem, indexTargetChar, "text__char-target");
     } else if (!specialKeyCodes.includes(code) && !wasError) {
       wasError = true;
       toggleClassTextChar(testingTextElem, indexTargetChar, "text__char-failed");
@@ -140,7 +159,7 @@ function initTraining(next?: () => void) {
     window.removeEventListener("keydown", handleKeyDownTraining);
     window.removeEventListener("click", handleClick);
 
-    return await statisticDataPost(dataStatisticSpeed.withAvgSpeed());
+    return await statisticDataPost(dataStatisticSpeed.getAvgStatistic());
   }
   function toggleClassTextChar(textElementWithSpans: HTMLElement, indexHighlight: number, className: string) {
     textElementWithSpans.querySelectorAll("span")[indexHighlight].classList.toggle(className);

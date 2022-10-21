@@ -21,18 +21,19 @@ export interface IMatchPagesUrl {
 export interface IDataStatisticSpeed {
   char: string,
   speedArr: number[]
+  accuracyArr: number[]
 }
 export interface IAdditionalDataStatistic {
   char: string,
-  speed?: number,
-  accuracy?: number
+  speed: number,
+  accuracy: number
 }
 
 export interface IDataStatistic {
   [timestamp: string]: {
     char: string
-    speed?: number,
-    accuracy?: number
+    speed: number,
+    accuracy: number
   }[]
 }
 
