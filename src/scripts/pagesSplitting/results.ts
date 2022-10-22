@@ -1,7 +1,9 @@
+// own modules
 import makeChart from "../modules/makeChart";
-// types
-import {IResponseStatistic, IDataStatistic} from "../types";
+import initTab from "../modules/initTab";
 import {authenticate, statisticDataGet} from "../services";
+// types
+import {IResponseStatistic, ITabMatchTriggerContent} from "../types";
 // general statisticData
 import {MATCH_PAGES_URL} from "../generalData";
 
@@ -12,8 +14,41 @@ async function results() {
     const resultsElem = document.querySelector(".results");
 
     try {
+      const matchTriggerContent: ITabMatchTriggerContent = {
+        containers: {
+          trigger: ".results__trigger-container",
+          content: ".results__canvases-container"
+        },
+        mainSelectors: {
+          trigger: ".results__trigger",
+          content: ".results__content"
+        },
+        activeClass: {
+          trigger: "button_in-text_active",
+          content: "results__active-canvas"
+        },
+        matchesDatasetId: [
+          {
+            trigger: 1,
+            content: 1
+          },
+          {
+            trigger: 2,
+            content: 2
+          }
+        ],
+        defaultActiveDatasetId: 1
+      }
+      initTab(matchTriggerContent);
+    }
+    catch (error) {
+      console.log(error);
+    }
+
+    try {
       const response: IResponseStatistic | Error = await statisticDataGet("last");
       const data = response as IResponseStatistic;
+
 
       for (const timestamp of Object.keys(data) as (keyof typeof data)[]) {
         const testTextElem = document.querySelector(".results__testing-text");
@@ -22,7 +57,8 @@ async function results() {
 
         testDateElem.textContent = new Date(+timestamp).toLocaleString();
         testTextElem.innerHTML = testingData.text;
-        makeChart(testingData.statistic, "#myChart", "speed");
+        makeChart(testingData.statistic, "#speed", "speed", "speed");
+        makeChart(testingData.statistic, "#accuracy", "accuracy", "accuracy");
       }
     }
     catch (error) {

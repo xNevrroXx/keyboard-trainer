@@ -224,15 +224,15 @@ async function changeToken(db, tableName, userId, value) {
   }
 }
 
-function createUserStatistic(db, tableName, timestamp, userId, charValue, speedValue) {
+function createUserStatistic(db, tableName, timestamp, userId, charValue, speedValue, accuracyValue, totalNumber, countMistakes) {
   return new Promise((resolve, reject) => {
     db.getConnection((error, connection) => {
       if(error) {
         throw error;
       }
 
-      const createStrSql = `INSERT INTO ${tableName} (timestamp, user_id, char_value, speed_value) VALUES(?, ?, ?, ?)`;
-      const createQuerySql = mysql.format(createStrSql, [timestamp, userId, charValue, speedValue]);
+      const createStrSql = `INSERT INTO ${tableName} (timestamp, user_id, char_value, speed_value, accuracy_value, total_number, count_mistakes) VALUES(?, ?, ?, ?, ?, ?, ?)`;
+      const createQuerySql = mysql.format(createStrSql, [timestamp, userId, charValue, speedValue, accuracyValue, totalNumber, countMistakes]);
 
       connection.query(createQuerySql, (error, result) => {
         connection.release();

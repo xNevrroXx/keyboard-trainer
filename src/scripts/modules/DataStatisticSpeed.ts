@@ -1,4 +1,4 @@
-import {IAdditionalDataStatistic, IDataStatisticSpeed} from "../types";
+import {IAdditionalDataStatistic, IAverageDataStatistic, IDataStatisticSpeed} from "../types";
 
 class DataStatisticSpeed {
   readonly statisticData: IDataStatisticSpeed[] = [];
@@ -15,38 +15,59 @@ class DataStatisticSpeed {
   addStatisticData(additionalStatisticSpeedData: IAdditionalDataStatistic) {
     for (const statisticCharSlice of this.statisticData) {
       if (statisticCharSlice.char === additionalStatisticSpeedData.char) {
-        statisticCharSlice.speedArr.push(additionalStatisticSpeedData.speed);
+        if(additionalStatisticSpeedData.speed) {
+          statisticCharSlice.speedArr.push(additionalStatisticSpeedData.speed);
+        }
+        statisticCharSlice.accuracyArr.push(additionalStatisticSpeedData.accuracy);
 
         return;
       }
     }
 
-    this.statisticData.push({
-      char: additionalStatisticSpeedData.char,
-      speedArr: [additionalStatisticSpeedData.speed],
-      accuracyArr: [additionalStatisticSpeedData.accuracy]
-    })
+    if(additionalStatisticSpeedData.speed) {
+      this.statisticData.push({
+        char: additionalStatisticSpeedData.char,
+        speedArr: [additionalStatisticSpeedData.speed],
+        accuracyArr: [additionalStatisticSpeedData.accuracy]
+      })
+    }
+    else {
+      this.statisticData.push({
+        char: additionalStatisticSpeedData.char,
+        speedArr: [],
+        accuracyArr: [additionalStatisticSpeedData.accuracy]
+      })
+    }
 
     return;
   };
 
   getAvgStatistic() {
-    const statisticData: IAdditionalDataStatistic[] = [];
+    const statisticData: IAverageDataStatistic[] = [];
 
     this.statisticData.forEach((value: IDataStatisticSpeed) => {
       const speed = value.speedArr;
       const accuracy = value.accuracyArr;
+      const totalCharNumber = accuracy.length;
+      const countMistakes = accuracy.reduce((sum, currentValue) => {
+        if (currentValue === 0) {
+          return sum + 1;
+        }
+        return sum;
+      }, 0)
 
       const sumSpeed = speed.reduce((sum, currentValue) => sum + currentValue, 0);
       let averageSpeed = Math.round(sumSpeed / speed.length);
 
-      const sumAccuracy = speed.reduce((sum, currentValue) => sum + currentValue, 0);
-      let averageAccuracy = Math.round(sumAccuracy / speed.length);
+      const sumAccuracy = accuracy.reduce((sum, currentValue) => sum + currentValue, 0);
+      let averageAccuracy = Math.round(sumAccuracy / accuracy.length);
 
       statisticData.push({
         char: value.char,
         speed: averageSpeed,
-        accuracy: averageAccuracy
+        accuracy: averageAccuracy,
+        totalNumber: totalCharNumber,
+        countMistakes: countMistakes
       })
     })
 

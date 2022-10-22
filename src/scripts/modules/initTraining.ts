@@ -115,10 +115,10 @@ function initTraining(next?: () => void) {
       buffer.push(code);
       updateStatistic();
       if (code === "Space" || code === "Enter") {
-        dataStatisticSpeed.addStatisticData({char: code, speed: statistic.speed, accuracy: wasError ? 0 : 100});
+        dataStatisticSpeed.addStatisticData({char: code, speed: statistic.speed, accuracy: 100});
       }
       else {
-        dataStatisticSpeed.addStatisticData({char: key.toLowerCase(), speed: statistic.speed, accuracy: wasError ? 0 : 100});
+        dataStatisticSpeed.addStatisticData({char: key.toLowerCase(), speed: statistic.speed, accuracy: 100});
       }
 
       if (wasError) {
@@ -129,10 +129,8 @@ function initTraining(next?: () => void) {
       if (testingText[indexTargetChar].charCodeAt(0) === 10) {
         toggleClassTextChar(testingTextElem, indexTargetChar, "text__char-passed-svg");
       }
-      toggleClassTextChar(testingTextElem, indexTargetChar, "text__char-passed");
-      toggleClassTextChar(testingTextElem, indexTargetChar, "text__char-target");
 
-      indexTargetChar++;
+      toggleClassTextChar(testingTextElem, indexTargetChar, "text__char-passed");
       toggleClassTextChar(testingTextElem, indexTargetChar, "text__char-target");
 
       if (testingText.length - 1 === indexTargetChar) {
@@ -148,9 +146,26 @@ function initTraining(next?: () => void) {
           return;
         }
       }
-    } else if (!specialKeyCodes.includes(code) && !wasError) {
+      else {
+        indexTargetChar++;
+        toggleClassTextChar(testingTextElem, indexTargetChar, "text__char-target");
+      }
+    } else if (!specialKeyCodes.includes(code)) {
+      let codeTarget = "";
+
+      if (/( )/.test(testingText[indexTargetChar])) {
+        codeTarget = "Space";
+      }
+      else if (/(\r\n|\r|\n)/.test(testingText[indexTargetChar])) {
+        codeTarget = "Enter";
+      }
+      else {
+        codeTarget = testingText[indexTargetChar];
+      }
+
+      dataStatisticSpeed.addStatisticData({char: codeTarget, accuracy: 0});
       wasError = true;
-      toggleClassTextChar(testingTextElem, indexTargetChar, "text__char-failed");
+      testingTextElem.querySelectorAll("span")[indexTargetChar].classList.add("text__char-failed");
       countErrors++;
     }
   }

@@ -1,7 +1,7 @@
 import {Chart, registerables } from "chart.js";
 import {IDataStatistic} from "../types";
 
-function makeChart(chartData: IDataStatistic["timestamp"], canvasSelector: string, label: string) {
+function makeChart(chartData: IDataStatistic["timestamp"], canvasSelector: string, label: string, targetTypeChart: "speed" | "accuracy") {
   Chart.register(...registerables);
   const canvasContext = (<HTMLCanvasElement>document.querySelector(canvasSelector)).getContext('2d');
 
@@ -9,7 +9,7 @@ function makeChart(chartData: IDataStatistic["timestamp"], canvasSelector: strin
   for (let i = 0, length = chartData.length; i < length; i++) {
     formattingData.push({
       x: chartData[i].char,
-      y: chartData[i].speed
+      y: chartData[i][targetTypeChart]
     })
   }
   const dataTest = {
@@ -29,7 +29,7 @@ function makeChart(chartData: IDataStatistic["timestamp"], canvasSelector: strin
         y: {
           ticks: {
             callback: function(value: any, index: any) {
-              return this.getLabelForValue(value) + " ch/min"
+              return this.getLabelForValue(value) + (targetTypeChart === "speed" ? " ch/min" : "%");
             }
           }
         },
@@ -50,10 +50,18 @@ function makeChart(chartData: IDataStatistic["timestamp"], canvasSelector: strin
               return label;
             },
             beforeLabel: function(context: any) {
-              let label = "avg speed - ";
+              let label = `avg ${targetTypeChart} - `;
+              const value = context.parsed.y;
+              const char = context.label;
 
-              if(context.parsed.y) {
-                label += context.parsed.y;
+              if (value || value === 0) {
+                label += value;
+              }
+
+              if (targetTypeChart === "accuracy") {
+                const charData = chartData.filter(value => value.char === char)[0];
+
+                label += `. Mistake in ${charData.countMistakes} out of ${charData.totalNumber}`;
               }
 
               return label;

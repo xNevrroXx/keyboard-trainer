@@ -4,7 +4,7 @@ import axios from "axios";
 import getCookies from "./modules/getCookies";
 // types
 import {
-  IAdditionalDataStatistic,
+  IAdditionalDataStatistic, IAverageDataStatistic,
   IBackendUrls,
   IDataLogin,
   IDataRecover__stageCode,
@@ -110,7 +110,7 @@ async function recoverStagePassword(data: IDataRecover__stagePassword) {
   }
 }
 
-async function statisticDataPost(dataStatisticSpeed: {text: string, statisticData: IAdditionalDataStatistic[]}) {
+async function statisticDataPost(dataStatisticSpeed: {text: string, statisticData: IAverageDataStatistic[]}) {
   const data = {
     "statistic": dataStatisticSpeed,
   }

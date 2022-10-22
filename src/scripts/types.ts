@@ -20,28 +20,31 @@ export interface IMatchPagesUrl {
 * */
 export interface IDataStatisticSpeed {
   char: string,
-  speedArr: number[]
+  speedArr?: number[]
   accuracyArr: number[]
 }
 export interface IAdditionalDataStatistic {
   char: string,
-  speed: number,
+  speed?: number,
   accuracy: number
+}
+export interface IAverageDataStatistic {
+  char: string,
+  speed: number,
+  accuracy: number,
+  totalNumber: number,
+  countMistakes: number
 }
 
 export interface IDataStatistic {
-  [timestamp: string]: {
-    char: string
-    speed: number,
-    accuracy: number
-  }[]
+  [timestamp: string]: IAverageDataStatistic[]
 }
 
 
 export interface IResponseStatistic {
   [timestamp: string]: {
     text: string,
-    statistic: IAdditionalDataStatistic[]
+    statistic: IAverageDataStatistic[]
   }
 }
 
@@ -98,4 +101,24 @@ export interface IBackendUrls {
       accuracy: string
     }
   }
+}
+
+export interface ITabMatchTriggerContent {
+  containers: {
+    trigger: string,
+    content: string
+  },
+  mainSelectors: {
+  trigger: string,
+  content: string,
+  },
+  activeClass: {
+    trigger: string,
+    content: string
+  },
+  matchesDatasetId: {
+    trigger: number,
+    content: number
+  }[],
+  defaultActiveDatasetId: number
 }

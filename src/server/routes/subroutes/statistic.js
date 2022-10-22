@@ -27,11 +27,14 @@ function statistic (app, db) {
           try {
             await createUserStatistic(
               db,
-              "user_statistic_speed_typing",
+              "user_statistic_typing",
               timestamp,
               userId,
               statisticData[i]["char"],
-              statisticData[i]["speed"]
+              statisticData[i]["speed"],
+              statisticData[i]["accuracy"],
+              statisticData[i]["totalNumber"],
+              statisticData[i]["countMistakes"]
             );
           }
           catch (error) {
@@ -71,30 +74,39 @@ function statistic (app, db) {
 
         try {
           if (query.which === "all") {
-
             findingResult["statistic"] = await searchDataCustom(db,
-              `SELECT timestamp, user_id, char_value AS "char", speed_value FROM user_statistic_speed_typing
+              `SELECT timestamp, user_id, char_value AS "char", speed_value FROM user_statistic_typing
                             WHERE user_id = ${userId}
                             ORDER BY "timestamp" DESC, "char" ASC`
             );
           }
           else if (query.which === "last") {
-            findingResult["texts"] = await searchDataCustom(db,
-              `SELECT user_id, timestamp, value FROM user_statistic_texts
+            try {
+              findingResult["texts"] = await searchDataCustom(db,
+                `SELECT user_id, timestamp, value FROM user_statistic_texts
                               WHERE 
                                 (user_id = ${userId})
                               AND
                                 (timestamp = (SELECT MAX(timestamp) FROM user_statistic_texts))`
-            );
+              );
+            }
+            catch (error) {
+              console.log(error);
+            }
 
-            findingResult["statistic"] = await searchDataCustom(db,
-              `SELECT user_id, char_value AS "char", speed_value as "speed", timestamp FROM user_statistic_speed_typing 
-                              WHERE 
+            try {
+              findingResult["statistic"] = await searchDataCustom(db,
+                `SELECT timestamp, user_id, char_value as "char", speed_value as "speed", accuracy_value as "accuracy", total_number, count_mistakes FROM user_statistic_typing 
+                              WHERE
                                 (user_id = ${userId})
                               AND
-                                (timestamp = (SELECT MAX(timestamp) FROM user_statistic_speed_typing)) 
+                                (timestamp = (SELECT MAX(timestamp) FROM user_statistic_typing))
                               ORDER BY char_value`
-            );
+              );
+            }
+            catch (error) {
+              console.log(error);
+            }
           }
           else {
             response.status(400).json({
@@ -118,6 +130,9 @@ function statistic (app, db) {
             data[timestamp].statistic.push({
               char: charStatisticSlice["char"],
               speed: charStatisticSlice["speed"],
+              accuracy: charStatisticSlice["accuracy"],
+              totalNumber: charStatisticSlice["total_number"],
+              countMistakes: charStatisticSlice["count_mistakes"]
             })
           })
 

@@ -38,4 +38,22 @@ button {
     width: 12rem;
     height: 2rem;
   }
+  &_in-text {
+    color: black;
+    border-radius: 0;
+    border: 1px solid black;
+    width: max-content;
+    height: max-content;
+    &:hover {
+      background-color: rgba(black, .2);
+    }
+    &#{_active} {
+      color: #6ae6ff;
+      background-color: black;
+      font-weight: 400;
+      &:hover {
+        background-color: rgba(black, .8);
+      }
+    }
+  }
 }
