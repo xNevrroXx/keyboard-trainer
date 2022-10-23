@@ -1,7 +1,7 @@
 @import "../modules/variables";
 
 #testing-text {
-  font-family: "Georgia", sans-serif;
+  font-family: $serif-font;
   overflow-wrap: anywhere;
   border-radius: .5rem;
   padding: 1.5rem 1rem 1.5rem 1rem;

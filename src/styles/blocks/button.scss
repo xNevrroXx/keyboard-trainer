@@ -42,7 +42,7 @@ button {
     color: black;
     border-radius: 0;
     border: 1px solid black;
-    width: max-content;
+    width: 10rem;
     height: max-content;
     &:hover {
       background-color: rgba(black, .2);
@@ -51,6 +51,10 @@ button {
       color: #6ae6ff;
       background-color: black;
       font-weight: 400;
+      &:focus {
+        outline: none;
+        box-shadow: 2px 2px 0 $soft-light-blue inset;
+      }
       &:hover {
         background-color: rgba(black, .8);
       }

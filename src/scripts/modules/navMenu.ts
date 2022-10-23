@@ -1,5 +1,5 @@
 // own modules
-import {logout} from "../services";
+import {logout} from "../services/services";
 import submenu from "./submenu";
 
 function navMenu() {

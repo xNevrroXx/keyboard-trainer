@@ -88,15 +88,15 @@ async function createUser(db, userData) {
   })
 }
 
-async function changeData(db, tableName, valueStrFind, nameColumnFind, newUserDataStr, nameNewColumn) {
+async function changeData(db, tableName, valueColumnWhere, nameColumnWhere, newUserDataValue, nameNewColumn) {
   return new Promise((resolve, reject) => {
     db.getConnection((error, connection) => {
       if (error) {
         return reject(error);
       }
 
-      const updateStrSQL = `UPDATE ${tableName} SET ${nameNewColumn} = ? WHERE ${nameColumnFind} = ?`;
-      const updateQuerySQL = mysql.format(updateStrSQL, [newUserDataStr, valueStrFind]);
+      const updateStrSQL = `UPDATE ${tableName} SET ${nameNewColumn} = ? WHERE ${nameColumnWhere} = ?`;
+      const updateQuerySQL = mysql.format(updateStrSQL, [newUserDataValue, valueColumnWhere]);
 
       connection.query(updateQuerySQL, (error, result) => {
         connection.release();
@@ -108,6 +108,31 @@ async function changeData(db, tableName, valueStrFind, nameColumnFind, newUserDa
         resolve({
           status: 200,
           message: "statisticData updated"
+        })
+      })
+    });
+  })
+}
+
+async function customQuery(db, strSQL) {
+  return new Promise((resolve, reject) => {
+    db.getConnection((error, connection) => {
+      if (error) {
+        return reject(error);
+      }
+
+      const updateQuerySQL = mysql.format(strSQL);
+
+      connection.query(updateQuerySQL, (error, result) => {
+        connection.release();
+
+        if (error) {
+          return reject(error);
+        }
+
+        resolve({
+          status: 200,
+          result: result
         })
       })
     });
@@ -270,4 +295,4 @@ function createUserStatisticText(db, tableName, timestamp, userId, value) {
   })
 }
 
-module.exports = {searchData, createUser, changeToken, createTemporaryCode, changeData, createUserStatistic, createUserStatisticText, searchDataCustom}
+module.exports = {searchData, createUser, changeToken, createTemporaryCode, changeData, createUserStatistic, createUserStatisticText, searchDataCustom, customQuery}

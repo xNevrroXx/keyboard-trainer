@@ -1,11 +1,26 @@
 function initModal(
-  {modalSelector, activeClass, triggerCloseSelector, triggerOpenSelector, callbackOnOpen = null, callbackOnClose = null, next = null}
-: {modalSelector: string, activeClass: string, triggerCloseSelector?: string, triggerOpenSelector?: string, callbackOnOpen?: () => void, callbackOnClose?: () => void, next?: () => void}
+  {
+    modalSelector, activeClass, triggerCloseSelector, triggerConfirmSelector, closeOnBackgroundSelector,
+    triggerOpenSelector, callbackOnOpen = null, callbackOnClose = null, callbackOnConfirm = null,
+    next = null
+  }
+: {
+    modalSelector: string, activeClass: string, triggerCloseSelector?: string, triggerConfirmSelector?: string, closeOnBackgroundSelector?: string,
+    triggerOpenSelector?: string, callbackOnOpen?: () => void, callbackOnClose?: () => void, callbackOnConfirm?: () => void,
+    next?: () => void
+  }
 ) {
   const modalElem = document.querySelector(modalSelector);
 
   const openModalEvent = new CustomEvent("openModal");
   const closeModalEvent = new CustomEvent("closeModal");
+
+  if(triggerConfirmSelector && callbackOnConfirm) {
+    const confirmElem = modalElem.querySelector(triggerConfirmSelector);
+
+
+      confirmElem.addEventListener("click", callbackOnConfirm);
+  }
 
   modalElem.addEventListener("openModal", function() {
     this.classList.add(activeClass);
@@ -35,6 +50,15 @@ function initModal(
         modalElem.dispatchEvent(closeModalEvent);
       })
     })
+  }
+  if (closeOnBackgroundSelector) {
+    const triggerElem = document.querySelector(closeOnBackgroundSelector);
+
+    triggerElem.addEventListener("click", (event) => {
+      if (event.target === triggerElem) {
+        modalElem.dispatchEvent(closeModalEvent);
+      }
+    });
   }
 
   if(next !== null) {

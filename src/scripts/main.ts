@@ -1,5 +1,3 @@
-// types
-import {IMatchPagesUrl} from "./types";
 // owm modules
 import scaleElements from "./modules/scaleElements";
 import navMenu from "./modules/navMenu";

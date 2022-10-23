@@ -13,8 +13,12 @@
   background-color: rgba(113, 135, 194, 0.2);
   &_active {
     display: flex;
+    .modal__dialog {
+      animation: .5s appearModal forwards;
+    }
   }
   &__dialog {
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -32,6 +36,19 @@
 
   &__close-trigger {
     position: absolute;
+    top: -0.5rem;
+    right: -0.5rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    background-color: $soft-pink;
+    border-radius: 3px;
+    svg {
+      width: 100%;
+      height: 100%;
+      path {
+        stroke: black;
+      }
+    }
   }
 
   &__icon {
@@ -58,8 +75,38 @@
         fill: $soft-pink;
       }
     }
+    &_close {
+      svg {
+        fill: red;
+      }
+    }
+    &_reset {
+      svg {
+        fill: none;
+        path {
+          fill: red;
+        }
+      }
+    }
+  }
+  input {
+    background-color: #eee;
+    border: none;
+    border-radius: .5rem;
+    padding: 12px 15px;
+    margin-bottom: 1rem;
+    width: 100%;
   }
 
+  .agree {
+    background-color: rgba(174, 255, 165, 0.73);
+  }
+  .cancel {
+    background-color: transparent;
+    &:hover {
+      background-color: rgba($soft-pink, 0.73);
+    }
+  }
   &__dialog {
     display: flex;
     justify-content: flex-start;
@@ -97,7 +144,7 @@
       min-height: 5rem;
       height: 100%;
       max-height: 10rem;
-      font-family: inherit;
+      font-family: $serif-font;
       &::-webkit-scrollbar-thumb {
         &:hover {
           cursor: pointer;
@@ -136,5 +183,16 @@
 
   &_statistic {
     display: none;
+  }
+}
+
+@keyframes appearModal {
+  from {
+    opacity: 0;
+    transform: rotateY(90deg) skewX(10deg);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(0);
   }
 }

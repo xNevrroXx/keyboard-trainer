@@ -1,5 +1,5 @@
 // own modules
-import {authenticate} from "../services";
+import {authenticate} from "../services/services";
 import initTesting from "../modules/initTesting";
 // general statisticData
 import {MATCH_PAGES_URL} from "../generalData";

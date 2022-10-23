@@ -1,7 +1,7 @@
 import splitText from "./splitText";
 // types
 import DataStatisticSpeed from "./DataStatisticSpeed";
-import {statisticDataPost} from "../services";
+import {statisticDataPost} from "../services/services";
 
 function initTraining(next?: () => void) {
   const testingTextElem: HTMLElement = document.querySelector("#testing-text"),

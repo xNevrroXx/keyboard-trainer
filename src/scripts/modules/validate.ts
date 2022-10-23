@@ -1,43 +1,71 @@
-import {IDataErrors, IDataLogin, IDataRegister, IDataRecover__stageEmail, IDataRecover__stageCode, IDataRecover__stagePassword} from "../types";
+// third-party modules
+import {number, object, ref, string, ValidationError} from "yup";
+// types
+// own types
+import {TMainSchemas, TNameComplexSchemas,} from "../types";
 
-function validate(
-  data: IDataLogin | IDataRegister | IDataRecover__stageEmail | IDataRecover__stageCode | IDataRecover__stagePassword,
-  isName: boolean,
-  isPassword: boolean,
-  isEmail: boolean,
-  isRepeatPassword: boolean): IDataErrors
-{
-  const errors: IDataErrors = {};
-  const nameRegex = /^[a-zа-яё]{2,}$/ig,
-    emailRegex =  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-    passwordRegex = /^(?=.*[0-9])(?=.*[(!@#$%^&*])[a-zA-Z0-9(!@#$%^&*]{6,16}$/,
-    codeRegex = /^\d{6}$/;
+/**
+ * TransformYupErrorsIntoObject
+ *
+ * @description Transform the useless yup error into a usable validation object
+ * @param {ValidationError} errors Yup validation errors
+ * @returns {Record<string, string>} Validation errors
+ */
+export const transformYupErrorsIntoObject = (errors: ValidationError): Record<string, string> => {
+  const validationErrors: Record<string, string> = {};
 
-  if("name" in data && data["name"] && nameRegex.test(data["name"].trim())) {
-  }
-  else if (isName) {
-    errors["name"] = "Name incorrect";
-  }
+  errors.inner.forEach((error: any) => {
+    if (error.path !== undefined && !validationErrors.hasOwnProperty(error.path)) {
+      validationErrors[error.path] = error.errors[0];
+    }
+  });
 
-  if("email" in data && data["email"] && emailRegex.test(data["email"].trim())) {
-  }
-  else if (isEmail) {
-    errors["email"] = "Email incorrect";
-  }
+  return validationErrors;
+};
 
-  if ("password" in data && data["password"] && passwordRegex.test(data["password"].trim())) {
-  }
-  else if (isPassword) {
-    errors["password"] = "Should include (!@#$%^&*\r\nShould be greater than 6 characters"
-  }
+const mainSchemas: TMainSchemas = {
+  name: string().ensure().required("Name is obligatory").min(2, "Name is too short").matches(/\D/),
+  email: string().ensure().required("Email is obligatory").email("Email is incorrect"),
+  password: string()
+    .ensure()
+    .required("Password is obligatory")
+    .min(6, "Password is too short")
+    .max(16, "Password is too long")
+    .matches(/^(?=.*[0-9])(?=.*[(!@#$%^&*])[a-zA-Z0-9(!@#$%^&*]{6,16}$/, "Password must contain one of the following characters: (!@#$%^&*"),
+  temporaryCode: number().required("Code is obligatory. It has been sent to your email address."),
+}
 
-  if ("repeat-password" in data && data["repeat-password"] && passwordRegex.test(data["repeat-password"].trim())) {
-  }
-  else if (isRepeatPassword) {
-    errors["repeat-password"] = "Should include !@#$%^&*\r\nShould be greater than 6 characters"
-  }
+const complexSchemas = {
+  signIn: object({
+    email: mainSchemas.email,
+    password: mainSchemas.password
+  }),
+  register: object({
+    name: mainSchemas.name,
+    email: mainSchemas.email,
+    password: mainSchemas.password
+  }),
+  passwordConfirmation: object({
+    password: mainSchemas.password,
+    repeatPassword: string()
+      .required("Please retype your password")
+      .oneOf([ref("password")], "Password must match")
+  }),
+  email: object({
+    email: mainSchemas.email
+  }),
+  temporaryCode: object({
+    temporaryCode: mainSchemas.temporaryCode
+  }),
+}
 
-  return errors;
+async function validate(data: any, nameSchema: TNameComplexSchemas) {
+  try {
+    await complexSchemas[nameSchema].validate(data, {abortEarly: false});
+  }
+  catch (errors) {
+    return transformYupErrorsIntoObject(errors);
+  }
 }
 
 export default validate;

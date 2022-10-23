@@ -9,9 +9,8 @@
 }
 * {
     &:focus {
-        outline: .2rem solid #000000;
-        border-radius: .3rem;
-        scale: 1.01;
+        outline: 1px solid #000000;
+        border-radius: .2rem;
     }
 }
 /*****SCROLLBAR*****/
@@ -54,6 +53,12 @@ body {
 }
 .hidden {
     display: none;
+}
+.underline {
+    text-decoration: underline;
+}
+.danger {
+    color: $soft-pink;
 }
 footer {
     position: absolute;

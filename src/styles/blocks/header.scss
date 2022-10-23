@@ -74,6 +74,11 @@ header.main-navbar {
       color: black;
     }
   }
+  &__indicator-is-submenu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
   &-submenu {
     &:hover, &:focus {
       +.submenu {
@@ -96,6 +101,9 @@ header.main-navbar {
       margin-left: 0.5rem;
       margin-right: 0.5rem;
     }
+  }
+  &__title-link {
+    display: flex;
   }
 
   .user-link {

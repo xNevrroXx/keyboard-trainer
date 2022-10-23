@@ -1,3 +1,9 @@
+// third-party types
+import {number, NumberSchema, SchemaOf, string, StringSchema} from "yup";
+import {RequiredStringSchema} from "yup/es/string";
+import {OptionalObjectSchema} from "yup/es/object";
+import {RequiredNumberSchema} from "yup/es/number";
+import {AnyObject} from "yup/es/types";
 
 export interface IMatchPagesUrl {
   [namePath: string]: {
@@ -48,6 +54,11 @@ export interface IResponseStatistic {
   }
 }
 
+export interface IDataPasswordConfirmation {
+  password: string,
+  repeatPassword: string
+}
+
 export interface IDataLogin {
   email: string,
   password: string
@@ -91,6 +102,9 @@ export interface IBackendUrls {
     stageCode: string,
     stagePassword: string
   },
+  resetProgress: string,
+  deleteAccount: string,
+  changePassword: string,
   statistic: {
     post: {
       speed: string,
@@ -121,4 +135,14 @@ export interface ITabMatchTriggerContent {
     content: number
   }[],
   defaultActiveDatasetId: number
+}
+
+export type TNameMainSchemas = "name" | "email" | "password" | "temporaryCode";
+export type TNameComplexSchemas = "signIn" | "register" | "passwordConfirmation" | "email" | "temporaryCode";
+
+export type TMainSchemas = {
+  [nameSchema in TNameMainSchemas]: SchemaOf<string | number>
+};
+export type TComplexSchemas = {
+  [nameSchema in TNameComplexSchemas]: any
 }

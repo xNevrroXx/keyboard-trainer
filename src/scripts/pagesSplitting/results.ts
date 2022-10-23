@@ -1,7 +1,7 @@
 // own modules
 import makeChart from "../modules/makeChart";
 import initTab from "../modules/initTab";
-import {authenticate, statisticDataGet} from "../services";
+import {authenticate, statisticDataGet} from "../services/services";
 // types
 import {IResponseStatistic, ITabMatchTriggerContent} from "../types";
 // general statisticData

@@ -1,5 +1,5 @@
 import {IMatchPagesUrl} from "../types";
-import {authenticate} from "../services";
+import {authenticate} from "../services/services";
 // general statisticData
 import {MATCH_PAGES_URL} from "../generalData";
 

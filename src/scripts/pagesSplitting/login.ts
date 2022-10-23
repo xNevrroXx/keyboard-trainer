@@ -1,9 +1,7 @@
-// types
-import {IDataStatistic, IMatchPagesUrl} from "../types";
 // own modules
 import loginFormTab from "../modules/loginFormTab";
 import loginFormListener from "../modules/loginFormListener";
-import {authenticate} from "../services";
+import {authenticate} from "../services/services";
 // general statisticData
 import {MATCH_PAGES_URL} from "../generalData";
 
@@ -14,7 +12,7 @@ async function login() {
     window.location.href = MATCH_PAGES_URL["testing"].pathname;
   } catch {
     document.querySelector("button#forgot-password").addEventListener("click", () => {
-      window.location.href = MATCH_PAGES_URL["recovery"].pathname + "?" + MATCH_PAGES_URL["recovery"].possibleSearchValue["email"];
+      window.location.href = MATCH_PAGES_URL["recovery"].pathname + MATCH_PAGES_URL["recovery"].possibleHashValue["email"];
     });
 
     loginFormTab();

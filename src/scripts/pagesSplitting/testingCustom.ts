@@ -1,4 +1,4 @@
-import {authenticate} from "../services";
+import {authenticate} from "../services/services";
 import initTesting from "../modules/initTesting";
 import setCustomTestingText from "../modules/setCustomTestingText";
 // general statisticData

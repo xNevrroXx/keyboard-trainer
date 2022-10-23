@@ -1,7 +1,10 @@
-const {searchData, createTemporaryCode, changeData} = require("../../modules/database");
-const createRandomValue = require("../../modules/createRandomValue");
+// third-party modules
 const sendMail = require("../../modules/nodemailer");
 const argon2 = require("argon2");
+// own modules
+const {searchData, createTemporaryCode, changeData, customQuery} = require("../../modules/database");
+const createRandomValue = require("../../modules/createRandomValue");
+const setCookie = require("../../modules/setCookies");
 
 function recoverRoutes (app, db) {
   app.post("/recover/getcode", async (request, response) => {
@@ -16,6 +19,15 @@ function recoverRoutes (app, db) {
         await createTemporaryCode(db, "temporary_code", user.id, user.email, temporaryValue.value, temporaryValue.endTime);
         await sendMail(email, temporaryValue.value);
 
+        setCookie(response,[
+          {
+            "email": email,
+            modifyOptions: {
+              httpOnly: true,
+              maxAge: 1000*60*5
+            }
+          }
+        ])
         response.status(202).json({
           message: "email has been send"
         });
@@ -32,7 +44,7 @@ function recoverRoutes (app, db) {
   })
 
   app.post("/recover/verifycode", async (request, response) => {
-    const email = request.body.email;
+    const email = request.cookies.email;
     const code = +request.body.code;
 
     try {
@@ -40,6 +52,16 @@ function recoverRoutes (app, db) {
       const findingCode = findingResult.data[0];
 
       if(findingCode.value === code && +findingCode["end_time"] > new Date().getTime()) {
+        setCookie(response,[
+          {
+            "code": code,
+            modifyOptions: {
+              httpOnly: true,
+              maxAge: 1000*60*5
+            }
+          }
+        ])
+
         response.status(200).json({
           message: "success"
         });
@@ -57,12 +79,13 @@ function recoverRoutes (app, db) {
   })
 
   app.post("/recover/changepassword", async (request, response) => {
-    const email = request.body.email;
-    const code = +request.body.code;
+    const email = request.cookies.email;
+    const code = +request.cookies.code;
     const password = await argon2.hash(request.body.password);
 
     try {
       const findingResultUser = await searchData(db, "user", email, "email");
+      const user = findingResultUser.data[0];
 
       try {
         const findingResultCode = await searchData(db, "temporary_code", code, "value");
@@ -77,6 +100,12 @@ function recoverRoutes (app, db) {
             response.sendStatus(500).json({
               message: "unknown error"
             });
+          }
+          try {
+            const deleteStrSQL = `DELETE FROM temporary_code WHERE user_id = ${user.id}`;
+            const deleteQuerySQL = await customQuery(db, deleteStrSQL);
+          } catch (error) {
+            console.log(error);
           }
         }
         else {

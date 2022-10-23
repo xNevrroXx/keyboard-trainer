@@ -1,7 +1,7 @@
 // third-party modules
 const argon2 = require("argon2");
 // own modules
-const {changeToken, searchData, createUser, changeData} = require("../../modules/database");
+const {changeToken, searchData, createUser, changeData, customQuery} = require("../../modules/database");
 const generateAccessToken = require("../../modules/generateAccessToken");
 const generateRefreshToken = require("../../modules/generateRefreshToken");
 const {validateTokenRefreshBind, validateTokenAccessBind} = require("../../modules/validateToken");
@@ -214,6 +214,98 @@ function authentication(app, db) {
       message: "logged out!"
     });
   })
+
+  app.put("/changepassword",
+    (request, response, next) => validateTokenAccessBind(request, response, next),
+    async (request, response) => {
+    const user = request.user;
+    const newHashedPassword = await argon2.hash(request.body["password"]);
+
+    try {
+      const findingUser = await searchData(db, "user", user.id, "id");
+
+      try {
+        const changePassword = await changeData(db, "user", user.id, "id", newHashedPassword, "password")
+
+        response.json({
+          message: "password has been successfully changed"
+        })
+      }
+      catch (error) {
+        console.log(error);
+        response.status(500).json(error);
+      }
+    }
+    catch (error) {
+      console.log(error);
+      response.status(error.status).json(error);
+    }
+  })
+
+  app.delete("/resetprogress",
+    (request, response, next) => validateTokenAccessBind(request, response, next),
+    async (request, response) => {
+      const user = request.user;
+      const userId = user.id;
+
+      try {
+        const findingUser = await searchData(db, "user", userId, "id");
+
+        try {
+          await resetProgress(userId);
+
+          response.json({
+            message: "progress has been successfully reset"
+          })
+        }
+        catch (error) {
+          console.log(error);
+          response.status(error.status).json(error);
+        }
+      }
+      catch (error) {
+        console.log(error);
+        response.status(error.status).json(error);
+      }
+    })
+
+  app.delete("/deleteaccount",
+    (request, response, next) => validateTokenAccessBind(request, response, next),
+    async (request, response) => {
+      const user = request.user;
+
+      try {
+        await resetProgress(user.id);
+
+        const deleteUserStrSql = `DELETE FROM user WHERE id = ${user.id}`;
+        const deleteUser = await customQuery(db, deleteUserStrSql);
+
+        response.json({
+          message: "account has been successfully deleted"
+        })
+      }
+      catch (error) {
+        console.log(error);
+        response.status(error.status).json(error);
+      }
+    })
+
+
+  async function resetProgress(userId) {
+    try {
+      const resetTypingStatStrSQL = `DELETE FROM user_statistic_typing WHERE user_id = ${userId}`;
+      const resetProgress = await customQuery(db, resetTypingStatStrSQL);
+    } catch (error) {
+      console.log(error)
+    }
+    try {
+      const resetTextsStrSQL = `DELETE FROM user_statistic_texts WHERE user_id = ${userId}`;
+      const resetProgress = await customQuery(db, resetTextsStrSQL);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
 }
 
 module.exports = authentication;

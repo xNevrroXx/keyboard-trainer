@@ -11,6 +11,9 @@ $soft-light-blue: #6ae6ff;
 $soft-pink: #f34f7d;
 $menu-color: rgb(59 194 245);
 
+// fonts
+$serif-font: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+
 @mixin beforePseudoLine {
   content: "";
   position: absolute;

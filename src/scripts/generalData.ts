@@ -1,4 +1,4 @@
-import {IMatchPagesUrl} from "./types";
+import {IBackendUrls, IMatchPagesUrl} from "./types";
 
 const MAIN_URL = "http://localhost:5000";
 const MATCH_PAGES_URL: IMatchPagesUrl = {
@@ -26,13 +26,12 @@ const MATCH_PAGES_URL: IMatchPagesUrl = {
   },
   "recovery": {
     pathname: "/recovery",
-    possibleSearchValue: {
-      "email": "email",
-      "code": "code",
-      "password": "password"
+    possibleHashValue: {
+      "email": "#email",
+      "code": "#code",
+      "password": "#password"
     }
   },
-
   // not for html routes
   "assets": {
     pathname: "/assets",
@@ -42,4 +41,31 @@ const MATCH_PAGES_URL: IMatchPagesUrl = {
   },
 }
 
-export {MATCH_PAGES_URL, MAIN_URL};
+const backendMainUrlStr = "http://localhost:5000";
+const MATCH_BACKEND_URL: IBackendUrls = {
+  login: backendMainUrlStr + "/login",
+  register: backendMainUrlStr + "/register",
+  refreshToken: backendMainUrlStr + "/refreshtoken",
+  logout: backendMainUrlStr + "/logout",
+  authenticate: backendMainUrlStr + "/authenticate",
+  recover: {
+    stageEmail: backendMainUrlStr + "/recover/getcode",
+    stageCode: backendMainUrlStr + "/recover/verifycode",
+    stagePassword: backendMainUrlStr + "/recover/changepassword"
+  },
+  resetProgress: backendMainUrlStr + "/resetprogress",
+  deleteAccount: backendMainUrlStr + "/deleteaccount",
+  changePassword: backendMainUrlStr + "/changepassword",
+  statistic: {
+    post: {
+      speed: backendMainUrlStr + "/statistic/speed",
+      accuracy: backendMainUrlStr + "/statistic/accuracy"
+    },
+    get: {
+      speed: backendMainUrlStr + "/statistic/speed",
+      accuracy: backendMainUrlStr + "/statistic/accuracy"
+    }
+  }
+};
+
+export { MAIN_URL, MATCH_PAGES_URL, MATCH_BACKEND_URL };

@@ -3,39 +3,50 @@
     <nav class="menu">
       <ul class="menu__left">
         <li class="menu__item menu__item_logo">
-          <button class="menu__main-link logo" data-target-point="/trainer">govorov</button>
+          <button class="menu__main-link logo" data-target-point="/trainer"><span class="menu__title-link">govorov</span></button>
         </li>
       </ul>
       <ul class="menu__main">
         <li class="menu__item">
-          <button class="menu__main-link menu__main-link_with-submenu" data-target-point="/testing">Testing</button>
+          <button class="menu__main-link menu__main-link_with-submenu" data-target-point="/testing"><span class="menu__title-link">Testing</span></button>
           <div class="menu-submenu submenu">
             <ul class="submenu__list">
-              <li class="submenu__item"><button tabindex="0" data-target-point="/testing/custom">Custom text</button></li>
+              <li class="submenu__item">
+                <button tabindex="0" data-target-point="/testing/custom"><span class="menu__title-link">Custom text</span></button>
+              </li>
             </ul>
           </div>
         </li>
         <li class="menu__item">
-          <button class="menu__main-link" data-target-point="/trainer">Trainer</button>
+          <button class="menu__main-link" data-target-point="/trainer"><span class="menu__title-link">Trainer</span></button>
         </li>
         <li class="menu__item">
-          <button class="menu__main-link" data-target-point="/preparation">Preparation</button>
+          <button class="menu__main-link" data-target-point="/preparation"><span class="menu__title-link">Preparation</span></button>
         </li>
       </ul>
       <ul class="menu__right">
         {{#if userData.exist}}
           <li class="menu__item menu__item_profile">
-            <button class="menu__main-link menu__main-link_with-submenu menu__profile user-link" data-target-point="/profile"> <!--todo on mouseover appear list of users characteristic-->
+            <button class="menu__main-link menu__main-link_with-submenu menu__profile user-link" data-target-point="/profile">
               {{> userImageObject}}
-              <span class="user-name">{{userData.name}}</span>
+              <div class="menu__title-link">{{userData.name}}<div class="menu__indicator-is-submenu">
+                <svg width="24px" height="24px" viewBox="0 0 24 24">
+                  <g transform="translate(24) rotate(90)">
+                    <rect id="Rectangle" width="24" height="24" fill="none"/>
+                    <circle id="Oval" cx="1" cy="1" r="1" transform="translate(5 11)" stroke="#000" stroke-miterlimit="10" stroke-width="0.5"/>
+                    <circle id="Oval-2" data-name="Oval" cx="1" cy="1" r="1" transform="translate(11 11)" stroke="#000" stroke-miterlimit="10" stroke-width="0.5"/>
+                    <circle id="Oval-3" data-name="Oval" cx="1" cy="1" r="1" transform="translate(17 11)" stroke="#000" stroke-miterlimit="10" stroke-width="0.5"/>
+                  </g>
+                </svg>
+              </div></div>
             </button>
             <div class="menu-submenu submenu">
               <ul class="submenu__list">
-                <li class="submenu__item"><button tabindex="0" data-target-point="/profile">My profile</button></li>
-                <li class="submenu__item"><button tabindex="0" data-target-point="/profile">Test results</button></li>
-                <li class="submenu__item"><button tabindex="0" data-target-point="/profile">Study results</button></li>
-                <li class="submenu__item"><button tabindex="0" data-target-point="/profile/edit">Edit profile</button></li>
-                <li class="submenu__item"><button  tabindex="0" id="logout">Logout</button></li>
+                <li class="submenu__item"><button tabindex="0" data-target-point="/profile"><span class="menu__title-link">My profile</span></button></li>
+                <li class="submenu__item"><button tabindex="0" data-target-point="/profile"><span class="menu__title-link">Test results</span></button></li>
+                <li class="submenu__item"><button tabindex="0" data-target-point="/profile"><span class="menu__title-link">Study results</span></button></li>
+                <li class="submenu__item"><button tabindex="0" data-target-point="/profile/edit"><span class="menu__title-link">Edit profile</span></button></li>
+                <li class="submenu__item"><button  tabindex="0" id="logout"><span class="menu__title-link">Logout</span></button></li>
               </ul>
             </div>
           </li>
