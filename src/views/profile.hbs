@@ -35,8 +35,8 @@
               </svg>
             </div>
             <div class="statistic-item__wrapper-description">
-              <div class="statistic-item__title">print speedArr</div>
-              <div class="statistic-item__wrapper-value"><span class="statistic-item__value">0</span> <span class="statistic-item__units">ch/min</span></div>
+              <div class="statistic-item__title">print speed</div>
+              <div class="statistic-item__wrapper-value"><span class="statistic-item__value">{{statistic.speed}}</span> <span class="statistic-item__units">ch/min</span></div>
             </div>
           </div>
           <div class="profile__statistic-item statistic-item">
@@ -93,7 +93,7 @@
             </div>
             <div class="statistic-item__wrapper-description">
               <div class="statistic-item__title">accuracy</div>
-              <div class="statistic-item__wrapper-value"><span class="statistic-item__value">0</span><span class="statistic-item__units">%</span></div>
+              <div class="statistic-item__wrapper-value"><span class="statistic-item__value">{{statistic.accuracy}}</span><span class="statistic-item__units">%</span></div>
             </div>
           </div>
           <div class="profile__statistic-item statistic-item">
@@ -113,9 +113,27 @@
     </div>
 
     <div class="profile__list-personal-keyboard-data">
-      <button class="button button_tab-trigger profile__data-tab-trigger">Education results</button>
-      <button class="button button_tab-trigger profile__data-tab-trigger">Test results</button>
-      <button class="button button_tab-trigger profile__data-tab-trigger">Friends</button>
+      <button data-id="1" class="button button_tab-trigger profile__data-tab-trigger">Education results</button>
+      <button data-id="2" class="button button_tab-trigger profile__data-tab-trigger">Test results</button>
+      <button data-id="3" class="button button_tab-trigger profile__data-tab-trigger">Friends</button>
+    </div>
+
+    <div class="profile__tab-content-wrapper">
+      <div data-id="1" class="profile__tab-content-element">
+        <div class="plug hidden">
+          <h1 class="subtitle">There is no data yet</h1>
+        </div>
+      </div>
+      <div data-id="2" class="profile__tab-content-element">
+        <div class="plug hidden">
+          <h1 class="subtitle">There is no data yet</h1>
+        </div>
+      </div>
+      <div data-id="3" class="profile__tab-content-element">
+        <div class="plug hidden">
+          <h1 class="subtitle">There is no data yet</h1>
+        </div>
+      </div>
     </div>
   </div>
 </main>

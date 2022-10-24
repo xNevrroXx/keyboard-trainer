@@ -242,6 +242,40 @@ function authentication(app, db) {
     }
   })
 
+  app.put("/changemaindata",
+    (request, response, next) => validateTokenAccessBind(request, response, next),
+    async (request, response) => {
+      const user = request.user;
+      const userId = user.id;
+      const newEmail = request.body.email;
+      const newName = request.body.name;
+
+      try {
+        const findingUser = await searchData(db, "user", userId, "id");
+
+        try {
+          const changeEmail = await changeData(db, "user", userId, "id", newEmail, "email");
+          const changeName = await changeData(db, "user", userId, "id", newName, "name");
+
+          response.json({
+            message: "Email and name has been changed"
+          })
+        }
+        catch (error) {
+          console.log(error);
+          response.status(500).json({
+            message: "unknown error"
+          })
+        }
+      }
+      catch(error) {
+        console.log(error);
+        response.status(404).json({
+          message: "user doesn't exist"
+        })
+      }
+    })
+
   app.delete("/resetprogress",
     (request, response, next) => validateTokenAccessBind(request, response, next),
     async (request, response) => {

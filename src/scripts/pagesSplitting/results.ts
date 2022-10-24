@@ -16,16 +16,16 @@ async function results() {
     try {
       const matchTriggerContent: ITabMatchTriggerContent = {
         containers: {
-          trigger: ".results__trigger-container",
-          content: ".results__canvases-container"
+          trigger: ".result__trigger-container",
+          content: ".result__canvases-container"
         },
         mainSelectors: {
-          trigger: ".results__trigger",
-          content: ".results__content"
+          trigger: ".result__trigger",
+          content: ".result__content"
         },
         activeClass: {
           trigger: "button_in-text_active",
-          content: "results__active-canvas"
+          content: "result__active-canvas"
         },
         matchesDatasetId: [
           {
@@ -51,8 +51,8 @@ async function results() {
 
 
       for (const timestamp of Object.keys(data) as (keyof typeof data)[]) {
-        const testTextElem = document.querySelector(".results__testing-text");
-        const testDateElem = document.querySelector(".results__date");
+        const testTextElem = document.querySelector(".result__testing-text");
+        const testDateElem = document.querySelector(".result__date");
         const testingData = data[timestamp];
 
         testDateElem.textContent = new Date(+timestamp).toLocaleString();
@@ -63,7 +63,7 @@ async function results() {
     }
     catch (error) {
       plugNoResultsElem.classList.remove("hidden");
-      resultsElem.classList.add("results__hidden");
+      resultsElem.classList.add("result__hidden");
     }
   } catch {
     window.location.href = MATCH_PAGES_URL["login"].pathname + MATCH_PAGES_URL["login"].possibleHashValue["sign-in"]

@@ -105,19 +105,6 @@ li {
     overflow: hidden;
     width: 60vw;
 }
-h1 {
-    font-size: 4rem;
-    text-align: center;
-}
-.title {
-    line-height: 3.5rem;
-    font-size: 3.5rem;
-}
-.subtitle {
-    line-height: 1.5rem;
-    font-size: 1.5rem;
-    opacity: .9;
-}
 .wrapper-content {
     display: flex;
     justify-content: center;
@@ -143,3 +130,27 @@ h1 {
 @import "blocks/profile";
 @import "blocks/editprofile";
 @import "blocks/results";
+
+
+h1 {
+    font-size: 4rem;
+    text-align: center;
+}
+.title {
+    line-height: 3.5rem;
+    font-size: 3.5rem;
+}
+.subtitle {
+    line-height: 1.5rem;
+    font-size: 1.5rem;
+    opacity: .9;
+}
+
+.error-description {
+    padding-left: 2rem;
+    text-align: left;
+    white-space: pre-wrap;
+    margin-bottom: 1rem;
+    font-size: .9rem;
+    color: $soft-pink;
+}

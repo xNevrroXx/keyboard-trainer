@@ -3,7 +3,7 @@ const {validateTokenAccessBind} = require("../../modules/validateToken");
 
 
 function statistic (app, db) {
-  app.route("/statistic/speed")
+  app.route("/statistic")
     .post((request, response, next) => validateTokenAccessBind(request, response, next),
     async (request, response) => {
       // start function
@@ -43,6 +43,7 @@ function statistic (app, db) {
         }
 
         if(responseErrors["text"] || responseErrors["statisticData"]) {
+          console.log("responseErrors: ", responseErrors);
           response.json({
             errors: responseErrors,
             message: "statisticData has been posted"
@@ -74,11 +75,28 @@ function statistic (app, db) {
 
         try {
           if (query.which === "all") {
-            findingResult["statistic"] = await searchDataCustom(db,
-              `SELECT timestamp, user_id, char_value AS "char", speed_value FROM user_statistic_typing
-                            WHERE user_id = ${userId}
-                            ORDER BY "timestamp" DESC, "char" ASC`
-            );
+            try {
+              findingResult["texts"] = await searchDataCustom(db,
+                `SELECT user_id, timestamp, value FROM user_statistic_texts
+                              WHERE 
+                                (user_id = ${userId})`
+              );
+            }
+            catch (error) {
+              console.log(error);
+            }
+
+            try {
+              findingResult["statistic"] = await searchDataCustom(db,
+                `SELECT timestamp, user_id, char_value as "char", speed_value as "speed", accuracy_value as "accuracy", total_number, count_mistakes FROM user_statistic_typing 
+                              WHERE
+                                (user_id = ${userId})
+                              ORDER BY char_value`
+              );
+            }
+            catch (error) {
+              console.log(error);
+            }
           }
           else if (query.which === "last") {
             try {

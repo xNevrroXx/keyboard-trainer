@@ -59,6 +59,11 @@ export interface IDataPasswordConfirmation {
   repeatPassword: string
 }
 
+export interface IDataMainData {
+  name: string,
+  email: string
+}
+
 export interface IDataLogin {
   email: string,
   password: string
@@ -105,20 +110,13 @@ export interface IBackendUrls {
   resetProgress: string,
   deleteAccount: string,
   changePassword: string,
-  statistic: {
-    post: {
-      speed: string,
-      accuracy: string
-    },
-    get: {
-      speed: string,
-      accuracy: string
-    }
-  }
+  changeMainData: string,
+  statistic: string
 }
 
 export interface ITabMatchTriggerContent {
   containers: {
+    common?: HTMLElement,
     trigger: string,
     content: string
   },
@@ -138,7 +136,7 @@ export interface ITabMatchTriggerContent {
 }
 
 export type TNameMainSchemas = "name" | "email" | "password" | "temporaryCode";
-export type TNameComplexSchemas = "signIn" | "register" | "passwordConfirmation" | "email" | "temporaryCode";
+export type TNameComplexSchemas = "signIn" | "register" | "passwordConfirmation" | "changeMainData" | "email" | "temporaryCode";
 
 export type TMainSchemas = {
   [nameSchema in TNameMainSchemas]: SchemaOf<string | number>

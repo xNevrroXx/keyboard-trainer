@@ -43,6 +43,7 @@
     justify-content: space-between;
     align-items: flex-start;
     gap: 2rem;
+    margin-bottom: 3rem;
   }
   &__form-field {
     width: 40%;
@@ -67,7 +68,6 @@
   }
 
   &__wrapper-form-choose {
-    margin-bottom: 3rem;
     button:first-of-type {
       margin-right: 1rem;
     }
@@ -87,5 +87,11 @@
     &:not(:last-child) {
       margin-bottom: 1rem;
     }
+  }
+}
+
+.modal {
+  form {
+    width: 40%;
   }
 }

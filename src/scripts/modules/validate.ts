@@ -24,7 +24,7 @@ export const transformYupErrorsIntoObject = (errors: ValidationError): Record<st
 };
 
 const mainSchemas: TMainSchemas = {
-  name: string().ensure().required("Name is obligatory").min(2, "Name is too short").matches(/\D/),
+  name: string().ensure().required("Name is obligatory").min(2, "Name is too short").matches(/^[a-zа-яё]+$/ig, "May include only letters"),
   email: string().ensure().required("Email is obligatory").email("Email is incorrect"),
   password: string()
     .ensure()
@@ -50,6 +50,10 @@ const complexSchemas = {
     repeatPassword: string()
       .required("Please retype your password")
       .oneOf([ref("password")], "Password must match")
+  }),
+  changeMainData: object({
+    name: mainSchemas.name,
+    email: mainSchemas.email
   }),
   email: object({
     email: mainSchemas.email

@@ -1,17 +1,37 @@
 // owm modules
-import {authenticate, changePassword, deleteAccount, resetProgress} from "../services/services";
+import {authenticate, changeMainData, changePassword, deleteAccount, resetProgress} from "../services/services";
 import initModal from "../modules/modal";
 // general data
 import {MATCH_PAGES_URL} from "../generalData";
 import form from "../modules/form";
 import validate from "../modules/validate";
-import {IDataPasswordConfirmation} from "../types";
+import {IDataMainData, IDataPasswordConfirmation} from "../types";
 
 async function editProfile() {
   try {
     const authenticateResponse = await authenticate();
 
     try {
+      const uploadFileBtn = document.querySelector(".button_upload-file");
+      const uploadFileInput = document.querySelector("input[type='file']");
+
+      uploadFileBtn.addEventListener("click", (event) => {
+        uploadFileInput.dispatchEvent(new MouseEvent("click"));
+      })
+
+      const editMainDataForm = document.querySelector(".edit-profile__form");
+      const cancelChangeMainDataBtn = editMainDataForm.querySelector("button.edit-profile__cancel-btn");
+      const formBindEditMainData = form.bind(editMainDataForm,
+        async (data: IDataMainData) => validate(data, "changeMainData"),
+        async (data: IDataMainData) => await changeMainData(data),
+        () => {
+            alert("Email and password has been saved");
+            window.location.reload();
+        }
+      )
+      editMainDataForm.addEventListener("submit", formBindEditMainData);
+      cancelChangeMainDataBtn.addEventListener("click", () => window.location.reload());
+
       initModal({
         modalSelector: ".modal_delete-account",
         activeClass: "modal_active",
@@ -80,12 +100,6 @@ async function editProfile() {
           const changePasswordFormElem = modalElem.querySelector("form");
           changePasswordFormElem.addEventListener("submit", formBindChangePassword);
         }
-      })
-      const uploadFileBtn = document.querySelector(".button_upload-file");
-      const uploadFileInput = document.querySelector("input[type='file']");
-
-      uploadFileBtn.addEventListener("click", (event) => {
-        uploadFileInput.dispatchEvent(new MouseEvent("click"));
       })
     }
     catch (error) {

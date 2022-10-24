@@ -14,7 +14,7 @@ $menu-color: rgb(59 194 245);
 // fonts
 $serif-font: "Palatino Linotype", "Book Antiqua", Palatino, serif;
 
-@mixin beforePseudoLine {
+@mixin pseudoLine {
   content: "";
   position: absolute;
   top: 0;

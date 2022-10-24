@@ -56,16 +56,8 @@ const MATCH_BACKEND_URL: IBackendUrls = {
   resetProgress: backendMainUrlStr + "/resetprogress",
   deleteAccount: backendMainUrlStr + "/deleteaccount",
   changePassword: backendMainUrlStr + "/changepassword",
-  statistic: {
-    post: {
-      speed: backendMainUrlStr + "/statistic/speed",
-      accuracy: backendMainUrlStr + "/statistic/accuracy"
-    },
-    get: {
-      speed: backendMainUrlStr + "/statistic/speed",
-      accuracy: backendMainUrlStr + "/statistic/accuracy"
-    }
-  }
+  changeMainData: backendMainUrlStr + "/changemaindata",
+  statistic: backendMainUrlStr + "/statistic"
 };
 
 export { MAIN_URL, MATCH_PAGES_URL, MATCH_BACKEND_URL };

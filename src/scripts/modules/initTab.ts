@@ -2,8 +2,9 @@
 import {ITabMatchTriggerContent} from "../types";
 
 function initTab(matchTriggerContent: ITabMatchTriggerContent) {
-  const triggerContainerElem = document.querySelector(matchTriggerContent.containers.trigger);
-  const contentContainerElem = document.querySelector(matchTriggerContent.containers.content);
+  const commonContainer = matchTriggerContent.containers.common || document;
+  const triggerContainerElem = commonContainer.querySelector(matchTriggerContent.containers.trigger);
+  const contentContainerElem = commonContainer.querySelector(matchTriggerContent.containers.content);
   const matchTriggerContentElems: Map<HTMLElement, HTMLElement> = new Map();
 
   matchTriggerContent.matchesDatasetId.forEach(matchSlice => {
@@ -16,11 +17,9 @@ function initTab(matchTriggerContent: ITabMatchTriggerContent) {
 
   toggleClasses(triggerContainerElem.querySelector(matchTriggerContent.mainSelectors.trigger + `[data-id="${matchTriggerContent.defaultActiveDatasetId}"]`));
 
-  console.log("triggerContainerElem: ", triggerContainerElem);
   triggerContainerElem.addEventListener("click", (event) => {
     const target = event.target as HTMLElement;
 
-    console.log("target: ", target);
     if (target) {
       for (const [trigger, content] of matchTriggerContentElems) {
         if (target === trigger) {

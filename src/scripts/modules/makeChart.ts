@@ -1,9 +1,15 @@
 import {Chart, registerables } from "chart.js";
 import {IDataStatistic} from "../types";
 
-function makeChart(chartData: IDataStatistic["timestamp"], canvasSelector: string, label: string, targetTypeChart: "speed" | "accuracy") {
+function makeChart(chartData: IDataStatistic["timestamp"], canvasSelector: string, label: string, targetTypeChart: "speed" | "accuracy", parentElem?: HTMLElement) {
   Chart.register(...registerables);
-  const canvasContext = (<HTMLCanvasElement>document.querySelector(canvasSelector)).getContext('2d');
+  let canvasContext;
+  if(parentElem) {
+    canvasContext = (<HTMLCanvasElement>parentElem.querySelector(canvasSelector)).getContext('2d');
+  }
+  else {
+    canvasContext = (<HTMLCanvasElement>document.querySelector(canvasSelector)).getContext('2d');
+  }
 
   const formattingData = [];
   for (let i = 0, length = chartData.length; i < length; i++) {

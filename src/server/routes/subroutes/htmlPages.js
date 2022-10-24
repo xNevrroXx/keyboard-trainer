@@ -1,6 +1,6 @@
 // own modules
 const {validateTokenAccessBind} = require("../../modules/validateToken");
-const {searchData} = require("../../modules/database");
+const {searchData, customQuery} = require("../../modules/database");
 
 
 const mainContainerTypes = {
@@ -11,11 +11,19 @@ const mainContainerTypes = {
 function htmlPages(app, db) {
   app.get("/profile",
     (request, response, next) => validateTokenAccessBind(request, response, next, false),
-    (request, response) => {
+    async (request, response) => {
       const user = request.user;
       const isUser = request.isUser;
 
-      if(isUser) {
+
+      if (isUser) {
+        const averageSpeedUserQueryResult = await customQuery(db, `SELECT AVG(speed_value) as "speed" FROM user_statistic_typing`);
+        const averageAccuracyUserQueryResult = await customQuery(db, `SELECT AVG(accuracy_value) as "accuracy" FROM user_statistic_typing`);
+        const avgStatistic = {
+          speed: Math.floor(averageSpeedUserQueryResult.result[0].speed) || 0,
+          accuracy: Math.floor(averageAccuracyUserQueryResult.result[0].accuracy) || 0
+        }
+
         response.render("profile", {
           title: "Profile Keyboard trainer - govorov",
           mainContainerClass: mainContainerTypes["body-container-main"],
@@ -23,10 +31,10 @@ function htmlPages(app, db) {
             exist: true,
             name: user.name,
             imagePath: user.imagePath || "/fake"
-          }
+          },
+          statistic: avgStatistic
         })
-      }
-      else {
+      } else {
         response.render("profile", {
           title: "Profile Keyboard trainer - govorov",
           mainContainerClass: mainContainerTypes["body-container-main"],
@@ -34,10 +42,14 @@ function htmlPages(app, db) {
             exist: false,
             name: "",
             imagePath: "/fake",
+          },
+          statistic: {
+            speed: 0,
+            accuracy: 0
           }
         })
       }
-  })
+    })
 
   app.get("/profile/edit",
     (request, response, next) => validateTokenAccessBind(request, response, next, false),

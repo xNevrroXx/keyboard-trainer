@@ -5,7 +5,7 @@ import getCookies from "../modules/getCookies";
 // types
 import {
   IAverageDataStatistic,
-  IDataLogin,
+  IDataLogin, IDataMainData,
   IDataPasswordConfirmation,
   IDataRecover__stageCode,
   IDataRecover__stageEmail,
@@ -74,6 +74,10 @@ async function changePassword(data: IDataPasswordConfirmation) {
   return await axios.put(MATCH_BACKEND_URL.changePassword, data);
 }
 
+async function changeMainData(data: IDataMainData) {
+  return await axios.put(MATCH_BACKEND_URL.changeMainData, data);
+}
+
 async function resetProgress() {
   return await axios.delete(MATCH_BACKEND_URL.resetProgress);
 }
@@ -100,7 +104,7 @@ async function statisticDataPost(dataStatisticSpeed: {text: string, statisticDat
   }
 
   try {
-    return await axios.post(MATCH_BACKEND_URL.statistic.post.speed, data);
+    return await axios.post(MATCH_BACKEND_URL.statistic, data);
   } catch (error) {
     throw error;
   }
@@ -108,9 +112,10 @@ async function statisticDataPost(dataStatisticSpeed: {text: string, statisticDat
 
 async function statisticDataGet(searchWhichResult: string) {
   try {
-    const response: any = await axios.get(MATCH_BACKEND_URL.statistic.get.speed + `?which=${searchWhichResult}`);
+    const response: any = await axios.get(MATCH_BACKEND_URL.statistic + `?which=${searchWhichResult}`);
     const data: IResponseStatistic = response.data.data;
 
+    console.log("services statistic: ", data);
     return data;
   } catch (error) {
     throw error;
@@ -120,6 +125,7 @@ async function statisticDataGet(searchWhichResult: string) {
 export {
   authenticate, refreshToken, signIn, register, logout,
   recoverStageEmail, recoverStageCode, recoverStagePassword,
+  deleteAccount, resetProgress,
+  changePassword, changeMainData,
   statisticDataPost, statisticDataGet,
-  deleteAccount, changePassword, resetProgress
 };

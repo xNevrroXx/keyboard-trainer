@@ -1,7 +1,7 @@
 @import "../modules/variables";
 
 
-.results {
+.result {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -48,7 +48,7 @@
     width: 100%;
     position: relative;
     &::before {
-      @include beforePseudoLine;
+      @include pseudoLine;
       left: 0;
     }
   }
@@ -68,7 +68,7 @@
     order: 2;
     position: relative;
     &::before {
-      @include beforePseudoLine;
+      @include pseudoLine;
     }
   }
   &__canvas-container {
