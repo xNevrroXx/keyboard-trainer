@@ -21,6 +21,9 @@ const MATCH_PAGES_URL: IMatchPagesUrl = {
   "testing-custom": {
     pathname: "/testing/custom"
   },
+  "trainer": {
+    pathname: "/trainer"
+  },
   "results": {
     pathname: "/results",
   },
@@ -60,4 +63,10 @@ const MATCH_BACKEND_URL: IBackendUrls = {
   statistic: backendMainUrlStr + "/statistic"
 };
 
-export { MAIN_URL, MATCH_PAGES_URL, MATCH_BACKEND_URL };
+
+const ENGLISH_ALPHABET: string = 'abcdefghijklmnopqrstuvwxyz';
+const RUSSIAN_ALPHABET: string = "абвгдеёжзийклмопрстуфхцчшщъэюя";
+const SPECIAL_SYMBOLS: string = "(!@#$%^&*";
+const DIGITS: string = "0123456789";
+
+export { ENGLISH_ALPHABET, RUSSIAN_ALPHABET, SPECIAL_SYMBOLS, DIGITS, MAIN_URL, MATCH_PAGES_URL, MATCH_BACKEND_URL };

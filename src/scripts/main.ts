@@ -10,6 +10,7 @@ import profile from "./pagesSplitting/profile";
 import testingCustom from "./pagesSplitting/testingCustom";
 // general statisticData
 import {MATCH_PAGES_URL} from "./generalData";
+import trainer from "./pagesSplitting/trainer";
 
 
 window.addEventListener("DOMContentLoaded", async () => {
@@ -24,6 +25,8 @@ window.addEventListener("DOMContentLoaded", async () => {
     testing();
   } else if (window.location.pathname === MATCH_PAGES_URL["testing-custom"].pathname) {
     testingCustom();
+  } else if (window.location.pathname === MATCH_PAGES_URL["trainer"].pathname) {
+    trainer()
   } else if (window.location.pathname === MATCH_PAGES_URL["results"].pathname) {
     results();
   } else if (window.location.pathname === MATCH_PAGES_URL["login"].pathname) {

@@ -11,7 +11,7 @@ import {
   IDataRecover__stageEmail,
   IDataRecover__stagePassword,
   IDataRegister,
-  IResponseStatistic
+  IResponseStatistic, IStatisticWithText
 } from "../types";
 // general data
 import {MATCH_BACKEND_URL} from "../generalData";
@@ -98,7 +98,7 @@ async function recoverStagePassword(data: IDataRecover__stagePassword) {
   }
 }
 
-async function statisticDataPost(dataStatisticSpeed: {text: string, statisticData: IAverageDataStatistic[]}) {
+async function statisticDataPost(dataStatisticSpeed: IStatisticWithText) {
   const data = {
     "statistic": dataStatisticSpeed,
   }

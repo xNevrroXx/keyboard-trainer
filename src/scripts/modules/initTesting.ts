@@ -1,8 +1,11 @@
+// own modules
 import keyboard from "./keyboard";
 import initModal from "./modal";
 import initTraining from "./initTraining";
+// types
+import {IStatisticWithText} from "../types";
 
-function initTesting(next: () => void) {
+function initTesting(next: (statisticWithText?: IStatisticWithText) => void) {
   const modalStartPrint: HTMLElement = document.querySelector(".modal_start-print");
   const testingText = document.querySelector("#testing-text");
 

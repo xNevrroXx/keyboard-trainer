@@ -10,7 +10,7 @@ function statistic (app, db) {
       const user = request.user;
       const userId = user.id;
       const statistic = request.body["statistic"];
-      const statisticData = statistic["statisticData"];
+      const statisticData = statistic["statistic"];
       const timestamp = new Date().getTime().toString();
 
       try {

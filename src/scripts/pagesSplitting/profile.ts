@@ -127,7 +127,6 @@ async function profile() {
     catch (error) {
       const plug = resultsElem.querySelector(".plug")
       plug.classList.remove("hidden");
-      // plugNoResultsElem.classList.remove("hidden");
     }
 
     // friends

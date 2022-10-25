@@ -144,6 +144,35 @@ function htmlPages(app, db) {
       })
     }
   })
+  app.get("/trainer",
+    (request, response, next) => validateTokenAccessBind(request, response, next, false),
+    (request, response) => {
+      const user = request.user;
+      const isUser = request.isUser;
+
+      if(isUser) {
+        response.render("trainer", {
+          title: "Trainer Keyboard trainer - govorov",
+          mainContainerClass: mainContainerTypes["body-container-full-page"],
+          userData: { // todo mock value(helpers)
+            exist: true,
+            name: user.name,
+            imagePath: user.imagePath || "/fake"
+          }
+        })
+      }
+      else {
+        response.render("trainer", {
+          title: "Trainer Keyboard trainer - govorov",
+          mainContainerClass: mainContainerTypes["body-container-full-page"],
+          userData: { // todo mock value(helpers)
+            exist: false,
+            name: "",
+            imagePath: "/fake"
+          }
+        })
+      }
+    })
   app.get("/testing/custom",
     (request, response, next) => validateTokenAccessBind(request, response, next, false),
     (request, response) => {

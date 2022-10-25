@@ -54,6 +54,11 @@ export interface IResponseStatistic {
   }
 }
 
+export interface IStatisticWithText {
+  text: string,
+  statistic: IAverageDataStatistic[]
+}
+
 export interface IDataPasswordConfirmation {
   password: string,
   repeatPassword: string
@@ -135,8 +140,8 @@ export interface ITabMatchTriggerContent {
   defaultActiveDatasetId: number
 }
 
-export type TNameMainSchemas = "name" | "email" | "password" | "temporaryCode";
-export type TNameComplexSchemas = "signIn" | "register" | "passwordConfirmation" | "changeMainData" | "email" | "temporaryCode";
+export type TNameMainSchemas = "name" | "email" | "password" | "temporaryCode" | "trainingOwnChars";
+export type TNameComplexSchemas = "signIn" | "register" | "passwordConfirmation" | "changeMainData" | "email" | "temporaryCode" | "trainingOwnChars";
 
 export type TMainSchemas = {
   [nameSchema in TNameMainSchemas]: SchemaOf<string | number>

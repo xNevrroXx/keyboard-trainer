@@ -1,4 +1,4 @@
-import {IAdditionalDataStatistic, IAverageDataStatistic, IDataStatisticSpeed} from "../types";
+import {IAdditionalDataStatistic, IAverageDataStatistic, IDataStatisticSpeed, IStatisticWithText} from "../types";
 
 class DataStatisticSpeed {
   readonly statisticData: IDataStatisticSpeed[] = [];
@@ -42,7 +42,7 @@ class DataStatisticSpeed {
     return;
   };
 
-  getAvgStatistic() {
+  getAvgStatistic(): IStatisticWithText {
     const statisticData: IAverageDataStatistic[] = [];
 
     this.statisticData.forEach((value: IDataStatisticSpeed) => {
@@ -73,7 +73,7 @@ class DataStatisticSpeed {
 
     return {
       text: this.text,
-      statisticData: statisticData
+      statistic: statisticData
     };
   }
 }

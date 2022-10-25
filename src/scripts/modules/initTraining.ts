@@ -1,12 +1,14 @@
+// own modules
 import splitText from "./splitText";
-// types
 import DataStatisticSpeed from "./DataStatisticSpeed";
-import {statisticDataPost} from "../services/services";
+// types
+import {IStatisticWithText} from "../types";
 
-function initTraining(next?: () => void) {
+function initTraining(next: (statisticWithText?: IStatisticWithText) => void, text?: string) {
   const testingTextElem: HTMLElement = document.querySelector("#testing-text"),
     statisticElem = document.querySelector(".statistic");
 
+  let idIntervalTyping: NodeJS.Timer;
   let indexTargetChar: number = 0,
     countErrors: number = 0,
     wasError: boolean = false;
@@ -36,6 +38,9 @@ function initTraining(next?: () => void) {
   const statisticSpeedValueElem = statisticElem.querySelector(".statistic-item_print-speed .statistic-item__value"),
     statisticAccuracyElem = statisticElem.querySelector(".statistic-item_accuracy .statistic-item__value");
 
+  if (text != null && text !== "") {
+    testingTextElem.textContent = text;
+  }
   testingTextElem.textContent = testingTextElem.textContent.trim();
   const testingText = splitText(testingTextElem);
 
@@ -47,7 +52,8 @@ function initTraining(next?: () => void) {
   window.addEventListener("keydown", handleKeyDownTraining)
   window.addEventListener("click", handleClick);
 
-  const idFastInterval = setInterval(() => {
+
+  idIntervalTyping = setInterval(() => {
     pastTime.time = pastTime.time + 100;
     updateStatistic();
 
@@ -138,7 +144,7 @@ function initTraining(next?: () => void) {
           const response = await onEndTraining();
 
           if (next) {
-            next();
+            next(dataStatisticSpeed.getAvgStatistic());
           }
           return;
         }
@@ -170,18 +176,18 @@ function initTraining(next?: () => void) {
     }
   }
   async function onEndTraining() {
-    clearInterval(idFastInterval);
+    clearInterval(idIntervalTyping);
     window.removeEventListener("keydown", handleKeyDownTraining);
     window.removeEventListener("click", handleClick);
-
-    return await statisticDataPost(dataStatisticSpeed.getAvgStatistic());
   }
   function toggleClassTextChar(textElementWithSpans: HTMLElement, indexHighlight: number, className: string) {
     textElementWithSpans.querySelectorAll("span")[indexHighlight].classList.toggle(className);
   }
   function updateStatistic() {
-    statistic.accuracy = buffer.length !== 0 ? Math.floor(100 - countErrors / (buffer.length / 100)) : 100;
-    statistic.speed = Math.floor(buffer.length / ((pastTime.time || 500) / (1000 * 60)) );
+    if(pastTime.time !== 0) {
+      statistic.accuracy = buffer.length !== 0 ? Math.floor(100 - countErrors / (buffer.length / 100)) : 100;
+      statistic.speed = Math.floor(buffer.length / ((pastTime.time || 500) / (1000 * 60)) );
+    }
   }
   function dispatchKeyDown (toggler: {isClicked: boolean}, codeKeys: string[], typeEvent: string) {
     codeKeys.forEach(codeKey =>

@@ -89,7 +89,7 @@
       }
     }
   }
-  input {
+  input:not([type="checkbox"]) {
     background-color: #eee;
     border: none;
     border-radius: .5rem;
@@ -150,6 +150,33 @@
           cursor: pointer;
         }
       }
+    }
+  }
+  &__wrapper-field {
+    display: flex;
+    flex-direction: column;
+    gap: .2rem;
+    position: relative;
+    &::before {
+      @include pseudoLine;
+    }
+  }
+  &__wrapper-checkbox {
+    padding-left: .5rem;
+    width: max-content;
+  }
+  &__wrapper-trainer-options {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 1rem;
+    span {
+      color: $soft-pink;
+      font-size: .9rem;
+    }
+    label {
+      height: max-content;
     }
   }
   &__right {

@@ -2,7 +2,7 @@
 import {number, object, ref, string, ValidationError} from "yup";
 // types
 // own types
-import {TMainSchemas, TNameComplexSchemas,} from "../types";
+import {TComplexSchemas, TMainSchemas, TNameComplexSchemas,} from "../types";
 
 /**
  * TransformYupErrorsIntoObject
@@ -33,9 +33,10 @@ const mainSchemas: TMainSchemas = {
     .max(16, "Password is too long")
     .matches(/^(?=.*[0-9])(?=.*[(!@#$%^&*])[a-zA-Z0-9(!@#$%^&*]{6,16}$/, "Password must contain one of the following characters: (!@#$%^&*"),
   temporaryCode: number().required("Code is obligatory. It has been sent to your email address."),
+  trainingOwnChars: string().ensure().matches(/^[0-9}{\[\]:;'\/"<>,.~?!@#$%^&*()_+№\-=]+$/, "May contain one of the following characters: 0-9}{\\[\\]:;'\\/\"<>,.~?!@#$%^&*()_+№\\-=")
 }
 
-const complexSchemas = {
+const complexSchemas: TComplexSchemas = {
   signIn: object({
     email: mainSchemas.email,
     password: mainSchemas.password
@@ -61,6 +62,9 @@ const complexSchemas = {
   temporaryCode: object({
     temporaryCode: mainSchemas.temporaryCode
   }),
+  trainingOwnChars: object({
+    trainingOwnChars: mainSchemas.trainingOwnChars
+  })
 }
 
 async function validate(data: any, nameSchema: TNameComplexSchemas) {
