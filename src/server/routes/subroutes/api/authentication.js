@@ -1,14 +1,14 @@
 // third-party modules
 const argon2 = require("argon2");
 // own modules
-const {changeToken, searchData, createUser, changeData, customQuery} = require("../../modules/database");
-const generateAccessToken = require("../../modules/generateAccessToken");
-const generateRefreshToken = require("../../modules/generateRefreshToken");
-const {validateTokenRefreshBind, validateTokenAccessBind} = require("../../modules/validateToken");
-const setCookies = require("../../modules/setCookies");
+const {changeToken, searchData, createUser, changeData, customQuery} = require("../../../modules/database");
+const generateAccessToken = require("../../../modules/generateAccessToken");
+const generateRefreshToken = require("../../../modules/generateRefreshToken");
+const {validateTokenRefreshBind, validateTokenAccessBind} = require("../../../modules/validateToken");
+const setCookies = require("../../../modules/setCookies");
 
 function authentication(app, db) {
-  app.post("/authenticate",
+  app.post("/api/authenticate",
     (request, response, next) => validateTokenAccessBind(request, response, next),
     async (request, response) =>
     {
@@ -22,13 +22,33 @@ function authentication(app, db) {
         message: "success authenticate"
       })
     } catch (error) {
+      setCookies(response, [
+        {
+          "accessToken": "",
+          modifyOptions: {
+            maxAge: 0
+          }
+        },
+        {
+          "refreshToken": "",
+          modifyOptions: {
+            maxAge: 0
+          }
+        },
+        {
+          "isAuthenticate": false,
+          modifyOptions: {
+            maxAge: 0
+          }
+        }
+      ])
       response.status(400).json({
         message: "user doesn't exist"
       });
     }
   })
 
-  app.post("/register", async (request, response) => {
+  app.post("/api/register", async (request, response) => {
     const name = request.body.name;
     const hashedPassword = await argon2.hash(request.body.password);
     const email = request.body.email;
@@ -58,7 +78,7 @@ function authentication(app, db) {
     }
   })
 
-  app.post("/login", async (request, response) => {
+  app.post("/api/login", async (request, response) => {
     const email = request.body.email;
     const password = request.body.password;
 
@@ -117,7 +137,7 @@ function authentication(app, db) {
     }
   })
 
-  app.post("/refreshtoken",
+  app.post("/api/refreshtoken",
     (request, response, next) => validateTokenRefreshBind(request, response, next),
     async (request, response) =>
     {
@@ -192,7 +212,7 @@ function authentication(app, db) {
       }
     })
 
-  app.delete("/logout", async (request, response) => {
+  app.delete("/api/logout", async (request, response) => {
     const accessToken = request.cookies.accessToken;
     const refreshToken = request.cookies.refreshToken;
 
@@ -215,7 +235,7 @@ function authentication(app, db) {
     });
   })
 
-  app.put("/changepassword",
+  app.put("/api/changepassword",
     (request, response, next) => validateTokenAccessBind(request, response, next),
     async (request, response) => {
     const user = request.user;
@@ -242,7 +262,7 @@ function authentication(app, db) {
     }
   })
 
-  app.put("/changemaindata",
+  app.put("/api/changemaindata",
     (request, response, next) => validateTokenAccessBind(request, response, next),
     async (request, response) => {
       const user = request.user;
@@ -276,7 +296,7 @@ function authentication(app, db) {
       }
     })
 
-  app.delete("/resetprogress",
+  app.delete("/api/resetprogress",
     (request, response, next) => validateTokenAccessBind(request, response, next),
     async (request, response) => {
       const user = request.user;
@@ -303,14 +323,38 @@ function authentication(app, db) {
       }
     })
 
-  app.delete("/deleteaccount",
+  app.delete("/api/deleteaccount",
     (request, response, next) => validateTokenAccessBind(request, response, next),
     async (request, response) => {
       const user = request.user;
 
       try {
         await resetProgress(user.id);
+        const resetAccessTokenStrSQL = `DELETE FROM access_token WHERE user_id = ${user.id}`;
+        const resetAccessTokenQuerySQL = await customQuery(db, resetAccessTokenStrSQL);
+        const resetRefreshTokenStrSQL = `DELETE FROM refresh_token WHERE user_id = ${user.id}`;
+        const resetRefreshTokenQuerySQL = await customQuery(db, resetRefreshTokenStrSQL);
 
+        setCookies(response, [
+          {
+            "accessToken": "",
+            modifyOptions: {
+              maxAge: 0
+            }
+          },
+          {
+            "refreshToken": "",
+            modifyOptions: {
+              maxAge: 0
+            }
+          },
+          {
+            "isAuthenticate": false,
+            modifyOptions: {
+              maxAge: 0
+            }
+          }
+        ])
         const deleteUserStrSql = `DELETE FROM user WHERE id = ${user.id}`;
         const deleteUser = await customQuery(db, deleteUserStrSql);
 

@@ -2,10 +2,10 @@
 const {validateTokenAccessBind, validateTokenRefreshBind} = require("../modules/validateToken");
 const {searchData} = require("../modules/database");
 // sub-routes
-const recoverRoutes = require("./subroutes/recover");
-const statistic = require("./subroutes/statistic");
-const htmlPages = require("./subroutes/htmlPages");
-const authentication = require("./subroutes/authentication");
+const recoverRoutes = require("./subroutes/api/recover");
+const statistic = require("./subroutes/api/statistic");
+const htmlPages = require("./subroutes/htmlPages/htmlPages");
+const authentication = require("./subroutes/api/authentication");
 
 
 async function routes(app, db) {

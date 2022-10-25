@@ -1,9 +1,9 @@
-const {createUserStatistic, searchData, searchDataCustom, createUserStatisticText} = require("../../modules/database");
-const {validateTokenAccessBind} = require("../../modules/validateToken");
+const {createUserStatistic, searchData, searchDataCustom, createUserStatisticText} = require("../../../modules/database");
+const {validateTokenAccessBind} = require("../../../modules/validateToken");
 
 
 function statistic (app, db) {
-  app.route("/statistic")
+  app.route("/api/statistic")
     .post((request, response, next) => validateTokenAccessBind(request, response, next),
     async (request, response) => {
       // start function

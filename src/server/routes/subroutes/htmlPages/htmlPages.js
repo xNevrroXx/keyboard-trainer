@@ -1,6 +1,6 @@
 // own modules
-const {validateTokenAccessBind} = require("../../modules/validateToken");
-const {searchData, customQuery} = require("../../modules/database");
+const {validateTokenAccessBind} = require("../../../modules/validateToken");
+const {searchData, customQuery} = require("../../../modules/database");
 
 
 const mainContainerTypes = {

@@ -31,7 +31,7 @@ const mainSchemas: TMainSchemas = {
     .required("Password is obligatory")
     .min(6, "Password is too short")
     .max(16, "Password is too long")
-    .matches(/^(?=.*[0-9])(?=.*[(!@#$%^&*])[a-zA-Z0-9(!@#$%^&*]{6,16}$/, "Password must contain one of the following characters: (!@#$%^&*"),
+    .matches(/^(?=.*[0-9])(?=.*[(!@#$%^&*])[a-zA-Z0-9(!@#$%^&* ]{6,16}$/, "Password must contain one of the following characters: (!@#$%^&*"),
   temporaryCode: number().required("Code is obligatory. It has been sent to your email address."),
   trainingOwnChars: string().ensure().matches(/^[0-9}{\[\]:;'\/"<>,.~?!@#$%^&*()_+№\-=]+$/, "May contain one of the following characters: 0-9}{\\[\\]:;'\\/\"<>,.~?!@#$%^&*()_+№\\-=")
 }

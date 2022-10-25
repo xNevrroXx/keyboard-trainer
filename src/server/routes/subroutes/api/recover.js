@@ -1,13 +1,13 @@
 // third-party modules
-const sendMail = require("../../modules/nodemailer");
+const sendMail = require("../../../modules/nodemailer");
 const argon2 = require("argon2");
 // own modules
-const {searchData, createTemporaryCode, changeData, customQuery} = require("../../modules/database");
-const createRandomValue = require("../../modules/createRandomValue");
-const setCookie = require("../../modules/setCookies");
+const {searchData, createTemporaryCode, changeData, customQuery} = require("../../../modules/database");
+const createRandomValue = require("../../../modules/createRandomValue");
+const setCookie = require("../../../modules/setCookies");
 
 function recoverRoutes (app, db) {
-  app.post("/recover/getcode", async (request, response) => {
+  app.post("/api/recover/getcode", async (request, response) => {
     const email = request.body.email;
 
     try {
@@ -43,7 +43,7 @@ function recoverRoutes (app, db) {
     }
   })
 
-  app.post("/recover/verifycode", async (request, response) => {
+  app.post("/api/recover/verifycode", async (request, response) => {
     const email = request.cookies.email;
     const code = +request.body.code;
 
@@ -78,7 +78,7 @@ function recoverRoutes (app, db) {
     }
   })
 
-  app.post("/recover/changepassword", async (request, response) => {
+  app.post("/api/recover/changepassword", async (request, response) => {
     const email = request.cookies.email;
     const code = +request.cookies.code;
     const password = await argon2.hash(request.body.password);
