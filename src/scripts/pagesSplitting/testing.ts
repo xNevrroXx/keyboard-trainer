@@ -3,11 +3,11 @@ import {authenticate, statisticDataPost} from "../services/services";
 import initTesting from "../modules/initTesting";
 // general statisticData
 import {MATCH_PAGES_URL} from "../generalData";
-import {IAverageDataStatistic, IStatisticWithText} from "../types";
+import {IStatisticWithText} from "../types";
 
 async function testing() {
   try {
-    const authenticateResponse = await authenticate();
+    await authenticate();
 
     initTesting(async (statisticWithText: IStatisticWithText) => {
       await statisticDataPost(statisticWithText);

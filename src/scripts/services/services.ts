@@ -115,7 +115,6 @@ async function statisticDataGet(searchWhichResult: string) {
     const response: any = await axios.get(MATCH_BACKEND_URL.statistic + `?which=${searchWhichResult}`);
     const data: IResponseStatistic = response.data.data;
 
-    console.log("services statistic: ", data);
     return data;
   } catch (error) {
     throw error;
@@ -127,5 +126,5 @@ export {
   recoverStageEmail, recoverStageCode, recoverStagePassword,
   deleteAccount, resetProgress,
   changePassword, changeMainData,
-  statisticDataPost, statisticDataGet,
+  statisticDataPost, statisticDataGet
 };

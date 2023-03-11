@@ -33,6 +33,7 @@ function initTraining(next: (statisticWithText?: IStatisticWithText) => void, te
     "CapsLock",
     "Backspace",
     "ContextMenu",
+    "AltLeft"
   ];
 
   const statisticSpeedValueElem = statisticElem.querySelector(".statistic-item_print-speed .statistic-item__value"),

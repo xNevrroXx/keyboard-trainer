@@ -1,6 +1,7 @@
 // own modules
 const {validateTokenAccessBind} = require("../../../modules/validateToken");
 const {searchData, customQuery} = require("../../../modules/database");
+const {getRandomText} = require("../../../modules/getRandomText");
 
 
 const mainContainerTypes = {
@@ -117,14 +118,17 @@ function htmlPages(app, db) {
   // this page can be provided to everyone. Both to the authenticating user and not.
   app.get("/testing",
     (request, response, next) => validateTokenAccessBind(request, response, next, false),
-    (request, response) => {
+    async (request, response) => {
     const user = request.user;
     const isUser = request.isUser;
+
+    const testingText = await getRandomText(2);
 
     if(isUser) {
       response.render("testing", {
         title: "Testing Keyboard trainer - govorov",
         mainContainerClass: mainContainerTypes["body-container-full-page"],
+        testingText: testingText,
         userData: { // todo mock value(helpers)
           exist: true,
           name: user.name,
@@ -136,6 +140,7 @@ function htmlPages(app, db) {
       response.render("testing", {
         title: "Testing Keyboard trainer - govorov",
         mainContainerClass: mainContainerTypes["body-container-full-page"],
+        testingText: testingText,
         userData: { // todo mock value(helpers)
           exist: false,
           name: "",
@@ -146,14 +151,16 @@ function htmlPages(app, db) {
   })
   app.get("/trainer",
     (request, response, next) => validateTokenAccessBind(request, response, next, false),
-    (request, response) => {
+    async (request, response) => {
       const user = request.user;
       const isUser = request.isUser;
+      const testingText = await getRandomText(1);
 
       if(isUser) {
         response.render("trainer", {
           title: "Trainer Keyboard trainer - govorov",
           mainContainerClass: mainContainerTypes["body-container-full-page"],
+          testingText: testingText,
           userData: { // todo mock value(helpers)
             exist: true,
             name: user.name,
@@ -165,6 +172,7 @@ function htmlPages(app, db) {
         response.render("trainer", {
           title: "Trainer Keyboard trainer - govorov",
           mainContainerClass: mainContainerTypes["body-container-full-page"],
+          testingText: testingText,
           userData: { // todo mock value(helpers)
             exist: false,
             name: "",
@@ -175,7 +183,7 @@ function htmlPages(app, db) {
     })
   app.get("/testing/custom",
     (request, response, next) => validateTokenAccessBind(request, response, next, false),
-    (request, response) => {
+    async (request, response) => {
       const user = request.user;
       const isUser = request.isUser;
 

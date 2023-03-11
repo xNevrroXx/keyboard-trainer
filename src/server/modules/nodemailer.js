@@ -23,7 +23,7 @@ async function sendMail(targetEmail, temporaryCode) {
     subject: "Keyboard trainer password recovery",
     html: `
       <div style="padding: 5px; border-radius: 5px; border: 1px solid black; height: auto; width: 400px; box-shadow: 0 0 3px black">
-        <p style="margin: 0; padding: 0">Please do not transfer the following code. Via this <span style="font-weight: bold">whoever</span> can access to your account</p>
+        <p style="margin: 0; padding: 0">Please do not transfer the following code. Via this <span style="font-weight: bold">whoever</span> can access your account</p>
         <br><br>
         <p style="margin: 0; padding: 0"><span style="font-weight: bold">Enter code</span> to the input form on the site.</p>
       </div>
