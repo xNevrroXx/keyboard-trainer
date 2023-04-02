@@ -1,13 +1,17 @@
-const express = require("express");
-const dotenv = require("dotenv");
-const cors = require("cors");
-const mysql = require("mysql");
-const cookieParser = require("cookie-parser");
-const path = require("path");
-const handlebars = require("express-handlebars").engine;
+import express from "express";
+import dotenv from "dotenv"
+import cors from "cors"
+import mysql from "mysql"
+import cookieParser from "cookie-parser"
+import * as path from 'path';
+import {fileURLToPath} from 'url';
+import handlebars from "express-handlebars";
 // owm modules
-const routes = require("./routes/routes");
+import routes from "./routes/routes.js"
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const handlebarsEngine = handlebars.engine;
 dotenv.config();
  
 const DB_DATABASE = process.env.DB_DATABASE,
@@ -35,7 +39,7 @@ db.getConnection((error, connection) => {
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.engine("hbs", handlebars({
+app.engine("hbs", handlebarsEngine({
   layoutsDir: path.join(__dirname, "views", "layouts"),
   partialsDir: path.join(__dirname, "views", "partials"),
   defaultLayout: "main",

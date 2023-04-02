@@ -8,4 +8,4 @@ function createRandomValue(min, max) {
   };
 }
 
-module.exports = createRandomValue;
+export default createRandomValue;

@@ -1,7 +1,7 @@
 // own modules
-const {validateTokenAccessBind} = require("../../../modules/validateToken");
-const {searchData, customQuery} = require("../../../modules/database");
-const {getRandomText} = require("../../../modules/getRandomText");
+import {validateTokenAccessBind} from "../../../modules/validateToken.js";
+import {searchData, customQuery} from "../../../modules/database.js";
+import {getRandomText} from "../../../modules/getRandomText.js";
 
 
 const mainContainerTypes = {
@@ -260,4 +260,4 @@ function htmlPages(app, db) {
   })
 }
 
-module.exports = htmlPages;
+export default htmlPages;

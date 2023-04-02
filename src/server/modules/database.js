@@ -1,4 +1,4 @@
-const mysql = require("mysql");
+import mysql from "mysql";
 
 
 /*
@@ -295,4 +295,4 @@ function createUserStatisticText(db, tableName, timestamp, userId, value) {
   })
 }
 
-module.exports = {searchData, createUser, changeToken, createTemporaryCode, changeData, createUserStatistic, createUserStatisticText, searchDataCustom, customQuery}
+export {searchData, createUser, changeToken, createTemporaryCode, changeData, createUserStatistic, createUserStatisticText, searchDataCustom, customQuery};

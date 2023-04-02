@@ -1,5 +1,5 @@
-const {createUserStatistic, searchData, searchDataCustom, createUserStatisticText} = require("../../../modules/database");
-const {validateTokenAccessBind} = require("../../../modules/validateToken");
+import {createUserStatistic, searchDataCustom, createUserStatisticText} from "../../../modules/database.js";
+import {validateTokenAccessBind} from "../../../modules/validateToken.js";
 
 
 function statistic (app, db) {
@@ -173,4 +173,4 @@ function statistic (app, db) {
       })
 }
 
-module.exports = statistic;
+export default statistic;
