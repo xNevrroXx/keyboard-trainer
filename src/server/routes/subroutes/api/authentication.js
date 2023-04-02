@@ -1,11 +1,11 @@
 // third-party modules
-const argon2 = require("argon2");
+import argon2 from "argon2";
 // own modules
-const {changeToken, searchData, createUser, changeData, customQuery} = require("../../../modules/database");
-const generateAccessToken = require("../../../modules/generateAccessToken");
-const generateRefreshToken = require("../../../modules/generateRefreshToken");
-const {validateTokenRefreshBind, validateTokenAccessBind} = require("../../../modules/validateToken");
-const setCookies = require("../../../modules/setCookies");
+import {changeToken, searchData, createUser, changeData, customQuery} from "../../../modules/database.js";
+import generateAccessToken from "../../../modules/generateAccessToken.js";
+import generateRefreshToken from "../../../modules/generateRefreshToken.js";
+import {validateTokenRefreshBind, validateTokenAccessBind} from "../../../modules/validateToken.js";
+import setCookies from "../../../modules/setCookies.js";
 
 function authentication(app, db) {
   app.post("/api/authenticate",
@@ -386,4 +386,4 @@ function authentication(app, db) {
 
 }
 
-module.exports = authentication;
+export default authentication;

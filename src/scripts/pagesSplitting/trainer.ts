@@ -2,12 +2,12 @@
 import {authenticate} from "../services/services";
 import initTesting from "../modules/initTesting";
 import getRandomNumber from "../modules/getRandomNumber";
+import validate from "../modules/validate";
+import initTraining from "../modules/initTraining";
 // general statisticData
 import {DIGITS, ENGLISH_ALPHABET, MATCH_PAGES_URL, SPECIAL_SYMBOLS} from "../generalData";
-import initTraining from "../modules/initTraining";
 // types
 import {IStatisticWithText} from "../types";
-import validate from "../modules/validate";
 
 const maxLengthText: number = 70;
 

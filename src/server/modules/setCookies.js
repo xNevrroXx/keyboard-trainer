@@ -24,4 +24,4 @@ function setCookies(response, arrCookies = []) {
   })
 }
 
-module.exports = setCookies;
+export default setCookies;

@@ -8,9 +8,9 @@ import results from "./pagesSplitting/results";
 import editProfile from "./pagesSplitting/editProfile";
 import profile from "./pagesSplitting/profile";
 import testingCustom from "./pagesSplitting/testingCustom";
+import trainer from "./pagesSplitting/trainer";
 // general statisticData
 import {MATCH_PAGES_URL} from "./generalData";
-import trainer from "./pagesSplitting/trainer";
 
 
 window.addEventListener("DOMContentLoaded", async () => {
