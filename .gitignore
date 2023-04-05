@@ -3,5 +3,4 @@ node_modules
 dist
 buildJS
 
-.env
-.env.json
+.env*

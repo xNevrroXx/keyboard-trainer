@@ -1,8 +1,8 @@
 // sub-routes
-import recoverRoutes from "./subroutes/api/recover.js";
-import statistic from "./subroutes/api/statistic.js";
-import htmlPages from "./subroutes/htmlPages/htmlPages.js";
-import authentication from "./subroutes/api/authentication.js";
+const recoverRoutes = require("./subroutes/api/recover");
+const statistic = require("./subroutes/api/statistic");
+const htmlPages = require("./subroutes/htmlPages/htmlPages");
+const authentication = require("./subroutes/api/authentication");
 
 
 async function routes(app, db) {
@@ -12,4 +12,4 @@ async function routes(app, db) {
   htmlPages(app, db);
 }
 
-export default routes;
+module.exports = routes;

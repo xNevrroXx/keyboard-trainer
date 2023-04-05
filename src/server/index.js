@@ -1,24 +1,15 @@
-import express from "express";
-import dotenv from "dotenv"
-import cors from "cors"
-import mysql from "mysql"
-import cookieParser from "cookie-parser"
-import * as path from 'path';
-import {fileURLToPath} from 'url';
-import handlebars from "express-handlebars";
+const express  = require("express");
+const path  = require('path');
+const fs = require("fs");
+const cors  = require("cors");
+const mysql  = require("mysql");
+const cookieParser  = require("cookie-parser");
+const handlebars  = require("express-handlebars");
 // owm modules
-import routes from "./routes/routes.js"
+const {DB_DATABASE, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, PORT = 5000} = require("./mainData");
+const routes  = require("./routes/routes.js");
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 const handlebarsEngine = handlebars.engine;
-dotenv.config();
- 
-const DB_DATABASE = process.env.DB_DATABASE,
-  DB_USER = process.env.DB_USER,
-  DB_PASSWORD = process.env.DB_PASSWORD,
-  DB_HOST = process.env.DB_HOST,
-  DB_PORT = process.env.DB_PORT;
 
 const db = mysql.createPool({
   connectionLimit: 100,
@@ -28,16 +19,23 @@ const db = mysql.createPool({
   password: DB_PASSWORD,
   port: DB_PORT
 })
-db.getConnection((error, connection) => {
-  if (error) {
-    throw error;
-  }
 
-  console.log("DB connected successful: " + connection.threadId);
-})
+  db.getConnection((error, connection) => {
+    if (error) {
+      const log = "Database is not connected\ntime: " + (new Date()).toString() + ",\n" +
+          `host: ${DB_HOST},\n` +
+          `user: ${DB_USER},\n` +
+          `database: ${DB_DATABASE},\n` +
+          `password: ${DB_PASSWORD},\n` +
+          `port: ${DB_PORT}\n\n\n\n`;
+      fs.writeFileSync(path.join(__dirname, "loggerDB.txt"), log);
+      throw new Error(error);
+    }
+
+    console.log("DB connected successful: " + connection.threadId);
+  })
 
 const app = express();
-const PORT = process.env.PORT || 5000;
 
 app.engine("hbs", handlebarsEngine({
   layoutsDir: path.join(__dirname, "views", "layouts"),

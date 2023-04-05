@@ -1,7 +1,9 @@
-import jwt from "jsonwebtoken";
+const jwt = require("jsonwebtoken");
+// own modules
+const {REFRESH_TOKEN_SECRET} = require("../mainData");
 
 function generateRefreshToken(payload) {
-  return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {expiresIn: "30m"});
+  return jwt.sign(payload, REFRESH_TOKEN_SECRET, {expiresIn: "30m"});
 }
 
-export default generateRefreshToken;
+module.exports = generateRefreshToken;
