@@ -1,7 +1,9 @@
-import jwt from "jsonwebtoken";
+const jwt = require("jsonwebtoken");
+// own modules
+const {ACCESS_TOKEN_SECRET} = require("../mainData");
 
 function generateAccessToken(payload) {
-  return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {expiresIn: "15m"});
+  return jwt.sign(payload, ACCESS_TOKEN_SECRET, {expiresIn: "15m"});
 }
 
-export default generateAccessToken;
+module.exports = generateAccessToken;

@@ -1,10 +1,10 @@
 // third-party modules
-import argon2 from "argon2";
+const argon2 = require("argon2");
 // own modules
-import sendMail from "../../../modules/nodemailer.js";
-import {searchData, createTemporaryCode, changeData, customQuery} from "../../../modules/database.js";
-import createRandomValue from "../../../modules/createRandomValue.js";
-import setCookie from "../../../modules/setCookies.js";
+const sendMail = require("../../../modules/nodemailer");
+const {searchData, createTemporaryCode, changeData, customQuery} = require("../../../modules/database");
+const createRandomValue = require("../../../modules/createRandomValue");
+const setCookie = require("../../../modules/setCookies");
 
 function recoverRoutes (app, db) {
   app.post("/api/recover/getcode", async (request, response) => {
@@ -127,4 +127,4 @@ function recoverRoutes (app, db) {
   })
 }
 
-export default recoverRoutes;
+module.exports = recoverRoutes;

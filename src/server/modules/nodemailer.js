@@ -1,9 +1,10 @@
-import nodemailer from "nodemailer";
-
+const nodemailer = require("nodemailer");
+// own modules
+const {EMAIL_ADDRESS, EMAIL_PASSWORD} = require("../mainData");
 
 async function sendMail(targetEmail, temporaryCode) {
-  const userEmail = process.env.EMAIL_ADDRESS;
-  const passwordEmail = process.env.EMAIL_PASSWORD;
+  const userEmail = EMAIL_ADDRESS;
+  const passwordEmail = EMAIL_PASSWORD;
 
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
@@ -34,53 +35,4 @@ async function sendMail(targetEmail, temporaryCode) {
   return sendingResult;
 }
 
-
-
-// async function sendMail(targetEmail) {
-//   const userEmail = process.env.EMAIL_ADDRESS;
-//   const passwordEmail = process.env.EMAIL_PASSWORD;
-//   console.log("userEmail: ", userEmail);
-//   console.log("passwordEmail: ", passwordEmail);
-//   console.log("targetEmail: ", targetEmail);
-//   const transporter = nodemailer.createTransport({
-//     port: 465,
-//     host: "smtp.mail.ru",
-//     auth: {
-//       user: userEmail,
-//       pass: passwordEmail
-//     },
-//     secure: true
-//   })
-//
-// //todo fix: {msg: 'Missing credentials for "PLAIN"'}
-//   const subject = "subj",
-//     text = "text",
-//     html = "",
-//     attachments = "";
-//   const mailer = async () => {
-//     console.log(userEmail, " ", passwordEmail)
-//     const mailData = {
-//       from: userEmail,
-//       to: targetEmail,
-//       subject: subject,
-//       text: text,
-//       html: html,
-//       attachments: attachments
-//     }
-//
-//     return new Promise((resolve, reject) => {
-//       transporter.sendMail(mailData, function (error, info) {
-//         if (error) {
-//           console.log("error: ", error)
-//           reject(error);
-//           return;
-//         }
-//         console.log("info: ", info)
-//         resolve(info)
-//       })
-//     })
-//   }
-//
-//   return await mailer();
-// }
-export default sendMail;
+module.exports = sendMail;

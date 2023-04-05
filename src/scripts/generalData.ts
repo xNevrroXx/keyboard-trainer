@@ -1,6 +1,5 @@
 import {IBackendUrls, IMatchPagesUrl} from "./types";
 
-const MAIN_URL = "http://localhost:5000";
 // frontend urls
 const MATCH_PAGES_URL: IMatchPagesUrl = {
   "profile": {
@@ -46,7 +45,7 @@ const MATCH_PAGES_URL: IMatchPagesUrl = {
 }
 
 // backend urls
-const BACKEND_MAIN_URL = MAIN_URL + "/api";
+const BACKEND_MAIN_URL = "/api";
 const MATCH_BACKEND_URL: IBackendUrls = {
   login: BACKEND_MAIN_URL + "/login",
   register: BACKEND_MAIN_URL + "/register",
@@ -71,4 +70,4 @@ const RUSSIAN_ALPHABET: string = "абвгдеёжзийклмопрстуфхц
 const SPECIAL_SYMBOLS: string = "(!@#$%^&*";
 const DIGITS: string = "0123456789";
 
-export { ENGLISH_ALPHABET, RUSSIAN_ALPHABET, SPECIAL_SYMBOLS, DIGITS, MAIN_URL, BACKEND_MAIN_URL, MATCH_PAGES_URL, MATCH_BACKEND_URL };
+export { ENGLISH_ALPHABET, RUSSIAN_ALPHABET, SPECIAL_SYMBOLS, DIGITS, BACKEND_MAIN_URL, MATCH_PAGES_URL, MATCH_BACKEND_URL };

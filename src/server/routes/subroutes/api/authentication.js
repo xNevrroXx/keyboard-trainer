@@ -1,11 +1,14 @@
 // third-party modules
-import argon2 from "argon2";
+const argon2 =  require("argon2");
 // own modules
-import {changeToken, searchData, createUser, changeData, customQuery} from "../../../modules/database.js";
-import generateAccessToken from "../../../modules/generateAccessToken.js";
-import generateRefreshToken from "../../../modules/generateRefreshToken.js";
-import {validateTokenRefreshBind, validateTokenAccessBind} from "../../../modules/validateToken.js";
-import setCookies from "../../../modules/setCookies.js";
+const {changeToken, searchData, createUser, changeData, customQuery} =  require("../../../modules/database");
+const generateAccessToken =  require("../../../modules/generateAccessToken");
+const generateRefreshToken =  require("../../../modules/generateRefreshToken");
+const {validateTokenRefreshBind, validateTokenAccessBind} =  require("../../../modules/validateToken");
+const setCookies =  require("../../../modules/setCookies");
+const {DB_HOST, DB_USER, DB_DATABASE, DB_PASSWORD, DB_PORT} = require("../../../mainData");
+const fs = require("fs");
+const path = require("path");
 
 function authentication(app, db) {
   app.post("/api/authenticate",
@@ -53,7 +56,16 @@ function authentication(app, db) {
     const hashedPassword = await argon2.hash(request.body.password);
     const email = request.body.email;
 
+
+    const log = "Time: " + (new Date()).toString() + ",\n" +
+        `start register before first try: ${name},\n` +
+        `email: ${email},\n\n\n\n`;
+    fs.writeFileSync(path.join(__dirname, "..", "..", "..", "loggerAuthenticate.txt"), log);
     try {
+      const log = "Time: " + (new Date()).toString() + ",\n" +
+          `start register first try - before search: ${name},\n` +
+          `email: ${email},\n\n\n\n`;
+      fs.writeFileSync(path.join(__dirname, "..", "..", "..", "loggerAuthenticate.txt"), log);
       const findingResult = await searchData(db, "user", email, "email");
 
       response.status(409).json({
@@ -66,11 +78,18 @@ function authentication(app, db) {
           hashedPassword: hashedPassword,
           email: email
         })
-
+        const log = "Time: " + (new Date()).toString() + ",\n" +
+            `created!: ${name},\n` +
+            `email: ${email},\n\n\n\n`;
+        fs.writeFileSync(path.join(__dirname, "..", "..", "..", "loggerAuthenticate.txt"), log);
         response.status(201).json(
           {message: "user created"}
         )
       } catch (error) {
+        const log = "Time: " + (new Date()).toString() + ",\n" +
+            `NOT created!: ${name},\n` +
+            `email: ${email},\n\n\n\n`;
+        fs.writeFileSync(path.join(__dirname, "..", "..", "..", "loggerAuthenticate.txt"), log);
         response.status(400).json({
           message: error
         });
@@ -386,4 +405,4 @@ function authentication(app, db) {
 
 }
 
-export default authentication;
+module.exports = authentication;

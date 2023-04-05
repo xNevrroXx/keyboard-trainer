@@ -1,8 +1,9 @@
 // third-party modules
-import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
+const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv");
 // own modules
-import setCookies from "./setCookies.js";
+const setCookies = require("./setCookies");
+const {ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET} = require("../mainData");
 
 dotenv.config();
 
@@ -66,8 +67,8 @@ function validateToken(secretToken, nameField, request, response, next, isThrowO
   })
 }
 
-const validateTokenAccessBind = validateToken.bind(null, process.env.ACCESS_TOKEN_SECRET, "accessToken");
-const validateTokenRefreshBind = validateToken.bind(null, process.env.REFRESH_TOKEN_SECRET, "refreshToken");
+const validateTokenAccessBind = validateToken.bind(null, ACCESS_TOKEN_SECRET, "accessToken");
+const validateTokenRefreshBind = validateToken.bind(null, REFRESH_TOKEN_SECRET, "refreshToken");
 
-export default validateToken;
-export {validateTokenAccessBind, validateTokenRefreshBind};
+module.exports = validateToken;
+module.exports = {validateTokenAccessBind, validateTokenRefreshBind};

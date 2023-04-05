@@ -1,4 +1,4 @@
-import fetch from "node-fetch";
+const fetch = require("node-fetch");
 
 async function getRandomText(numberSequences = 2) {
     const response = await fetch(`https://fish-text.ru/get?number=${numberSequences}`);
@@ -7,4 +7,4 @@ async function getRandomText(numberSequences = 2) {
     return data.text;
 }
 
-export {getRandomText};
+module.exports = {getRandomText};
