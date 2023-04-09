@@ -6,18 +6,21 @@ import {authenticate} from "../services/services";
 import {MATCH_PAGES_URL} from "../generalData";
 
 async function login() {
-  try {
-    const authenticateResponse = await authenticate();
+    try {
+        await authenticate();
 
-    window.location.href = MATCH_PAGES_URL["testing"].pathname;
-  } catch {
-    document.querySelector("button#forgot-password").addEventListener("click", () => {
-      window.location.href = MATCH_PAGES_URL["recovery"].pathname + MATCH_PAGES_URL["recovery"].possibleHashValue["email"];
-    });
+        window.location.href = MATCH_PAGES_URL["testing"].pathname;
+    } catch {
+        const forgotPasswordBtns = document.querySelectorAll("button.forgot-password")
+        forgotPasswordBtns.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                window.location.href = MATCH_PAGES_URL["recovery"].pathname + MATCH_PAGES_URL["recovery"].possibleHashValue["email"];
+            });
+        })
 
-    loginFormTab();
-    loginFormListener();
-  }
+        loginFormTab();
+        loginFormListener();
+    }
 }
 
 export default login;

@@ -5,6 +5,7 @@ import DataStatisticSpeed from "./DataStatisticSpeed";
 import {IStatisticWithText} from "../types";
 
 function initTraining(next: (statisticWithText?: IStatisticWithText) => void, text?: string) {
+  const keyboardInputPhone: HTMLInputElement = document.querySelector("#keyboard-input-phone");
   const testingTextElem: HTMLElement = document.querySelector("#testing-text"),
     statisticElem = document.querySelector(".statistic");
 
@@ -52,7 +53,15 @@ function initTraining(next: (statisticWithText?: IStatisticWithText) => void, te
 
   window.addEventListener("keydown", handleKeyDownTraining)
   window.addEventListener("click", handleClick);
-
+  // start mobile devices support
+  window.addEventListener("touchstart", () => {
+    keyboardInputPhone.focus();
+  })
+  window.addEventListener("click", () => {
+    keyboardInputPhone.focus();
+  })
+  keyboardInputPhone.addEventListener("keydown", () => {}, true);
+  // end mobile devices support
 
   idIntervalTyping = setInterval(() => {
     pastTime.time = pastTime.time + 100;
@@ -197,7 +206,9 @@ function initTraining(next: (statisticWithText?: IStatisticWithText) => void, te
     toggler.isClicked = !toggler.isClicked;
   }
   function scrollToTarget() {
-    testingTextElem.querySelector(".text__char-target").scrollIntoView(true);
+    const targetChar: HTMLSpanElement | null = testingTextElem.querySelector(".text__char-target");
+    if (!targetChar) throw new Error("No target character");
+    testingTextElem.scrollTop = targetChar.offsetTop;
     testingTextElem.scrollTop += -3;
   }
 }

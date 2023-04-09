@@ -20,7 +20,7 @@ async function testingCustom() {
     // todo!!! try temporarily saving testing the test values in the backend. And save to DB this one when user sign-in/register
     // todo send statisticData to db
 
-    initTesting(() => window.location.href = MATCH_PAGES_URL["login"].pathname + MATCH_PAGES_URL["login"].possibleHashValue["sign-in"]);
+   window.location.href = MATCH_PAGES_URL["login"].pathname + MATCH_PAGES_URL["login"].possibleHashValue["sign-in"];
   }
 }
 

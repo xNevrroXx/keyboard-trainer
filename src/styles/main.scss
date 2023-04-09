@@ -42,6 +42,8 @@ html {
     font-size: 14px;
 }
 body {
+    position: relative;
+    background-color: $soft-light-blue;
     font-family: "Montserrat", sans-serif;
 }
 .plug {
@@ -87,15 +89,15 @@ li {
 }
 .body-container-main {
     padding: 7vw;
-    background-color: $soft-light-blue;
     display: flex;
     justify-content: center;
     min-height: 100vh;
     position: relative;
 }
 .body-container-full-page {
-    background-color: $soft-light-blue;
-    height: 100vh;
+    padding-top: 7rem;
+    min-height: 100vh;
+    height: max-content;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -135,6 +137,7 @@ li {
 @import "blocks/profile";
 @import "blocks/editprofile";
 @import "blocks/results";
+@import "blocks/form";
 
 
 h1 {
@@ -158,4 +161,19 @@ h1 {
     margin-bottom: 1rem;
     font-size: .9rem;
     color: $soft-pink;
+}
+
+
+@media screen and (max-width: 1050px) {
+    .wrapper-content {
+        flex-direction: column;
+    }
+    .body-container-full-page {
+        padding-top: 20%;
+        justify-content: center;
+        align-items: flex-start;
+    }
+    .gif {
+        display: none;
+    }
 }
