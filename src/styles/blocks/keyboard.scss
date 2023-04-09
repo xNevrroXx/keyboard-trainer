@@ -153,6 +153,12 @@
   }
 }
 
+@media screen and (max-width: 1050px) {
+  .keyboard {
+    display: none;
+  }
+}
+
 /* 5.1. Animations */
 @keyframes gif__animation--x {
   100% {

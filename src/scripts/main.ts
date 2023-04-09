@@ -1,6 +1,6 @@
 // owm modules
-import scaleElements from "./modules/scaleElements";
 import navMenu from "./modules/navMenu";
+import burger from "./modules/burger";
 import login from "./pagesSplitting/login";
 import recovery from "./pagesSplitting/recovery";
 import testing from "./pagesSplitting/testing";
@@ -15,6 +15,7 @@ import {MATCH_PAGES_URL} from "./generalData";
 
 window.addEventListener("DOMContentLoaded", async () => {
   navMenu();
+  burger();
 
   // scaleElements(document.querySelector("body"), document.querySelectorAll("body > *"));
   // window.addEventListener("resize", () => {
