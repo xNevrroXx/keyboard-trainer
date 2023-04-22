@@ -1,7 +1,4 @@
 const mysql = require("mysql");
-const fs = require("fs");
-const path = require("path");
-
 
 /*
 * find user in db. Will return some error or statisticData of an existing user.
@@ -13,30 +10,18 @@ const path = require("path");
 *   Describes required type of column, where "userData" should be found. Example: "email":
 * */
 async function searchData(db, tableName, data, nameColumn) {
-  let log = "Time: " + (new Date()).toString() + ",\n" +
-      `before search user!: ${data}\n\n\n\n`;
-  fs.writeFileSync(path.join(__dirname, "..", "loggerCreateUser.txt"), log);
   return new Promise((resolve, reject) => {
     db.getConnection(async (error, connection) => {
       const searchStrSQL = `SELECT * FROM ${tableName} WHERE ${nameColumn} = ?`;
       const searchQuerySQL = mysql.format(searchStrSQL, [data]);
 
-      let log = "Time: " + (new Date()).toString() + ",\n" +
-          `before query search user!: ${data}\n\n\n\n`;
-      fs.writeFileSync(path.join(__dirname, "..", "loggerCreateUser.txt"), log);
       connection.query(searchQuerySQL, (error, result) => {
         connection.release();
 
         if (error) {
           return reject(error);
-          let log = "Time: " + (new Date()).toString() + ",\n" +
-              `In the query search user - ERROR!: ${searchStrSQL}\n\n\n\n`;
-          fs.writeFileSync(path.join(__dirname, "..", "loggerCreateUser.txt"), log);
         }
 
-        let log = "Time: " + (new Date()).toString() + ",\n" +
-            `In the query search user!: ${searchStrSQL}\n\n\n\n`;
-        fs.writeFileSync(path.join(__dirname, "..", "loggerCreateUser.txt"), log);
         if (!result || result.length === 0) {
           return reject({
             status: 404,
@@ -84,10 +69,6 @@ async function searchDataCustom(db, searchStrSQL) {
 }
 
 async function createUser(db, userData) {
-  const log = "Time: " + (new Date()).toString() + ",\n" +
-      `trying to create row!: ${userData.name},\n` +
-      `email: ${userData.email},\n\n\n\n`;
-  fs.writeFileSync(path.join(__dirname, "..", "loggerCreateUser.txt"), log);
   const insertStrSQL = "INSERT INTO user(name, password, email) VALUES (?, ?, ?)";
   const insertQuerySQL = mysql.format(insertStrSQL, [userData.name, userData.hashedPassword, userData.email]);
   return new Promise((resolve, reject) => {

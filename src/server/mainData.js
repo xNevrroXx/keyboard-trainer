@@ -21,7 +21,6 @@ const ENV = {
 }
 
 
-console.log("DB_DATABASE: ", ENV.DB_DATABASE);
 const log = "Time: " + (new Date()).toString() + ",\n" +
     `host: ${ENV.DB_HOST},\n` +
     `user: ${ENV.DB_USER},\n` +
