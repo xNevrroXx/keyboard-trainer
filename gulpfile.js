@@ -2,12 +2,10 @@ const gulp = require("gulp");
 const webpack = require("webpack-stream");
 const sourcemaps = require("gulp-sourcemaps");
 const rename = require('gulp-rename');
-const ts = require("gulp-typescript");
 const nodemon = require("gulp-nodemon");
 const env = require("gulp-env");
 const sass = require('gulp-sass')(require('sass'));
 
-const tsProject = ts.createProject("tsconfig.json");
 const dist = "./dist/";
 const src = "./src/";
 
@@ -29,7 +27,7 @@ gulp.task("copy-assets", () => {
 gulp.task("copy-server", () => {
   return gulp.src(src + "/server/**/*.js")
     .pipe(gulp.dest(dist));
-}) 
+})
 gulp.task("copy-env-file", () => {
   return gulp.src(src + "/server/.env.json")
     .pipe(gulp.dest(dist));
@@ -46,43 +44,28 @@ gulp.task("serve", () => {
 })
 
 gulp.task("build-ts", () => {
-  return tsProject.src()
-    .pipe(tsProject()).js
-    .pipe(gulp.dest(src + "/buildJS"))
-})
-
-gulp.task("build-js", () => {
-  return gulp.src(src + "/buildJS/main.js")
-    .pipe(webpack({
-      mode: 'development',
-      output: {
-        filename: 'bundle.js'
-      },
-      watch: false,
-      devtool: "source-map",
-      module: {
-        rules: [
-          {
-            test: /\.m?js$/,
-            resolve: {
-              fullySpecified: false
-            },
+  return gulp.src(src + "/scripts/main.ts")
+      .pipe(webpack({
+        mode: 'production',
+        watch: false,
+        devtool: "source-map",
+        module: {
+          rules: [{
+            test: /\.tsx?$/,
             exclude: /(node_modules|bower_components)/,
             use: {
-              loader: 'babel-loader',
-              options: {
-                presets: [['@babel/preset-env', {
-                  debug: true,
-                  corejs: 3,
-                  useBuiltIns: "usage"
-                }]]
-              }
+              loader: 'ts-loader',
             }
-          }
-        ]
-      }
-    }))
-    .pipe(gulp.dest(dist + "/public/scripts"))
+          }]
+        },
+        resolve: {
+          extensions: ['.tsx', '.ts', '.js'],
+        },
+        output: {
+          filename: 'bundle.js'
+        },
+      }))
+      .pipe(gulp.dest(dist + "/public/scripts"))
 });
 
 gulp.task("build-styles", () => {
@@ -97,12 +80,12 @@ gulp.task("build-styles", () => {
 gulp.task("watch", () => {
   gulp.watch(src + "server/**/*.js", gulp.series("copy-server"));
   gulp.watch(src + "views/**/*.hbs", gulp.parallel("copy-handlebar-views"));
-  gulp.watch(src + "scripts/**/*.ts", gulp.series("build-ts", "build-js"));
+  gulp.watch(src + "scripts/**/*.ts", gulp.parallel("build-ts"));
   gulp.watch(src + "styles/**/*.@(scss|sass)", gulp.parallel("build-styles"));
   gulp.watch(src + "assets/**/*.*", gulp.parallel("copy-assets"));
   gulp.watch(src + "fonts/**/*.*", gulp.parallel("copy-fonts"));
 })
 
-gulp.task("build", gulp.parallel(gulp.series("copy-env-file", "copy-server", "serve"), gulp.series("build-ts", "build-js"), "copy-handlebar-views", "build-styles", "copy-assets"/*"copy-fonts"*/));
+gulp.task("build", gulp.parallel(gulp.series("copy-env-file", "copy-server", "serve"), "build-ts", "copy-handlebar-views", "build-styles", "copy-assets"/*"copy-fonts"*/));
 
-gulp.task("default", gulp.parallel("watch", "build"))
+gulp.task("default", gulp.parallel("watch", "build"));

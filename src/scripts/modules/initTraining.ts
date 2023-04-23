@@ -60,7 +60,7 @@ function initTraining(next: (statisticWithText?: IStatisticWithText) => void, te
   window.addEventListener("click", () => {
     keyboardInputPhone.focus();
   })
-  keyboardInputPhone.addEventListener("keydown", () => {}, true);
+  // keyboardInputPhone.addEventListener("keydown", () => {}, false);
   // end mobile devices support
 
   idIntervalTyping = setInterval(() => {
