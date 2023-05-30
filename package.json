@@ -54,7 +54,7 @@
     "gulp-env": "^0.4.0",
     "jsonwebtoken": "^8.5.1",
     "mysql": "^2.18.1",
-    "node-fetch": "^2.6.9",
+    "node-fetch": "^2.6.11",
     "nodemailer": "^6.8.0",
     "yup": "^0.32.11"
   }
